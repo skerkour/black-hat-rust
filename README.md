@@ -93,9 +93,9 @@ estimated number of pages: **~320**
 
 ## Community
 
-Hey! Welcome you to the Black Hat Rustaceans gang! If you think something in the book or the code can be improved, please [open an issue]((https://github.com/skerkour/black-hat-rust/issues)). Pull requests are also welcome :)
+Hey! Welcome you to the Black Hat Rustaceans gang! If you think something in the book or the code can be improved, please [open an issue](https://github.com/skerkour/black-hat-rust/issues). Pull requests are also welcome :)
 
-If you have any question or idea, feel free to [join the discusssion on the Forum](https://github.com/skerkour/black-hat-rust/discussions)!
+If you have any question or idea, feel free to [join the discussion on the Forum](https://github.com/skerkour/black-hat-rust/discussions)!
 
 
 ## Newsletter
