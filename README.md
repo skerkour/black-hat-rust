@@ -15,7 +15,9 @@ In reality, the spectrum of the profile of the attackers is extremely large, fro
 
 What are the motivations of the attackers? How can they break seemingly so easily into any network? What do they do to their victims?
 We will put on our black hat and explore the arcanes of offensive security, whether it be cyber attacks, cybercrimes or cyberwar.
-Scanners, exploits, malwares...  From theory to pratice, we build our own offensive tools at the edge of technology, with the Rust programming language, Stack Overflow’s most loved language for five years in a row. Rust is opening a new page in history of programming languages by providing unmatched guarantees and features, whether it be in defensive or, as we will see, offensive security.
+Scanners, exploits, malwares...  From theory to pratice, we build our own offensive tools at the edge of technology, with the Rust programming language, Stack Overflow’s most loved language for five years in a row.
+
+Rust is opening a new page in history of programming languages by providing unmatched guarantees and features, whether it be in defensive or, as we will see, offensive security.
 
 Free Updates and DRM Free, of course :)
 
