@@ -41,7 +41,7 @@ Instead it's from-theory-to-practice-manual and you may enjoy it if any of the f
 
 ## Early access
 
-As of today, the book is still a work in progress. You can think of it as a Kickstarter campaign, but with 100% of the revenues going to the author.
+As of today, the book is a work in progress. You can think of it as a Kickstarter campaign, but with 100% of the revenues going to the author.
 
 If for any reason the project has to shut down before its completion, you'll receive a full refund.
 
@@ -56,6 +56,7 @@ estimated number of pages: **~320**
 <h3>
   <a href="https://academy.kerkour.com/black-hat-rust">Buy the book now!</a>
 </h3>
+
 
 ## Table of contents
 
