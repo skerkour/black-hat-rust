@@ -17,24 +17,23 @@ What are the motivations of the attackers? How can they break seemingly so easil
 We will put on our black hat and explore the arcanes of offensive security, whether it be cyber attacks, cybercrimes or cyberwar.
 Scanners, exploits, malwares... From theory to practice, we will explore the arcanes of offensive security and build our own offensive tools with the Rust programming language, Stack Overflow’s most loved language for five years in a row.
 
-Rust is opening a new page in history of programming languages by providing unmatched guarantees and features, whether it be in defensive or, as we will see, offensive security.
+Rust is turning a new page in the history of programming languages by providing unparalleled guarantees and features, whether it be for defensive or offensive security. I will venture to say that Rust is the long awaited one-size-fits-all programming language. Here is why.
 
 Free Updates and DRM Free, of course :)
 
 ## Who this book is for
 
-This is NOT a 1000th tutorial about sqlmap and Metasploit.
+This is NOT a 1000th tutorial about sqlmap and Metasploit nor it will teach you the fundamentals of programming.
 
-You will enjoy it if any of the following:
+Instead it's from-theory-to-practice-manual and you may enjoy it if any of the following:
 
 - You keep screaming "show me the code!" when reading about cyber attacks and malwares
 - You want to learn real-world and idiomatic rust practices
-- You want to make money with bug bounties or offensive security
 - You believe that the best defense is thinking like an attacker
 - You learn by building and love to look under the hood
 - You develop your own tools and exploits with Python, Ruby, C, Java...
 - You want to learn real-world offensive security, not just pentesting
-
+- You want to start your career in bug bounties or offensive security
 
 <h3>
   <a href="https://academy.kerkour.com/black-hat-rust">Buy the book now!</a>
@@ -42,7 +41,7 @@ You will enjoy it if any of the following:
 
 ## Early access
 
-As of today, the book is still a work in progress. You can think of it as a Kickstarter campaign, but with 100% of the revenue going to the author.
+As of today, the book is still a work in progress. You can think of it as a Kickstarter campaign, but with 100% of the revenues going to the author.
 
 If for any reason the project has to shut down before its completion, you'll receive a full refund.
 
