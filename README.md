@@ -25,7 +25,7 @@ Free Updates and DRM Free, of course :)
 
 This is NOT a 1000th tutorial about sqlmap and Metasploit nor it will teach you the fundamentals of programming.
 
-Instead it's from-theory-to-practice-manual and you may enjoy it if any of the following:
+Instead it's a from-theory-to-practice-manual and you may enjoy it if any of the following:
 
 - You keep screaming "show me the code!" when reading about cyber attacks and malwares
 - You want to learn real-world and idiomatic rust practices
