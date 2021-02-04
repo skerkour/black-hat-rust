@@ -67,28 +67,28 @@ estimated number of pages: **~320**
 #### 2 - Multi-threaded attack surface discovery <span title="work in progress">🚧</span>
 How to perform effective reconnaissance? In this chapter we will build a multi-threaded scanner in order to automate the mapping of the target.
 
-#### 3 - Going full speed with async
+#### 3 - Going full speed with async <span title="to do">🕒</span>
 Unfortunately, when a program spends most of it time in I/O operations, multi-threading is not a panacea. We will learn how async makes Rust code really, really fast and refactor or scanner to async code.
 
-#### 4 - Adding modules with Trait objects
+#### 4 - Adding modules with Trait objects <span title="to do">🕒</span>
 We will add more heterogeneous modules to our scanner and will learn how Rust’s type system helps create properly designed large pieces of software.
 
-#### 5 - Crawling the web for OSINT
+#### 5 - Crawling the web for OSINT <span title="to do">🕒</span>
 Leveraging all we learned previously, we will build an extremely fast web crawler to help us find the needles in the haystack the web is.
 
 
 ### Part II: Exploitation
 
-#### 6 - Finding vulnerabilities with Fuzzing
+#### 6 - Finding vulnerabilities with Fuzzing <span title="to do">🕒</span>
 Once the external reconnaissance performed, it’s time to find entry points. In this chapter we will learn how automated fuzzing can help us to find vulnerabilities that can be exploited to then gain access to our target’s systems.
 
-#### 7 - Exploit development
+#### 7 - Exploit development <span title="to do">🕒</span>
 Rust may not be as fast as python when it comes to iterate on quick scripts such as exploits, but as we will see, its powerful type and modules system make it nonetheless a weapon of choice.
 
-#### 8 - Writing shellcodes in Rust
+#### 8 - Writing shellcodes in Rust <span title="work in progress">🚧</span>
 Shellcode development is an ungrateful task. Writing assembly by hand is definitely not sexy. Fortunately for us, Rust, one more time, got our back! In this chapter we will learn how to write shellcodes in plain Rust with no_std.
 
-#### 9 - Phishing with WebAssembly
+#### 9 - Phishing with WebAssembly <span title="work in progress">🚧</span>
 When they can’t find exploitable hardware or software vulnerability, attackers usually fall back to what is often the weakest link in the chain: Humans.
 Again, Rust comes handy and will let us create advanced phishing pages by compiling to WebAssembly.
 
@@ -96,16 +96,16 @@ Again, Rust comes handy and will let us create advanced phishing pages by compil
 
 ### Part III: Implant development
 
-#### 10 - A modern RAT
+#### 10 - A modern RAT <span title="to do">🕒</span>
 A RAT (for Remote Access Tool), also known as implant or beacon, is a kind of software used to perform offensive operations on a target's machines. In this chapter we will build our own RAT communicating to a remote server and database.
 
-#### 11 - Securing communications with end-to-end encryption
+#### 11 - Securing communications with end-to-end encryption <span title="work in progress">🚧</span>
 The consequences of our own infrastructure being compromised or seized can be desastrious. We will add end-to-end encryption to our RAT’s communication in order to secure its communications and avoid leaving traces on our servers.
 
-#### 12 - Going multi-platforms
+#### 12 - Going multi-platforms <span title="to do">🕒</span>
 Today’s computing landscape is extremely fragmented. From Windows to macOS we can’t target only one Operating System to ensure the success of our operations. In this section we will see how Rust’s ecosystem is extremely useful when it comes to cross-compilation.
 
-#### 13 - Turning into a worm to increase reach
+#### 13 - Turning into a worm to increase reach <span title="to do">🕒</span>
 Once the initial targets compromised, we will capitalize on Rust’s extraordinarily reusability to incorporate some parts of our initial scanner to turn our RAT into a worm and reach more targets only accessible from the target's internal network.
 
 <h3>
