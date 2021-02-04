@@ -15,7 +15,7 @@ In reality, the spectrum of the profile of the attackers is extremely large, fro
 
 What are the motivations of the attackers? How can they break seemingly so easily into any network? What do they do to their victims?
 We will put on our black hat and explore the arcanes of offensive security, whether it be cyber attacks, cybercrimes or cyberwar.
-Scanners, exploits, malwares... From theory to practice, we will explore the arcanes of offensive security and build our own offensive tools with the Rust programming language, Stack Overflow’s most loved language for five years in a row.
+Scanners, exploits, phishing toolkit, implants... From theory to practice, we will explore the arcanes of offensive security and build our own offensive tools with the Rust programming language, Stack Overflow’s most loved language for five years in a row.
 
 Rust is turning a new page in the history of programming languages by providing unparalleled guarantees and features, whether it be for defensive or offensive security. I will venture to say that Rust is the long awaited one-size-fits-all programming language. Here is why.
 
@@ -24,9 +24,9 @@ Free Updates and DRM Free, of course :)
 ## Who this book is for
 
 This is NOT a 1000th tutorial about sqlmap and Metasploit nor it will teach you the fundamentals of programming.
-
-Instead it's a from-theory-to-practice-manual and you may enjoy it if any of the following:
-
+ 
+Instead it's a from-theory-to-practice manual and you may enjoy it if any of the following:
+ 
 - You keep screaming "show me the code!" when reading about cyber attacks and malwares
 - You want to learn real-world and idiomatic rust practices
 - You believe that the best defense is thinking like an attacker
@@ -41,7 +41,7 @@ Instead it's a from-theory-to-practice-manual and you may enjoy it if any of the
 
 ## Early access
 
-As of today, the book is a work in progress. You can think of it as a Kickstarter campaign, but with 100% of the revenues going to the author.
+As of today, the book is work in progress. You can think of it as a Kickstarter campaign, but with 100% of the revenues going to the author.
 
 If for any reason the project has to shut down before its completion, you'll receive a full refund.
 
