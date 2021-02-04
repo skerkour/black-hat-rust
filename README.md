@@ -45,7 +45,7 @@ As of today, the book is work in progress. You can think of it as a Kickstarter 
 
 If for any reason the project has to shut down before its completion, you'll receive a full refund.
 
-estimated final publication: **June 2021**
+estimated final publication: **July 2021**
 
 estimated number of pages: **~320**
 
