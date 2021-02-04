@@ -49,8 +49,8 @@ estimated final publication: **June 2021**
 
 estimated number of pages: **~320**
 
-**In order to thanks the people who make it possible, all early access buyers will also receive the following bonus:**
-* **A curated list of advanced malware analyses**
+**In order to thank all the people who will help me make this book a reality, all early access buyers will also receive the following bonus:**
+* **A curated list of advanced malware analyses. You will find inside great inspiration when developing your own offensive tools.**
 
 
 <h3>
