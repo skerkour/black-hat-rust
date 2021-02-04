@@ -71,7 +71,7 @@ How to perform effective reconnaissance? In this chapter we will build a multi-t
 Unfortunately, when a program spends most of it time in I/O operations, multi-threading is not a panacea. We will learn how async makes Rust code really, really fast and refactor or scanner to async code.
 
 #### 4 - Adding modules with Trait objects <span title="to do">🕒</span>
-We will add more heterogeneous modules to our scanner and will learn how Rust’s type system helps create properly designed large pieces of software.
+We will add more heterogeneous modules to our scanner and will learn how Rust’s type system helps create properly designed large software projects.
 
 #### 5 - Crawling the web for OSINT <span title="to do">🕒</span>
 Leveraging all we learned previously, we will build an extremely fast web crawler to help us find the needles in the haystack the web is.
@@ -100,7 +100,7 @@ Again, Rust comes handy and will let us create advanced phishing pages by compil
 A RAT (for Remote Access Tool), also known as implant or beacon, is a kind of software used to perform offensive operations on a target's machines. In this chapter we will build our own RAT communicating to a remote server and database.
 
 #### 11 - Securing communications with end-to-end encryption <span title="work in progress">🚧</span>
-The consequences of our own infrastructure being compromised or seized can be desastrious. We will add end-to-end encryption to our RAT’s communication in order to secure its communications and avoid leaving traces on our servers.
+The consequences of our own infrastructure being compromised or seized can be disastrous. We will add end-to-end encryption to our RAT’s communication in order to secure its communications and avoid leaving traces on our servers.
 
 #### 12 - Going multi-platforms <span title="to do">🕒</span>
 Today’s computing landscape is extremely fragmented. From Windows to macOS we can’t target only one Operating System to ensure the success of our operations. In this section we will see how Rust’s ecosystem is extremely useful when it comes to cross-compilation.
