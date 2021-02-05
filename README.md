@@ -68,7 +68,7 @@ estimated number of pages: **~320**
 How to perform effective reconnaissance? In this chapter we will build a multi-threaded scanner in order to automate the mapping of the target.
 
 #### 3 - Going full speed with async <span title="to do">🕒</span>
-Unfortunately, when a program spends most of it time in I/O operations, multi-threading is not a panacea. We will learn how async makes Rust code really, really fast and refactor or scanner to async code.
+Unfortunately, when a program spends most of it time in I/O operations, multi-threading is not a panacea. We will learn how async makes Rust code really, really fast and refactor our scanner to async code.
 
 #### 4 - Adding modules with Trait objects <span title="to do">🕒</span>
 We will add more heterogeneous modules to our scanner and will learn how Rust’s type system helps create properly designed large software projects.
