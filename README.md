@@ -17,7 +17,11 @@ What are the motivations of the attackers? How can they break seemingly so easil
 We will put on our black hat and explore the arcanes of offensive security, whether it be cyber attacks, cybercrimes or cyberwar.
 Scanners, exploits, phishing toolkit, implants... From theory to practice, we will explore the arcanes of offensive security and build our own offensive tools with the Rust programming language, Stack Overflow’s most loved language for five years in a row.
 
-Rust is turning a new page in the history of programming languages by providing unparalleled guarantees and features, whether it be for defensive or offensive security. I will venture to say that Rust is the long awaited one-size-fits-all programming language. Here is why.
+
+The offensive security field is defined by its extremely large scope (from shellcodes to servers and webapps) and thanks to its unparalleled guarantees and features Rust is the long awaited one-size-fits-all programming language. Here is why.
+<!-- 
+
+Rust is turning a new page in the history of programming languages by providing unparalleled guarantees and features, whether it be for defensive or offensive security. I will venture to say that Rust is the long awaited one-size-fits-all programming language. Here is why. -->
 
 Free Updates and DRM Free, of course :)
 
