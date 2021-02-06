@@ -14,8 +14,8 @@ Whether it be in movies or in mainstream media, hackers are often romanticized: 
 In reality, the spectrum of the profile of the attackers is extremely large, from the bored teenager exploring the internet to sovereign State’s armies as well as the unhappy former employee.
 
 What are the motivations of the attackers? How can they break seemingly so easily into any network? What do they do to their victims?
-We will put on our black hat and explore the arcanes of offensive security, whether it be cyber attacks, cybercrimes or cyberwar.
-Scanners, exploits, phishing toolkit, implants... From theory to practice, we will explore the arcanes of offensive security and build our own offensive tools with the Rust programming language, Stack Overflow’s most loved language for five years in a row.
+We will put on our black hat and explore the world of offensive security, whether it be cyber attacks, cybercrimes or cyberwar.
+Scanners, exploits, phishing toolkit, implants... From theory to practice, we will explore the arcane of offensive security and build our own offensive tools with the Rust programming language, Stack Overflow’s most loved language for five years in a row.
 
 
 The security programming field is defined by its extremely large scope (from shellcodes to servers and webapps). Rust is the long awaited one-size-fits-all programming language meeting all those requirements thanks to its unparalleled guarantees and feature set. Here is why.
