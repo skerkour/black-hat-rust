@@ -1,9 +1,9 @@
 <p align="center">
-  <a href="https://academy.kerkour.com/black-hat-rust" target="_blank" rel="noopener"><img alt="Black Hat Rust logo" src="./black_hat_rust_cover.png" height="300" /></a>
+  <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB" target="_blank" rel="noopener"><img alt="Black Hat Rust logo" src="./black_hat_rust_cover.png" height="300" /></a>
   <h1 align="center">Black Hat Rust - Early Access</h1>
   <h3 align="center">Deep dive into offensive security with the Rust programming language</h3>
   <h3 align="center">
-    <a href="https://academy.kerkour.com/black-hat-rust">Buy the book now!</a>
+    <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
   </h3>
 </p>
 
@@ -40,7 +40,7 @@ Instead it's a from-theory-to-practice manual and you may enjoy it if any of the
 - You want to start your career in bug bounties or offensive security
 
 <h3>
-  <a href="https://academy.kerkour.com/black-hat-rust">Buy the book now!</a>
+  <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
 </h3>
 
 ## Early access
@@ -58,7 +58,7 @@ estimated number of pages: **~320**
 
 
 <h3>
-  <a href="https://academy.kerkour.com/black-hat-rust">Buy the book now!</a>
+  <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
 </h3>
 
 
@@ -113,7 +113,7 @@ Today’s computing landscape is extremely fragmented. From Windows to macOS we 
 Once the initial targets compromised, we will capitalize on Rust’s extraordinarily reusability to incorporate some parts of our initial scanner to turn our RAT into a worm and reach more targets only accessible from the target's internal network.
 
 <h3>
-  <a href="https://academy.kerkour.com/black-hat-rust">Buy the book now!</a>
+  <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
 </h3>
 
 
