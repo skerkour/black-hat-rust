@@ -66,31 +66,31 @@ estimated number of pages: **~320**
 
 ### Part I: Reconnaissance
 
-#### 2 - Multi-threaded attack surface discovery <span title="work in progress">🚧</span>
+#### 2 - Multi-threaded attack surface discovery <span title="coming soon">🕒</span>
 How to perform effective reconnaissance? In this chapter, we will build a multi-threaded scanner in order to automate the mapping of the target.
 
-#### 3 - Going full speed with async <span title="to do">🕒</span>
+#### 3 - Going full speed with async <span title="coming soon">🕒</span>
 Unfortunately, when a program spends most of its time in I/O operations, multi-threading is not a panacea. We will learn how async makes Rust code really, really fast and refactor our scanner to async code.
 
-#### 4 - Adding modules with Trait objects <span title="to do">🕒</span>
+#### 4 - Adding modules with Trait objects <span title="coming soon">🕒</span>
 We will add more heterogeneous modules to our scanner and will learn how Rust's type system helps create properly designed large software projects.
 
-#### 5 - Crawling the web for OSINT <span title="to do">🕒</span>
+#### 5 - Crawling the web for OSINT <span title="coming soon">🕒</span>
 Leveraging all we learned previously, we will build an extremely fast web crawler to help us find the needles in the haystack the web is.
 
 
 ### Part II: Exploitation
 
-#### 6 - Finding vulnerabilities with Fuzzing <span title="to do">🕒</span>
+#### 6 - Finding vulnerabilities with Fuzzing <span title="coming soon">🕒</span>
 Once the external reconnaissance performed, it's time to find entry points. In this chapter we will learn how automated fuzzing can help us to find vulnerabilities that can be exploited to then gain access to our target's systems.
 
-#### 7 - Exploit development <span title="to do">🕒</span>
+#### 7 - Exploit development <span title="coming soon">🕒</span>
 Rust may not be as fast as python when it comes to iterate on quick scripts such as exploits, but as we will see, its powerful type and modules system make it nonetheless a weapon of choice.
 
-#### 8 - Writing shellcodes in Rust <span title="work in progress">🚧</span>
+#### 8 - Writing shellcodes in Rust <span title="coming soon">🕒</span>
 Shellcode development is an ungrateful task. Writing assembly by hand is definitely not sexy. Fortunately for us, Rust, one more time, got our back! In this chapter we will learn how to write shellcodes in plain Rust with no_std.
 
-#### 9 - Phishing with WebAssembly <span title="work in progress">🚧</span>
+#### 9 - Phishing with WebAssembly <span title="coming soon">🕒</span>
 When they can't find exploitable hardware or software vulnerability, attackers usually fall back to what is often the weakest link in the chain: Humans.
 Again, Rust comes handy and will let us create advanced phishing pages by compiling to WebAssembly.
 
@@ -98,16 +98,16 @@ Again, Rust comes handy and will let us create advanced phishing pages by compil
 
 ### Part III: Implant development
 
-#### 10 - A modern RAT <span title="to do">🕒</span>
+#### 10 - A modern RAT <span title="coming soon">🕒</span>
 A RAT (for Remote Access Tool), also known as implant or beacon, is a kind of software used to perform offensive operations on a target's machines. In this chapter we will build our own RAT communicating to a remote server and database.
 
-#### 11 - Securing communications with end-to-end encryption <span title="work in progress">🚧</span>
+#### 11 - Securing communications with end-to-end encryption <span title="coming soon">🕒</span>
 The consequences of our own infrastructure being compromised or seized can be disastrous. We will add end-to-end encryption to our RAT's communication in order to secure its communications and avoid leaving traces on our servers.
 
-#### 12 - Going multi-platforms <span title="to do">🕒</span>
+#### 12 - Going multi-platforms <span title="coming soon">🕒</span>
 Today's computing landscape is extremely fragmented. From Windows to macOS, we can't target only one Operating System to ensure the success of our operations. In this section we will see how Rust's ecosystem is extremely useful when it comes to cross-compilation.
 
-#### 13 - Turning into a worm to increase reach <span title="to do">🕒</span>
+#### 13 - Turning into a worm to increase reach <span title="coming soon">🕒</span>
 Once the initial targets compromised, we will capitalize on Rust's excellent reusability to incorporate some parts of our initial scanner to turn our RAT into a worm and reach more targets only accessible from the target's internal network.
 
 <h3>
