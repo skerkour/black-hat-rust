@@ -10,7 +10,7 @@
 
 ## Summary
 
-Whether it be in movies or in mainstream media, hackers are often romanticized: they are painted as black magic wizards, nasty criminals, or, in the worst cases, as thieves with a hood and a crowbar.
+Whether in movies or mainstream media, hackers are often romanticized: they are painted as black magic wizards, nasty criminals, or, in the worst cases, as thieves with a hood and a crowbar.
 In reality, the spectrum of the profile of the attackers is extremely large, from the bored teenager exploring the internet to sovereign State's armies as well as the unhappy former employee.
 
 What are the motivations of the attackers? How can they break seemingly so easily into any network? What do they do to their victims?
