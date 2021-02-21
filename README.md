@@ -45,7 +45,7 @@ Instead, it's a from-theory-to-practice manual and you may enjoy it if any of th
 
 ## Early access
 
-As of today, the book is a work in progress. You can think of it as a Kickstarter campaign, but with 100% of the revenues going to the author.
+As of today, the book is a work in progress. It is available in the context of an Early Access program which means that the chapters will be sent to you as soon as they are written, and feedback is very much appreciated.
 
 estimated final publication: **July 2021**
 
@@ -130,6 +130,7 @@ Want to stay updated? I'll write you once a week about avoiding complexity, hack
 
 *I hate spam even more than you do. I'll never share your email, and you can unsubscribe at anytime. Also, there is no tracking or ads.*
 
+Or join the Telegram channel: [t.me/skerkour](https://t.me/skerkour)
 
 ## Changelog
 
