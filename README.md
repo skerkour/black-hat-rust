@@ -130,6 +130,8 @@ Want to stay updated? I'll write you once a week about avoiding complexity, hack
 
 *I hate spam even more than you do. I'll never share your email, and you can unsubscribe at anytime. Also, there is no tracking or ads.*
 
+Or join the Telegram channel: [t.me/skerkour](https://t.me/skerkour)
+
 ## Changelog
 
 You'll find all the updates in the Changelog: https://github.com/skerkour/black-hat-rust/blob/main/CHANGELOG.md
