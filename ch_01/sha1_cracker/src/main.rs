@@ -13,7 +13,7 @@ fn main() -> Result<(), Box<dyn Error>> {
 
     if args.len() != 3 {
         println!("Usage:");
-        println!("sha1_cracker: [wordlist.txt] [sha1_hash]");
+        println!("sha1_cracker: <wordlist.txt> <sha1_hash>");
         return Ok(());
     }
 
