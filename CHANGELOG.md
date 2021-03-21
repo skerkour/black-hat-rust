@@ -3,20 +3,21 @@
 All notable changes to the book will be documented in this file.
 
 
-## v2021.2 - Unreleased
+## v2021.2 - 2021-03-21
 
 ### Added
 
-* ch01: How to train without breaking the law
+* chapter 01: How to train without breaking the law
+* chapter 02: First draft
 
 ### Changed
 
-* ch01: Replaced the "but you have to be aware" section by a "Rust tips" sections
-* ch01: misc fixes and rephrasing
+* chapter 01: Replaced the "but you have to be aware" section by a "Rust tips" sections
+* chapter 01: misc fixes and rephrasing
 
 
 ## v2021.1 - 2021-02-04
 
 ### Added
 
-* Chapter 01: Early access release
+* chapter 01: Early access release
