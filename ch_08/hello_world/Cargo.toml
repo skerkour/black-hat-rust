@@ -1,0 +1,14 @@
+[package]
+name = "hello_world"
+version = "0.1.0"
+authors = ["Sylvain Kerkour <sylvain@kerkour.fr>"]
+edition = "2018"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
+opt-level = "z"
+lto = true
+codegen-units = 1
