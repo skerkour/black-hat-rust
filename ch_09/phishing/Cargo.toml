@@ -1,0 +1,11 @@
+[workspace]
+members = [
+  "webapp",
+  "server",
+  "common",
+]
+
+default-members = [
+  "webapp",
+  "server",
+]
