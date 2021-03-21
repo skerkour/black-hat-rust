@@ -66,7 +66,7 @@ estimated number of pages: **~320**
 
 ### Part I: Reconnaissance
 
-#### 2 - Multi-threaded attack surface discovery <span title="coming soon">🕒</span>
+#### 2 - Multi-threaded attack surface discovery <span title="partially available">✅🕒</span>
 How to perform effective reconnaissance? In this chapter, we will build a multi-threaded scanner in order to automate the mapping of the target.
 
 #### 3 - Going full speed with async <span title="coming soon">🕒</span>
