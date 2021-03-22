@@ -16,8 +16,10 @@ pub fn scan_ports(mut subdomain: Subdomain) -> Subdomain {
 }
 
 pub fn scan_http(mut subdomain: Subdomain) -> Subdomain {
+    let timeout = Duration::from_secs(5);
     let http_client = Client::builder()
         .redirect(redirect::Policy::limited(1))
+        .timeout(timeout)
         .build()
         .expect("http scanner: building HTTP client");
 
@@ -36,7 +38,7 @@ fn scan_port(hostname: &str, port: u16) -> Port {
     let timeout = Duration::from_secs(3);
     let socket_addresses: Vec<SocketAddr> = format!("{}:{}", hostname, port)
         .to_socket_addrs()
-        .expect("Creating socket address")
+        .expect("port scanner: Creating socket address")
         .collect();
 
     if socket_addresses.len() == 0 {
