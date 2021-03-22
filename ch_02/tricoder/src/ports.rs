@@ -11,7 +11,7 @@ pub fn scan_ports(mut subdomain: Subdomain) -> Subdomain {
     subdomain.open_ports = MOST_COMMON_PORTS_10
         .iter()
         .map(|port| scan_port(&subdomain.domain, *port))
-        .filter(|port| port.is_open)
+        .filter(|port| port.is_open) // filter closed ports
         .collect();
     subdomain
 }
