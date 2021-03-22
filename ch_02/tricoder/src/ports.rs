@@ -4,16 +4,22 @@ use crate::{
 };
 use rayon::prelude::*;
 use reqwest::{blocking::Client, redirect};
+use std::net::{SocketAddr, ToSocketAddrs};
+use std::{net::TcpStream, time::Duration};
 
 pub fn scan_ports(mut subdomain: Subdomain) -> Subdomain {
-    subdomain.open_ports = MOST_COMMON_PORTS.iter().map(scan_port).collect();
+    subdomain.open_ports = MOST_COMMON_PORTS
+        .iter()
+        .map(|port| scan_port(&subdomain.domain, *port))
+        .collect();
     subdomain
 }
 
 pub fn scan_http(mut subdomain: Subdomain) -> Subdomain {
     let http_client = Client::builder()
-    .redirect(redirect::Policy::limited(1))
-    .build().expect("http scanner: building HTTP client");
+        .redirect(redirect::Policy::limited(1))
+        .build()
+        .expect("http scanner: building HTTP client");
 
     let domain = &subdomain.domain; // to avoid ownership problems
 
@@ -26,8 +32,32 @@ pub fn scan_http(mut subdomain: Subdomain) -> Subdomain {
     subdomain
 }
 
-fn scan_port(port: &u16) -> Port {
-    todo!();
+fn scan_port(hostname: &str, port: u16) -> Port {
+    let timeout = Duration::from_secs(3);
+    let socket_addresses: Vec<SocketAddr> = format!("{}:{}", hostname, port)
+        .to_socket_addrs()
+        .expect("Creating socket address")
+        .collect();
+
+    if socket_addresses.len() == 0 {
+        return Port {
+            port: port,
+            is_open: false,
+            is_http: false,
+        };
+    }
+
+    let is_open = if let Ok(_) = TcpStream::connect_timeout(&socket_addresses[0], timeout) {
+        true
+    } else {
+        false
+    };
+
+    Port {
+        port: port,
+        is_open,
+        is_http: false,
+    }
 }
 
 fn check_http(http_client: &Client, domain: &str, mut port: Port) -> Port {

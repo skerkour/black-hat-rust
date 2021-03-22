@@ -12,6 +12,7 @@ pub fn enumerate(target: &str) -> Result<Vec<Subdomain>, Error> {
 }
 
 pub fn resolves(domain: &Subdomain) -> bool {
-    let dns_resolver = Resolver::new(ResolverConfig::default(), ResolverOpts::default()).expect("subdomain resolver: building DNS client");
+    let dns_resolver = Resolver::new(ResolverConfig::default(), ResolverOpts::default())
+        .expect("subdomain resolver: building DNS client");
     dns_resolver.lookup_ip(domain.domain.as_str()).is_ok()
 }
