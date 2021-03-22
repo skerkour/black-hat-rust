@@ -22,7 +22,7 @@ fn main() -> Result<()> {
 
     let http_timeout = Duration::from_secs(5);
     let http_client = Client::builder()
-        .redirect(redirect::Policy::limited(2))
+        .redirect(redirect::Policy::limited(4))
         .timeout(http_timeout)
         .build()
         .expect("building HTTP client");

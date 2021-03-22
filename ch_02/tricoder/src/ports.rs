@@ -64,7 +64,7 @@ fn check_http(http_client: &Client, domain: &str, mut port: Port) -> Port {
     port.is_http = match res {
         Ok(_) => true,
         Err(err) => {
-            if err.is_connect() || err.is_timeout() {
+            if err.is_connect() || err.is_timeout() || err.is_decode() || err.is_request() {
                 false
             } else {
                 true
