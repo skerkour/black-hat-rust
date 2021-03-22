@@ -27,6 +27,7 @@ pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, E
         })
         .flatten()
         .filter(|subdomain: &String| subdomain != target)
+        .filter(|subdomain: &String| subdomain.contains("*"))
         .collect();
 
     let subdomains: Vec<Subdomain> = subdomains
