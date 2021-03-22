@@ -23,7 +23,7 @@ pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, E
                 .name_value
                 .split("\n")
                 .map(|subdomain| subdomain.trim().to_string())
-                .collect()
+                .collect::<Vec<String>>()
         })
         .flatten()
         .filter(|subdomain: &String| subdomain != target)
@@ -35,6 +35,7 @@ pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, E
             domain,
             open_ports: Vec::new(),
         })
+        .filter(resolves)
         .collect();
 
     Ok(subdomains)
