@@ -3,7 +3,7 @@ use crate::{
     model::{Port, Subdomain},
 };
 use rayon::prelude::*;
-use reqwest::{blocking::Client, redirect};
+use reqwest::blocking::Client;
 use std::net::{SocketAddr, ToSocketAddrs};
 use std::{net::TcpStream, time::Duration};
 
@@ -15,20 +15,13 @@ pub fn scan_ports(mut subdomain: Subdomain) -> Subdomain {
     subdomain
 }
 
-pub fn scan_http(mut subdomain: Subdomain) -> Subdomain {
-    let timeout = Duration::from_secs(5);
-    let http_client = Client::builder()
-        .redirect(redirect::Policy::limited(1))
-        .timeout(timeout)
-        .build()
-        .expect("http scanner: building HTTP client");
-
+pub fn scan_http(http_client: &Client, mut subdomain: Subdomain) -> Subdomain {
     let domain = &subdomain.domain; // to avoid ownership problems
 
     subdomain.open_ports = subdomain
         .open_ports
         .into_par_iter()
-        .map(|port| check_http(&http_client, domain, port))
+        .map(|port| check_http(http_client, domain, port))
         .collect();
 
     subdomain
