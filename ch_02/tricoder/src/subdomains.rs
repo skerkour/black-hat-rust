@@ -3,7 +3,7 @@ use crate::{
     Error,
 };
 use reqwest::blocking::Client;
-use std::collections::HashSet;
+use std::{collections::HashSet, time::Duration};
 use trust_dns_resolver::{
     config::{ResolverConfig, ResolverOpts},
     Resolver,
@@ -27,7 +27,7 @@ pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, E
         })
         .flatten()
         .filter(|subdomain: &String| subdomain != target)
-        .filter(|subdomain: &String| subdomain.contains("*"))
+        .filter(|subdomain: &String| !subdomain.contains("*"))
         .collect();
 
     let subdomains: Vec<Subdomain> = subdomains
@@ -43,7 +43,13 @@ pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, E
 }
 
 pub fn resolves(domain: &Subdomain) -> bool {
-    let dns_resolver = Resolver::new(ResolverConfig::default(), ResolverOpts::default())
-        .expect("subdomain resolver: building DNS client");
+    let dns_resolver = Resolver::new(
+        ResolverConfig::default(),
+        ResolverOpts {
+            timeout: Duration::from_secs(4),
+            ..Default::default()
+        },
+    )
+    .expect("subdomain resolver: building DNS client");
     dns_resolver.lookup_ip(domain.domain.as_str()).is_ok()
 }
