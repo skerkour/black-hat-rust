@@ -1,3 +1,5 @@
+use serde::Deserialize;
+
 #[derive(Debug, Clone)]
 pub struct Subdomain {
     pub domain: String,
@@ -9,4 +11,9 @@ pub struct Port {
     pub port: u16,
     pub is_open: bool,
     pub is_http: bool,
+}
+
+#[derive(Debug, Deserialize, Clone)]
+pub struct CrtShEntry {
+    pub name_value: String,
 }

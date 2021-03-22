@@ -1,14 +1,43 @@
-use crate::{model::Subdomain, Error};
+use crate::{
+    model::{CrtShEntry, Subdomain},
+    Error,
+};
+use reqwest::blocking::Client;
+use std::collections::HashSet;
 use trust_dns_resolver::{
     config::{ResolverConfig, ResolverOpts},
     Resolver,
 };
 
-pub fn enumerate(target: &str) -> Result<Vec<Subdomain>, Error> {
-    // find subdomains from crt.sh
-    // generate from most common subdomains
-    // filter
-    Ok(Vec::new())
+pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, Error> {
+    let entries: Vec<CrtShEntry> = http_client
+        .get(&format!("https://crt.sh/?q=%25.{}&output=json", target))
+        .send()?
+        .json()?;
+
+    // clean and dedup results
+    let subdomains: HashSet<String> = entries
+        .into_iter()
+        .map(|entry| {
+            entry
+                .name_value
+                .split("\n")
+                .map(|subdomain| subdomain.trim().to_string())
+                .collect()
+        })
+        .flatten()
+        .filter(|subdomain: &String| subdomain != target)
+        .collect();
+
+    let subdomains: Vec<Subdomain> = subdomains
+        .into_iter()
+        .map(|domain| Subdomain {
+            domain,
+            open_ports: Vec::new(),
+        })
+        .collect();
+
+    Ok(subdomains)
 }
 
 pub fn resolves(domain: &Subdomain) -> bool {
