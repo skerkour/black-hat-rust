@@ -24,8 +24,7 @@ fn main() -> Result<()> {
     let http_client = Client::builder()
         .redirect(redirect::Policy::limited(4))
         .timeout(http_timeout)
-        .build()
-        .expect("building HTTP client");
+        .build()?;
 
     let scan_result: Vec<Subdomain> = subdomains::enumerate(&http_client, target)?
         .into_par_iter()
@@ -36,7 +35,7 @@ fn main() -> Result<()> {
     for subdomain in scan_result {
         println!("{}:", &subdomain.domain);
         for port in &subdomain.open_ports {
-            let protocol = if port.is_http { "http" } else { "??" };
+            let protocol = if port.is_http { "http" } else { "tcp" };
             println!("    {}: {}", port.port, protocol);
         }
 
