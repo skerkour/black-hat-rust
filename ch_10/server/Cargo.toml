@@ -7,3 +7,7 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+uuid = { version = "0.8", features = ["serde", "v4"] }
+chrono = { version  = "0.4", features = ["serde"] }
+sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "uuid", "json", "postgres", "migrate", "chrono", "time" ] }
+tokio = { version = "1", features = ["full"] }
