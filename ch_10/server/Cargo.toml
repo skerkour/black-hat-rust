@@ -11,3 +11,4 @@ uuid = { version = "0.8", features = ["serde", "v4"] }
 chrono = { version  = "0.4", features = ["serde"] }
 sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "uuid", "json", "postgres", "migrate", "chrono", "time" ] }
 tokio = { version = "1", features = ["full"] }
+actix-web = "4.0.0-beta.5"
