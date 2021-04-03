@@ -8,14 +8,20 @@ build: agent client server
 
 .PHONY: agent
 agent:
+	cargo build -p agent --release
 
 .PHONY: client
 client:
+	cargo build -p client --release
 
 .PHONY: server
 server:
-
+	cargo build -p server --release
 
 .PHONY: docker
 docker:
 	docker build -t $(DOCKER_IMAGE) .
+
+.PHONY: dev
+dev:
+	cargo run -p server

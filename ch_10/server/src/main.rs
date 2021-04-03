@@ -3,7 +3,10 @@ use actix_web::{web, App, HttpServer};
 mod routes;
 
 #[actix_web::main]
-async fn main() -> std::io::Result<()> {
+async fn main() -> Result<(), anyhow::Error> {
+    ::std::env::set_var("RUST_LOG", "actix_server=info,actix_web=info");
+    env_logger::init();
+
     HttpServer::new(|| {
         App::new().service(web::resource("/{id}/{name}").route(web::get().to(routes::index)))
     })
