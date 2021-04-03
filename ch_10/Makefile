@@ -25,3 +25,7 @@ docker:
 .PHONY: dev
 dev:
 	cargo run -p server
+
+.PHONY: fmt
+fmt:
+	cargo fmt

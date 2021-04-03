@@ -1419,8 +1419,10 @@ dependencies = [
  "actix-web",
  "anyhow",
  "chrono",
+ "dotenv",
  "env_logger",
  "sqlx",
+ "thiserror",
  "tokio",
  "uuid",
 ]

@@ -14,3 +14,5 @@ tokio = { version = "1", features = ["full"] }
 actix-web = { version = "4.0.0-beta.5", features = ["rustls"] }
 env_logger = "0.8"
 anyhow = "1.0"
+dotenv = "0.15"
+thiserror = "1.0"
