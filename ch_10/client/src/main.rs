@@ -4,6 +4,7 @@ mod cli;
 mod config;
 mod error;
 
+use config::Config;
 pub use error::Error;
 
 fn main() -> Result<(), anyhow::Error> {
@@ -19,6 +20,9 @@ fn main() -> Result<(), anyhow::Error> {
 
     if let Some(_) = cli.subcommand_matches(cli::TOKEN) {
         cli::token::run()?;
+    } else if let Some(_) = cli.subcommand_matches(cli::LIST) {
+        let config = Config::load()?;
+        cli::list::run(config)?;
     }
 
     Ok(())

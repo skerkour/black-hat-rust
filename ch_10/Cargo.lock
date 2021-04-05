@@ -435,6 +435,7 @@ dependencies = [
  "anyhow",
  "base64",
  "clap",
+ "common",
  "rand 0.8.3",
  "thiserror",
 ]
@@ -442,6 +443,9 @@ dependencies = [
 [[package]]
 name = "common"
 version = "0.1.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "const_fn"
@@ -1423,6 +1427,7 @@ dependencies = [
  "actix-web",
  "anyhow",
  "chrono",
+ "common",
  "dotenv",
  "env_logger",
  "sqlx",
