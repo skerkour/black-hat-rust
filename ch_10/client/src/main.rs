@@ -1,5 +1,6 @@
 use clap::{App, SubCommand};
 
+mod api;
 mod cli;
 mod config;
 mod error;
