@@ -8,3 +8,5 @@ edition = "2018"
 
 [dependencies]
 clap = "2.33"
+anyhow = "1.0"
+thiserror = "1.0"
