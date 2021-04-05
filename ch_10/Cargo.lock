@@ -433,7 +433,9 @@ name = "client"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "base64",
  "clap",
+ "rand 0.8.3",
  "thiserror",
 ]
 
