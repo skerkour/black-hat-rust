@@ -1,8 +1,8 @@
 use actix_web::{middleware, web, App, HttpServer};
 
+mod api;
 mod config;
 mod error;
-mod routes;
 
 use config::Config;
 pub use error::Error;
@@ -19,7 +19,8 @@ async fn main() -> Result<(), anyhow::Error> {
     HttpServer::new(|| {
         App::new()
             .wrap(middleware::Logger::default())
-            .service(web::resource("/{id}/{name}").route(web::get().to(routes::index)))
+            .service(web::resource("/{id}/{name}").route(web::get().to(api::routes::index)))
+            .service(web::resource("/api/commands").route(web::get().to(api::routes::commands)))
     })
     .bind(&addr)?
     .run()
