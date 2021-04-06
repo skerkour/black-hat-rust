@@ -1,6 +1,6 @@
 use log::error;
-use sqlx::{self, postgres::PgPoolOptions, Executor, Pool, Postgres, Transaction};
-
+use sqlx::{self, postgres::PgPoolOptions, Pool, Postgres};
+use std::time::Duration;
 
 pub async fn connect(database_url: &str) -> Result<Pool<Postgres>, crate::Error> {
     PgPoolOptions::new()
