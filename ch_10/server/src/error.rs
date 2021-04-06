@@ -21,3 +21,12 @@ impl std::convert::From<std::num::ParseIntError> for Error {
         Error::InvalidArgument(err.to_string())
     }
 }
+
+impl std::convert::From<sqlx::Error> for Error {
+    fn from(err: sqlx::Error) -> Self {
+        match err {
+            sqlx::Error::RowNotFound => Error::NotFound("Not found".into()),
+            _ => Error::Internal(err.to_string()),
+        }
+    }
+}

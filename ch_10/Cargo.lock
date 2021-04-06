@@ -1529,6 +1529,7 @@ dependencies = [
  "common",
  "dotenv",
  "env_logger",
+ "log",
  "serde",
  "sqlx",
  "thiserror",

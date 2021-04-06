@@ -43,6 +43,7 @@ impl std::convert::From<crate::Error> for Error {
     }
 }
 
+// Allow our Actix handlers to return Result<T, crate::Error>
 impl ResponseError for crate::Error {
     // builds the actual response to send back when an error occurs
     fn error_response(&self) -> HttpResponse {

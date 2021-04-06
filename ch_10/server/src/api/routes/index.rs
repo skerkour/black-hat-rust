@@ -1,6 +1,9 @@
-use actix_web::{web, Responder};
+use crate::api;
+use actix_web::Responder;
+use std::collections::HashMap;
 
-pub async fn index(path: web::Path<(u32, String)>) -> impl Responder {
-    let (id, name) = path.into_inner();
-    format!("Hello {}! id:{}", name, id)
+pub async fn index() -> impl Responder {
+    let mut data = HashMap::new();
+    data.insert("hello", "world");
+    api::Response::ok(data)
 }
