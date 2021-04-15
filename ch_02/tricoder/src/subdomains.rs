@@ -16,7 +16,7 @@ pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, E
         .json()?;
 
     // clean and dedup results
-    let subdomains: HashSet<String> = entries
+    let mut subdomains: HashSet<String> = entries
         .into_iter()
         .map(|entry| {
             entry
@@ -29,6 +29,7 @@ pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, E
         .filter(|subdomain: &String| subdomain != target)
         .filter(|subdomain: &String| !subdomain.contains("*"))
         .collect();
+    subdomains.insert(target.to_string());
 
     let subdomains: Vec<Subdomain> = subdomains
         .into_iter()
