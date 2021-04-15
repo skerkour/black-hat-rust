@@ -33,10 +33,7 @@ pub async fn scan_http(http_client: &Client, mut subdomain: Subdomain) -> Subdom
     let domain = &subdomain.domain; // to avoid ownership problems
 
     subdomain.open_ports = stream::iter(subdomain.open_ports.into_iter())
-        .filter_map(|port| async move {
-            let port = check_http(http_client, domain, port).await;
-            Some(port)
-        })
+        .then(|port| check_http(http_client, domain, port))
         .collect()
         .await;
 

@@ -47,11 +47,11 @@ pub async fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdoma
         .collect();
 
     let subdomains: Vec<Subdomain> = stream::iter(subdomains.into_iter())
-        .filter_map(|domain| {
-            let subdomain = Subdomain {
-                domain,
-                open_ports: Vec::new(),
-            };
+        .map(|domain| Subdomain {
+            domain,
+            open_ports: Vec::new(),
+        })
+        .filter_map(|subdomain| {
             let dns_resolver = dns_resolver.clone();
             async move {
                 if resolves(&dns_resolver, &subdomain).await {

@@ -35,7 +35,7 @@ fn main() -> Result<()> {
         let subdomains_iter = subdomains::enumerate(&http_client, target).await?;
 
         let res: Vec<Subdomain> = stream::iter(subdomains_iter.into_iter())
-            .then(|subdomain| async move { ports::scan_ports(subdomain).await })
+            .then(|subdomain| ports::scan_ports(subdomain))
             .then(|subdomain| {
                 let http_client = http_client.clone();
                 async move { ports::scan_http(&http_client, subdomain).await }
