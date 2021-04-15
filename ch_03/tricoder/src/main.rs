@@ -30,12 +30,13 @@ fn main() -> Result<()> {
         .redirect(redirect::Policy::limited(4))
         .timeout(http_timeout)
         .build()?;
+    let ports_concurrency = 1000;
 
     let scan_result = runtime.block_on(async move {
-        let subdomains_iter = subdomains::enumerate(&http_client, target).await?;
+        let subdomains = subdomains::enumerate(&http_client, target).await?;
 
-        let res: Vec<Subdomain> = stream::iter(subdomains_iter.into_iter())
-            .then(|subdomain| ports::scan_ports(subdomain))
+        let res: Vec<Subdomain> = stream::iter(subdomains.into_iter())
+            .then(|subdomain| ports::scan_ports(ports_concurrency, subdomain))
             .then(|subdomain| {
                 let http_client = http_client.clone();
                 async move { ports::scan_http(&http_client, subdomain).await }

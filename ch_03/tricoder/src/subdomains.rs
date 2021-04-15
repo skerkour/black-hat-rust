@@ -32,7 +32,7 @@ pub async fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdoma
     .expect("subdomain resolver: building DNS client");
 
     // clean and dedup results
-    let subdomains: HashSet<String> = entries
+    let mut subdomains: HashSet<String> = entries
         .into_iter()
         .map(|entry| {
             entry
@@ -45,6 +45,7 @@ pub async fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdoma
         .filter(|subdomain: &String| subdomain != target)
         .filter(|subdomain: &String| !subdomain.contains("*"))
         .collect();
+    subdomains.insert(target.to_string());
 
     let subdomains: Vec<Subdomain> = stream::iter(subdomains.into_iter())
         .map(|domain| Subdomain {
