@@ -1,4 +1,5 @@
 use anyhow::Result;
+use futures::{stream, StreamExt};
 use reqwest::{redirect, Client};
 use std::{env, time::Duration};
 
@@ -31,13 +32,19 @@ fn main() -> Result<()> {
         .build()?;
 
     let scan_result = runtime.block_on(async move {
-        subdomains::enumerate(&http_client, target)
-            .await?
-            .into_iter()
-            .map(ports::scan_ports)
-            .map(|subdomain| ports::scan_http(&http_client, subdomain))
+        let subdomains_iter = subdomains::enumerate(&http_client, target).await?;
+
+        let res: Vec<Subdomain> = stream::iter(subdomains_iter.into_iter())
+            .then(|subdomain| async move { ports::scan_ports(subdomain).await })
+            .then(|subdomain| {
+                let http_client = http_client.clone();
+                async move { ports::scan_http(&http_client, subdomain).await }
+            })
             .collect()
-    });
+            .await;
+
+        Ok::<_, crate::Error>(res)
+    })?;
 
     for subdomain in scan_result {
         println!("{}:", &subdomain.domain);

@@ -2,27 +2,43 @@ use crate::{
     common_ports::MOST_COMMON_PORTS_10,
     model::{Port, Subdomain},
 };
+use futures::stream;
+use futures::StreamExt;
 use reqwest::Client;
 use std::net::{SocketAddr, ToSocketAddrs};
 use std::{net::TcpStream, time::Duration};
 
-pub async fn scan_ports(mut subdomain: Subdomain) -> Subdomain {
-    subdomain.open_ports = MOST_COMMON_PORTS_10
-        .iter()
-        .map(async |port| scan_port(&subdomain.domain, *port).await)
-        .filter(|port| port.is_open) // filter closed ports
-        .collect();
-    subdomain
+pub async fn scan_ports(subdomain: Subdomain) -> Subdomain {
+    let mut ret = subdomain.clone();
+
+    ret.open_ports = stream::iter(MOST_COMMON_PORTS_10.iter())
+        .filter_map(|port| {
+            let subdomain = subdomain.clone();
+            async move {
+                let port = scan_port(&subdomain.domain, *port).await;
+                if port.is_open {
+                    Some(port)
+                } else {
+                    None
+                }
+            }
+        })
+        .collect()
+        .await;
+
+    ret
 }
 
-pub fn scan_http(http_client: &Client, mut subdomain: Subdomain) -> Subdomain {
+pub async fn scan_http(http_client: &Client, mut subdomain: Subdomain) -> Subdomain {
     let domain = &subdomain.domain; // to avoid ownership problems
 
-    subdomain.open_ports = subdomain
-        .open_ports
-        .into_iter()
-        .map(|port| check_http(http_client, domain, port))
-        .collect();
+    subdomain.open_ports = stream::iter(subdomain.open_ports.into_iter())
+        .filter_map(|port| async move {
+            let port = check_http(http_client, domain, port).await;
+            Some(port)
+        })
+        .collect()
+        .await;
 
     subdomain
 }
@@ -58,7 +74,8 @@ async fn scan_port(hostname: &str, port: u16) -> Port {
 async fn check_http(http_client: &Client, domain: &str, mut port: Port) -> Port {
     let res = http_client
         .get(&format!("http://{}:{}/", domain, port.port))
-        .send().await;
+        .send()
+        .await;
 
     port.is_http = match res {
         Ok(_) => true,

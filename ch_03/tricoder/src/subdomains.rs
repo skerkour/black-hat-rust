@@ -2,6 +2,8 @@ use crate::{
     model::{CrtShEntry, Subdomain},
     Error,
 };
+use futures::stream;
+use futures::StreamExt;
 use reqwest::Client;
 use std::{collections::HashSet, time::Duration};
 use trust_dns_resolver::{
@@ -44,14 +46,23 @@ pub async fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdoma
         .filter(|subdomain: &String| !subdomain.contains("*"))
         .collect();
 
-    let subdomains: Vec<Subdomain> = subdomains
-        .into_iter()
-        .map(|domain| Subdomain {
-            domain,
-            open_ports: Vec::new(),
+    let subdomains: Vec<Subdomain> = stream::iter(subdomains.into_iter())
+        .filter_map(|domain| {
+            let subdomain = Subdomain {
+                domain,
+                open_ports: Vec::new(),
+            };
+            let dns_resolver = dns_resolver.clone();
+            async move {
+                if resolves(&dns_resolver, &subdomain).await {
+                    Some(subdomain)
+                } else {
+                    None
+                }
+            }
         })
-        .filter(|subdomain| resolves(&dns_resolver, subdomain))
-        .collect();
+        .collect()
+        .await;
 
     Ok(subdomains)
 }
