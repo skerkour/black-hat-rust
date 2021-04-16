@@ -34,6 +34,7 @@ pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
             }
         })
         .await;
+    // close channel
     drop(output_tx);
 
     let output_rx_stream = tokio_stream::wrappers::ReceiverStream::new(output_rx);
