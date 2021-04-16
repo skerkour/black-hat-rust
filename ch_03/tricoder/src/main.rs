@@ -1,7 +1,11 @@
 use anyhow::Result;
 use futures::{stream, StreamExt};
 use reqwest::{redirect, Client};
-use std::{env, sync::Arc, time::Duration};
+use std::{
+    env,
+    sync::Arc,
+    time::{Duration, Instant},
+};
 use tokio::sync::Mutex;
 
 mod error;
@@ -31,8 +35,10 @@ fn main() -> Result<()> {
         .redirect(redirect::Policy::limited(4))
         .timeout(http_timeout)
         .build()?;
+
     let ports_concurrency = 200;
     let subdomains_concurrency = 100;
+    let scan_start = Instant::now();
 
     let scan_result = runtime.block_on(async move {
         let subdomains = subdomains::enumerate(&http_client, target).await?;
@@ -57,6 +63,9 @@ fn main() -> Result<()> {
                 .into_inner(),
         )
     })?;
+
+    let scan_duration = scan_start.elapsed();
+    println!("Scan completed in {:?}", scan_duration);
 
     for subdomain in scan_result {
         println!("{}:", &subdomain.domain);
