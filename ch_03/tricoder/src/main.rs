@@ -1,7 +1,8 @@
 use anyhow::Result;
 use futures::{stream, StreamExt};
 use reqwest::{redirect, Client};
-use std::{env, time::Duration};
+use std::{env, sync::Arc, time::Duration};
+use tokio::sync::Mutex;
 
 mod error;
 pub use error::Error;
@@ -30,21 +31,31 @@ fn main() -> Result<()> {
         .redirect(redirect::Policy::limited(4))
         .timeout(http_timeout)
         .build()?;
-    let ports_concurrency = 1000;
+    let ports_concurrency = 200;
+    let subdomains_concurrency = 100;
 
     let scan_result = runtime.block_on(async move {
         let subdomains = subdomains::enumerate(&http_client, target).await?;
 
-        let res: Vec<Subdomain> = stream::iter(subdomains.into_iter())
-            .then(|subdomain| ports::scan_ports(ports_concurrency, subdomain))
-            .then(|subdomain| {
+        let res: Arc<Mutex<Vec<Subdomain>>> = Arc::new(Mutex::new(Vec::new()));
+
+        stream::iter(subdomains.into_iter())
+            .for_each_concurrent(subdomains_concurrency, |subdomain| {
                 let http_client = http_client.clone();
-                async move { ports::scan_http(&http_client, subdomain).await }
+                let res = res.clone();
+                async move {
+                    let subdomain = ports::scan_ports(ports_concurrency, subdomain).await;
+                    let subdomain = ports::scan_http(&http_client, subdomain).await;
+                    res.lock().await.push(subdomain)
+                }
             })
-            .collect()
             .await;
 
-        Ok::<_, crate::Error>(res)
+        Ok::<_, crate::Error>(
+            Arc::try_unwrap(res)
+                .expect("Moving out from subdomains Arc")
+                .into_inner(),
+        )
     })?;
 
     for subdomain in scan_result {
