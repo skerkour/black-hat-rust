@@ -1,6 +1,6 @@
 use anyhow::Result;
 use futures::{stream, StreamExt};
-use reqwest::{redirect, Client};
+use reqwest::Client;
 use std::{
     env,
     sync::Arc,
@@ -30,11 +30,8 @@ fn main() -> Result<()> {
         .build()
         .expect("Building tokio's runtime");
 
-    let http_timeout = Duration::from_secs(5);
-    let http_client = Client::builder()
-        .redirect(redirect::Policy::limited(4))
-        .timeout(http_timeout)
-        .build()?;
+    let http_timeout = Duration::from_secs(10);
+    let http_client = Client::builder().timeout(http_timeout).build()?;
 
     let ports_concurrency = 200;
     let subdomains_concurrency = 100;
@@ -43,15 +40,14 @@ fn main() -> Result<()> {
     let scan_result = runtime.block_on(async move {
         let subdomains = subdomains::enumerate(&http_client, target).await?;
 
+        // Method 1: Using an Arc<Mutex<T>>
         let res: Arc<Mutex<Vec<Subdomain>>> = Arc::new(Mutex::new(Vec::new()));
 
         stream::iter(subdomains.into_iter())
             .for_each_concurrent(subdomains_concurrency, |subdomain| {
-                let http_client = http_client.clone();
                 let res = res.clone();
                 async move {
                     let subdomain = ports::scan_ports(ports_concurrency, subdomain).await;
-                    let subdomain = ports::scan_http(&http_client, subdomain).await;
                     res.lock().await.push(subdomain)
                 }
             })
@@ -70,8 +66,7 @@ fn main() -> Result<()> {
     for subdomain in scan_result {
         println!("{}:", &subdomain.domain);
         for port in &subdomain.open_ports {
-            let protocol = if port.is_http { "http" } else { "tcp" };
-            println!("    {}: {}", port.port, protocol);
+            println!("    {}: open", port.port);
         }
 
         println!("");
