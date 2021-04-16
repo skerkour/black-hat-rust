@@ -1,5 +1,5 @@
 [package]
-name = "tricoder"
+name = "tokio_main"
 version = "0.1.0"
 authors = ["Sylvain Kerkour <sylvain@kerkour.fr>"]
 edition = "2018"
@@ -8,10 +8,3 @@ edition = "2018"
 
 [dependencies]
 tokio = { version = "1", features = ["full"] }
-thiserror = "1.0"
-anyhow = "1.0"
-reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
-serde = { version = "1", features = ["derive"] }
-trust-dns-resolver = "0.20"
-futures = "0.3"
-tokio-stream = "0.1"
