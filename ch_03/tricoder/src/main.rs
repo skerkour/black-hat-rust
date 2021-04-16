@@ -40,7 +40,7 @@ fn main() -> Result<()> {
     let scan_result = runtime.block_on(async move {
         let subdomains = subdomains::enumerate(&http_client, target).await?;
 
-        // Method 1: Using an Arc<Mutex<T>>
+        // Comcurrent stream ethod 1: Using an Arc<Mutex<T>>
         let res: Arc<Mutex<Vec<Subdomain>>> = Arc::new(Mutex::new(Vec::new()));
 
         stream::iter(subdomains.into_iter())

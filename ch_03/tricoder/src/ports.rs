@@ -10,6 +10,8 @@ use tokio::sync::mpsc;
 
 pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
     let mut ret = subdomain.clone();
+
+    // Concurrent stream method 2: using channels
     let (input_tx, input_rx) = mpsc::channel(concurrency);
     let (output_tx, output_rx) = mpsc::channel(concurrency);
 
