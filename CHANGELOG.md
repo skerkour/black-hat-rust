@@ -3,6 +3,15 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.3 - ???
+
+### Added
+
+* Preface
+* chapter 03: First draft
+* chapter 04: First draft
+
+
 ## v2021.2 - 2021-03-21
 
 ### Added
