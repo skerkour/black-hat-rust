@@ -11,7 +11,7 @@ webapp:
 
 .PHONY: serve
 serve:
-	cargo watch -w server -x 'run -p server -- server'
+	cargo watch -w server -x 'run -p server'
 
 
 .PHONY: webapp_debug

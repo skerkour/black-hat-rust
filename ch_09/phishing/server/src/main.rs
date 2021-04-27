@@ -1,6 +1,6 @@
 use actix_files::NamedFile;
 use actix_web::{middleware, web, App, HttpServer};
-use clap::{Arg, SubCommand};
+use clap::Arg;
 use log::info;
 use std::sync::Arc;
 
@@ -19,23 +19,19 @@ async fn main() -> Result<(), Error> {
     let cli_matches = clap::App::new(clap::crate_name!())
         .version(clap::crate_version!())
         .about(clap::crate_description!())
-        .subcommand(
-            SubCommand::with_name("server")
-                .about("Run the HTTP server")
-                .arg(
-                    Arg::with_name("port")
-                        .long("port")
-                        .short("p")
-                        .help("Port to listen to")
-                        .default_value("8080"),
-                )
-                .arg(
-                    Arg::with_name("directory")
-                        .long("directory")
-                        .short("d")
-                        .help("Directory to server")
-                        .default_value("public"),
-                ),
+        .arg(
+            Arg::with_name("port")
+                .long("port")
+                .short("p")
+                .help("Port to listen to")
+                .default_value("8080"),
+        )
+        .arg(
+            Arg::with_name("directory")
+                .long("directory")
+                .short("d")
+                .help("Directory to server")
+                .default_value("public"),
         )
         .setting(clap::AppSettings::ArgRequiredElseHelp)
         .setting(clap::AppSettings::VersionlessSubcommands)
@@ -44,13 +40,11 @@ async fn main() -> Result<(), Error> {
     std::env::set_var("RUST_LOG", "actix_web=info,server=info");
     env_logger::init();
 
-    if let Some(server_matches) = cli_matches.subcommand_matches("server") {
-        let pool = db::connect(db::DATABASE_URL).await?;
-        let port = server_matches.value_of("port").unwrap().parse::<u16>()?;
-        let public_dir = server_matches.value_of("directory").unwrap().to_string();
+    let pool = db::connect(db::DATABASE_URL).await?;
+    let port = cli_matches.value_of("port").unwrap().parse::<u16>()?;
+    let public_dir = cli_matches.value_of("directory").unwrap().to_string();
 
-        run_server(pool, port, public_dir).await?;
-    }
+    run_server(pool, port, public_dir).await?;
 
     Ok(())
 }
