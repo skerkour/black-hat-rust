@@ -14,11 +14,6 @@ serve:
 	cargo watch -w server -x 'run -p server -- server'
 
 
-.PHONY: init
-init:
-	cargo run -p server -- init
-
-
 .PHONY: webapp_debug
 webapp_debug:
 	wasm-pack build --target web --out-name wasm --out-dir ./dist --dev --no-typescript webapp

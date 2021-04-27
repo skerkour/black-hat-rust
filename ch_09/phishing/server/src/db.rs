@@ -1,26 +1,32 @@
 use chrono::Utc;
 use common::api::model;
 use sqlx::{
-    sqlite::{SqliteConnectOptions, SqlitePoolOptions},
-    ConnectOptions, SqlitePool,
+    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePoolOptions, SqliteSynchronous},
+    SqlitePool,
 };
-use std::str::FromStr;
+use std::{str::FromStr, time::Duration};
 
 pub const DATABASE_URL: &str = "sqlite://db.sqlite";
 
 pub async fn connect(database_url: &str) -> Result<SqlitePool, crate::Error> {
-    let pool = SqlitePoolOptions::new().connect(database_url).await?;
-    Ok(pool)
-}
+    let pool_timeout = Duration::from_secs(60);
+    let pool_max_connections = 1;
 
-pub async fn init(database_url: &str) -> Result<(), crate::Error> {
-    let mut connection = SqliteConnectOptions::from_str(database_url)?
+    let options = SqliteConnectOptions::from_str(database_url)?
         .create_if_missing(true)
-        .connect()
-        .await?;
-    sqlx::migrate!("./db").run(&mut connection).await?;
+        .journal_mode(SqliteJournalMode::Wal)
+        .synchronous(SqliteSynchronous::Normal)
+        .busy_timeout(pool_timeout);
 
-    Ok(())
+    let pool = SqlitePoolOptions::new()
+        .max_connections(pool_max_connections)
+        .connect_timeout(pool_timeout)
+        .connect_with(options)
+        .await?;
+
+    sqlx::migrate!("./db").run(&pool).await?;
+
+    Ok(pool)
 }
 
 pub async fn insert(pool: &SqlitePool, credentials: &model::Login) -> Result<(), crate::Error> {

@@ -19,7 +19,6 @@ async fn main() -> Result<(), Error> {
     let cli_matches = clap::App::new(clap::crate_name!())
         .version(clap::crate_version!())
         .about(clap::crate_description!())
-        .subcommand(SubCommand::with_name("init").about("Init database"))
         .subcommand(
             SubCommand::with_name("server")
                 .about("Run the HTTP server")
@@ -45,9 +44,7 @@ async fn main() -> Result<(), Error> {
     std::env::set_var("RUST_LOG", "actix_web=info,server=info");
     env_logger::init();
 
-    if let Some(_) = cli_matches.subcommand_matches("init") {
-        db::init(db::DATABASE_URL).await?;
-    } else if let Some(server_matches) = cli_matches.subcommand_matches("server") {
+    if let Some(server_matches) = cli_matches.subcommand_matches("server") {
         let pool = db::connect(db::DATABASE_URL).await?;
         let port = server_matches.value_of("port").unwrap().parse::<u16>()?;
         let public_dir = server_matches.value_of("directory").unwrap().to_string();
