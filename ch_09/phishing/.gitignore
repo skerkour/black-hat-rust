@@ -3,3 +3,4 @@ public/*
 !public/index.html
 !public/css
 db.sqlite*
+dist/

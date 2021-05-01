@@ -9,3 +9,9 @@ default-members = [
   "webapp",
   "server",
 ]
+
+[profile.release]
+lto = true
+debug = false
+debug-assertions = false
+codegen-units = 1

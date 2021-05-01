@@ -1,6 +1,7 @@
 WEBAPP_DIST_DIR = webapp/dist
 TARGET_DIR = target
 DB_FILES = db.sqlite*
+DIST_DIR = dist
 
 
 .PHONY: webapp
@@ -37,5 +38,13 @@ fmt:
 
 .PHONY: clean
 clean:
-	rm -rf $(WEBAPP_DIST_DIR) $(TARGET_DIR) $(DB_FILES)
+	rm -rf $(WEBAPP_DIST_DIR) $(TARGET_DIR) $(DB_FILES) $(DIST_DIR)
 
+
+.PHONY: build
+build: webapp
+	mkdir -p $(DIST_DIR)
+	cargo build --release -p server
+	strip -s target/release/server
+	cp target/release/server $(DIST_DIR)
+	cp -r public $(DIST_DIR)
