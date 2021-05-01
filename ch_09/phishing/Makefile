@@ -6,7 +6,7 @@ DB_FILES = db.sqlite*
 .PHONY: webapp
 webapp:
 	wasm-pack build --target web --out-name wasm --out-dir ./dist --release --no-typescript webapp
-	cp webapp/dist/{wasm.js,wasm_bg.wasm} public/
+	cp webapp/dist/wasm* public/
 
 
 .PHONY: serve
@@ -17,7 +17,7 @@ serve:
 .PHONY: webapp_debug
 webapp_debug:
 	wasm-pack build --target web --out-name wasm --out-dir ./dist --dev --no-typescript webapp
-	cp webapp/dist/{wasm.js,wasm_bg.wasm} public/
+	cp webapp/dist/wasm* public/
 
 
 .PHONY: dev
