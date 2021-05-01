@@ -1,5 +1,5 @@
 webapp/dist/
 public/*
-!public/index.html,
+!public/index.html
 !public/css
 db.sqlite*
