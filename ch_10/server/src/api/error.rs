@@ -1,5 +1,5 @@
 use super::Response;
-use actix_web::{http::StatusCode, web::HttpResponse, ResponseError};
+use actix_web::{http::StatusCode, HttpResponse, ResponseError};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -46,9 +46,21 @@ impl std::convert::From<crate::Error> for Error {
 // Allow our Actix handlers to return Result<T, crate::Error>
 impl ResponseError for crate::Error {
     // builds the actual response to send back when an error occurs
+    // fn error_response(&self) -> BaseHttpResponse<Body> {
+    //     let res = Response::<()>::err(self.clone());
+
+    //     // resp.set_body(Body::from(buf))
+    //     BaseHttpResponse::new(self.status_code())
+    //     .set_body(Body::from(res))
+    //     // .json(res)
+    // }
     fn error_response(&self) -> HttpResponse {
         let res = Response::<()>::err(self.clone());
+
+        // resp.set_body(Body::from(buf))
         HttpResponse::build(self.status_code()).json(res)
+        // .set_body(Body::from(res))
+        // .json(res)
     }
 
     fn status_code(&self) -> StatusCode {
