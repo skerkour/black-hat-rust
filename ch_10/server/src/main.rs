@@ -7,13 +7,11 @@ mod db;
 mod error;
 mod repository;
 mod service;
-mod state;
 
 use config::Config;
 pub use error::Error;
 pub use repository::Repository;
 pub use service::Service;
-pub use state::AppState;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<(), anyhow::Error> {
@@ -24,10 +22,10 @@ async fn main() -> Result<(), anyhow::Error> {
 
     let db_pool = db::connect(&config.database_url).await?;
     let service = Service::new(db_pool);
-    let app_state = Arc::new(AppState::new(service));
+    let app_state = Arc::new(api::AppState::new(service));
 
     let api = warp::path("api");
-    let api_with_state = api.and(state::with_state(app_state));
+    let api_with_state = api.and(api::with_state(app_state));
 
     // GET /api
     let index = api

@@ -2,7 +2,7 @@ use crate::api;
 use std::{sync::Arc, time::Duration};
 use warp::http::StatusCode;
 
-pub async fn jobs(state: Arc<crate::AppState>) -> Result<impl warp::Reply, warp::Rejection> {
+pub async fn jobs(state: Arc<api::AppState>) -> Result<impl warp::Reply, warp::Rejection> {
     let sleep_for = Duration::from_secs(1);
 
     for _ in 0..5u64 {
