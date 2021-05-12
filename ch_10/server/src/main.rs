@@ -5,6 +5,7 @@ use warp::Filter;
 mod api;
 mod config;
 mod db;
+pub mod entities;
 mod error;
 mod repository;
 mod service;
@@ -54,21 +55,24 @@ fn routes(
         .and(warp::get())
         .and_then(api::routes::index);
 
-    // POST /api/commands
-    let commands = api_with_state
-        .clone()
-        .and(warp::path("commands"))
-        .and(warp::path::end())
-        .and(warp::post())
-        .and_then(api::routes::commands);
-
-    // GET /api/jobs
-    let get_jobs = api_with_state
+    // POST /api/jobs
+    let post_jobs = api_with_state
         .clone()
         .and(warp::path("jobs"))
         .and(warp::path::end())
+        .and(warp::post())
+        .and(api::json_body())
+        .and_then(api::routes::create_job);
+
+    // GET /api/jobs/{job_id}/result
+    let get_job = api_with_state
+        .clone()
+        .and(warp::path("jobs"))
+        .and(warp::path::param())
+        .and(warp::path("result"))
+        .and(warp::path::end())
         .and(warp::get())
-        .and_then(api::routes::get_jobs);
+        .and_then(api::routes::get_job_result);
 
     // POST /api/agents
     let post_agents = api_with_state
@@ -87,11 +91,21 @@ fn routes(
         .and(warp::get())
         .and_then(api::routes::get_agents);
 
+    // GET /api/agents/job
+    let get_agents_job = api_with_state
+        .clone()
+        .and(warp::path("agents"))
+        .and(warp::path("job"))
+        .and(warp::path::end())
+        .and(warp::get())
+        .and_then(api::routes::get_agent_job);
+
     let routes = index
-        .or(commands)
-        .or(get_jobs)
+        .or(post_jobs)
+        .or(get_job)
         .or(post_agents)
         .or(get_agents)
+        .or(get_agents_job)
         .with(warp::log("server"))
         .recover(api::handle_error);
 
