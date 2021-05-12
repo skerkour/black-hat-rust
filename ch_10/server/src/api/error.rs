@@ -1,6 +1,8 @@
 // use super::Response;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::{collections::HashMap, convert::Infallible};
+use warp::http::StatusCode;
+use warp::{Rejection, Reply};
 
 const EXTENSION_KEY_CODE: &str = "code";
 const CODE_NOT_FOUND: &str = "NOT_FOUND";
@@ -42,34 +44,35 @@ impl std::convert::From<crate::Error> for Error {
     }
 }
 
-// // Allow our Actix handlers to return Result<T, crate::Error>
-// impl ResponseError for crate::Error {
-//     // builds the actual response to send back when an error occurs
-//     // fn error_response(&self) -> BaseHttpResponse<Body> {
-//     //     let res = Response::<()>::err(self.clone());
+pub async fn handle_error(rejection: Rejection) -> std::result::Result<impl Reply, Infallible> {
+    let status;
+    let err;
 
-//     //     // resp.set_body(Body::from(buf))
-//     //     BaseHttpResponse::new(self.status_code())
-//     //     .set_body(Body::from(res))
-//     //     // .json(res)
-//     // }
-//     fn error_response(&self) -> HttpResponse {
-//         let res = Response::<()>::err(self.clone());
+    if rejection.is_not_found() {
+        status = StatusCode::NOT_FOUND;
+        err = crate::Error::NotFound("Route not found.".to_string());
+    } else if let Some(_) = rejection.find::<warp::filters::body::BodyDeserializeError>() {
+        status = StatusCode::BAD_REQUEST;
+        err = crate::Error::InvalidArgument("Invalid Body.".to_string());
+    } else if let Some(_) = rejection.find::<warp::reject::MethodNotAllowed>() {
+        status = StatusCode::METHOD_NOT_ALLOWED;
+        err = crate::Error::InvalidArgument("Invalid HTTP Method.".to_string());
+    } else if let Some(e) = rejection.find::<crate::Error>() {
+        status = match e {
+            crate::Error::InvalidArgument(_) => StatusCode::BAD_REQUEST, // 400
+            // Error::AuthenticationRequired => StatusCode::UNAUTHORIZED, // 401
+            // Error::PermissionDenied(_) => StatusCode::FORBIDDEN,       // 403
+            crate::Error::NotFound(_) => StatusCode::NOT_FOUND, // 404
+            // Error::AlreadyExists(_) => StatusCode::CONFLICT,           // 409
+            crate::Error::Internal(_) => StatusCode::INTERNAL_SERVER_ERROR, // 500
+        };
+        err = e.to_owned();
+    } else {
+        status = StatusCode::INTERNAL_SERVER_ERROR;
+        err = crate::Error::Internal("".to_string());
+    }
 
-//         // resp.set_body(Body::from(buf))
-//         HttpResponse::build(self.status_code()).json(res)
-//         // .set_body(Body::from(res))
-//         // .json(res)
-//     }
-
-//     fn status_code(&self) -> StatusCode {
-//         match self {
-//             crate::Error::InvalidArgument(_) => StatusCode::BAD_REQUEST, // 400
-//             // Error::AuthenticationRequired => StatusCode::UNAUTHORIZED, // 401
-//             // Error::PermissionDenied(_) => StatusCode::FORBIDDEN,       // 403
-//             crate::Error::NotFound(_) => StatusCode::NOT_FOUND, // 404
-//             // Error::AlreadyExists(_) => StatusCode::CONFLICT,           // 409
-//             crate::Error::Internal(_) => StatusCode::INTERNAL_SERVER_ERROR, // 500
-//         }
-//     }
-// }
+    let res = super::Response::<()>::err(err);
+    let res_json = warp::reply::json(&res);
+    Ok(warp::reply::with_status(res_json, status))
+}

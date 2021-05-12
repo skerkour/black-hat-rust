@@ -10,6 +10,8 @@ pub enum Error {
     InvalidArgument(String),
 }
 
+impl warp::reject::Reject for Error {}
+
 impl std::convert::From<sqlx::migrate::MigrateError> for Error {
     fn from(err: sqlx::migrate::MigrateError) -> Self {
         Error::Internal(err.to_string())

@@ -26,7 +26,6 @@ async fn main() -> Result<(), anyhow::Error> {
     let service = Service::new(db_pool);
     let app_state = Arc::new(AppState::new(service));
 
-    let default_handler = warp::any().and_then(api::routes::not_found);
     let api = warp::path("api");
     let api_with_state = api.and(state::with_state(app_state));
 
@@ -38,18 +37,37 @@ async fn main() -> Result<(), anyhow::Error> {
 
     // POST /api/commands
     let commands = api_with_state
+        .clone()
         .and(warp::path("commands"))
         .and(warp::path::end())
         .and(warp::post())
         .and_then(api::routes::commands);
 
+    // GET /api/jobs
+    let jobs = api_with_state
+        .clone()
+        .and(warp::path("jobs"))
+        .and(warp::path::end())
+        .and(warp::get())
+        .and_then(api::routes::jobs);
+
     let routes = index
         .or(commands)
-        .or(default_handler)
-        .with(warp::log("server"));
+        .or(jobs)
+        .with(warp::log("server"))
+        .recover(api::handle_error);
 
     log::info!("starting server on: 0.0.0.0:{}", config.port);
-    warp::serve(routes).run(([0, 0, 0, 0], config.port)).await;
+
+    let (_addr, server) =
+        warp::serve(routes).bind_with_graceful_shutdown(([127, 0, 0, 1], config.port), async {
+            tokio::signal::ctrl_c()
+                .await
+                .expect("Failed to listen for CRTL+c");
+            log::info!("Shutting down server");
+        });
+
+    server.await;
 
     Ok(())
 }

@@ -1,5 +1,8 @@
 use crate::Repository;
+use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Postgres};
+
+mod get_job;
 
 #[derive(Debug)]
 pub struct Service {
@@ -13,3 +16,6 @@ impl Service {
         Service { db, repo }
     }
 }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Job {}
