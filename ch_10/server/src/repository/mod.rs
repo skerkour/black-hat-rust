@@ -1,3 +1,2 @@
-
-pub struct Repository {
-}
+#[derive(Debug)]
+pub struct Repository {}

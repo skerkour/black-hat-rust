@@ -1,4 +1,3 @@
-use actix_web::{web::Json, HttpRequest, HttpResponse, Responder};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -21,11 +20,5 @@ impl<T: Serialize> Response<T> {
             data: None,
             errors: Some(vec![err.into()]),
         };
-    }
-}
-
-impl<T: Serialize> Responder for Response<T> {
-    fn respond_to(self, req: &HttpRequest) -> HttpResponse {
-        Json(self).respond_to(req)
     }
 }
