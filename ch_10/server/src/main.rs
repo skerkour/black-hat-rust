@@ -28,6 +28,7 @@ async fn main() -> Result<(), anyhow::Error> {
 
     let default_handler = warp::any().and_then(api::routes::not_found);
     let api = warp::path("api");
+    let api_with_state = api.and(state::with_state(app_state));
 
     // GET /api
     let index = api
@@ -36,11 +37,10 @@ async fn main() -> Result<(), anyhow::Error> {
         .and_then(api::routes::index);
 
     // POST /api/commands
-    let commands = api
+    let commands = api_with_state
         .and(warp::path("commands"))
         .and(warp::path::end())
         .and(warp::post())
-        .and(state::with_state(app_state))
         .and_then(api::routes::commands);
 
     let routes = index
