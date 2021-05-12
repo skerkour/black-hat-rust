@@ -6,3 +6,9 @@ members = [
     "common",
     "server",
 ]
+
+[profile.release]
+lto = true
+debug = false
+debug-assertions = false
+codegen-units = 1
