@@ -8,7 +8,9 @@ build: agent client server
 
 .PHONY: agent
 agent:
-	cargo build -p agent --release
+	cargo build -p agent --release --target x86_64-unknown-linux-musl
+	strip -s target/release/agent
+	upx -9 target/release/agent
 
 .PHONY: client
 client:
