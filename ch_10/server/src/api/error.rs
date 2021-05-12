@@ -1,5 +1,4 @@
-// use super::Response;
-use serde::{Deserialize, Serialize};
+use common::api;
 use std::{collections::HashMap, convert::Infallible};
 use warp::http::StatusCode;
 use warp::{Rejection, Reply};
@@ -8,21 +7,14 @@ const EXTENSION_KEY_CODE: &str = "code";
 const CODE_NOT_FOUND: &str = "NOT_FOUND";
 const CODE_INTERNAL: &str = "INTERNAL";
 
-#[derive(Debug, Serialize, Deserialize, Default)]
-pub struct Error {
-    pub message: String,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub extensions: Option<HashMap<String, String>>,
-}
-
-impl std::convert::From<crate::Error> for Error {
-    fn from(err: crate::Error) -> Self {
-        match err {
+impl std::convert::Into<api::Error> for crate::Error {
+    fn into(self) -> api::Error {
+        match self {
             crate::Error::NotFound(err) => {
                 let mut extensions = HashMap::new();
                 extensions.insert(EXTENSION_KEY_CODE.into(), CODE_NOT_FOUND.into());
 
-                Error {
+                api::Error {
                     message: err.to_string(),
                     extensions: Some(extensions),
                 }
@@ -31,13 +23,13 @@ impl std::convert::From<crate::Error> for Error {
                 let mut extensions = HashMap::new();
                 extensions.insert(EXTENSION_KEY_CODE.into(), CODE_INTERNAL.into());
 
-                Error {
-                    message: err.to_string(),
+                api::Error {
+                    message: self.to_string(),
                     extensions: Some(extensions),
                 }
             }
-            _ => Error {
-                message: err.to_string(),
+            _ => api::Error {
+                message: self.to_string(),
                 extensions: None,
             },
         }
@@ -72,7 +64,7 @@ pub async fn handle_error(rejection: Rejection) -> std::result::Result<impl Repl
         err = crate::Error::Internal("".to_string());
     }
 
-    let res = super::Response::<()>::err(err);
+    let res = api::Response::<()>::err(err.into());
     let res_json = warp::reply::json(&res);
     Ok(warp::reply::with_status(res_json, status))
 }

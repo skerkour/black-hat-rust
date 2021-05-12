@@ -2,12 +2,10 @@ use serde::de::DeserializeOwned;
 use warp::Filter;
 
 mod error;
-mod response;
 mod state;
 
 pub mod routes;
-pub use error::{handle_error, Error};
-pub use response::Response;
+pub use error::handle_error;
 pub use state::{with_state, AppState};
 
 pub fn json_body<T: DeserializeOwned + Send>(

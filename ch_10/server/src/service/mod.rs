@@ -6,6 +6,7 @@ mod get_agent_job;
 mod get_job_result;
 mod list_agents;
 mod register_agent;
+mod update_job_result;
 
 #[derive(Debug)]
 pub struct Service {

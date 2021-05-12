@@ -74,6 +74,16 @@ fn routes(
         .and(warp::get())
         .and_then(api::routes::get_job_result);
 
+    // POST /api/jobs/result
+    let post_job_result = api_with_state
+        .clone()
+        .and(warp::path("jobs"))
+        .and(warp::path("result"))
+        .and(warp::path::end())
+        .and(warp::post())
+        .and(api::json_body())
+        .and_then(api::routes::post_job_result);
+
     // POST /api/agents
     let post_agents = api_with_state
         .clone()
@@ -103,6 +113,7 @@ fn routes(
     let routes = index
         .or(post_jobs)
         .or(get_job)
+        .or(post_job_result)
         .or(post_agents)
         .or(get_agents)
         .or(get_agents_job)
