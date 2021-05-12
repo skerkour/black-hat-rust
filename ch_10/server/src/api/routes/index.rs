@@ -1,8 +1,8 @@
 use crate::api;
-use std::{collections::HashMap, convert::Infallible, sync::Arc};
+use std::{collections::HashMap, convert::Infallible};
 use warp::http::StatusCode;
 
-pub async fn index(_state: Arc<crate::AppState>) -> Result<impl warp::Reply, Infallible> {
+pub async fn index() -> Result<impl warp::Reply, Infallible> {
     let mut data = HashMap::new();
     data.insert("hello", "world");
     let res = api::Response::ok(data);

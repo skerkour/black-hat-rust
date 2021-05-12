@@ -26,11 +26,11 @@ async fn main() -> Result<(), anyhow::Error> {
     let service = Service::new(db_pool);
     let app_state = Arc::new(AppState::new(service));
 
-    let api = warp::path("api").and(state::with_state(app_state));
+    let default_handler = warp::any().and_then(api::routes::not_found);
+    let api = warp::path("api");
 
     // GET /api
     let index = api
-        .clone()
         .and(warp::path::end())
         .and(warp::get())
         .and_then(api::routes::index);
@@ -38,10 +38,15 @@ async fn main() -> Result<(), anyhow::Error> {
     // POST /api/commands
     let commands = api
         .and(warp::path("commands"))
+        .and(warp::path::end())
         .and(warp::post())
+        .and(state::with_state(app_state))
         .and_then(api::routes::commands);
 
-    let routes = index.or(commands).with(warp::log("server"));
+    let routes = index
+        .or(commands)
+        .or(default_handler)
+        .with(warp::log("server"));
 
     log::info!("starting server on: 0.0.0.0:{}", config.port);
     warp::serve(routes).run(([0, 0, 0, 0], config.port)).await;
