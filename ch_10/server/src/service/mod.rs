@@ -3,6 +3,8 @@ use serde::{Deserialize, Serialize};
 use sqlx::{Pool, Postgres};
 
 mod get_job;
+mod list_agents;
+mod register_agent;
 
 #[derive(Debug)]
 pub struct Service {
