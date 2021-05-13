@@ -30,8 +30,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             None => {
                 log::debug!("No job found. Trying again in: {:?}", sleep_for);
                 sleep(sleep_for);
-                continue
-            },
+                continue;
+            }
         };
     }
 }
