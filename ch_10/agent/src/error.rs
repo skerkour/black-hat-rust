@@ -30,3 +30,9 @@ impl std::convert::From<std::io::Error> for Error {
         Error::Io(err)
     }
 }
+
+impl std::convert::From<uuid::Error> for Error {
+    fn from(err: uuid::Error) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
