@@ -20,7 +20,7 @@ pub fn routes(
     let index = api.and(warp::path::end()).and(warp::get()).and_then(index);
 
     // GET /api/jobs
-    let post_jobs = api_with_state
+    let get_jobs = api_with_state
         .clone()
         .and(warp::path("jobs"))
         .and(warp::path::end())
@@ -83,6 +83,7 @@ pub fn routes(
         .and_then(get_agent_job);
 
     let routes = index
+        .or(get_jobs)
         .or(post_jobs)
         .or(get_job)
         .or(post_job_result)
