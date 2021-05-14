@@ -9,8 +9,14 @@ impl Service {
         self.repo.find_job_by_id(&self.db, job_id).await
     }
 
-    pub async fn get_agent_job(&self) -> Result<Option<Job>, Error> {
-        match self.repo.find_job_where_output_is_null(&self.db).await {
+    pub async fn get_agent_job(&self, agent_id: Uuid) -> Result<Option<Job>, Error> {
+        let mut agent = self.repo.find_agent_by_id(&self.db, agent_id).await?;
+
+        agent.last_seen_at = Utc::now();
+        // ignore result as an error is not important
+        let _ = self.repo.update_agent(&self.db, &agent).await;
+
+        match self.repo.find_job_for_agent(&self.db, agent_id).await {
             Ok(job) => Ok(Some(job)),
             Err(Error::NotFound(_)) => Ok(None),
             Err(err) => Err(err),

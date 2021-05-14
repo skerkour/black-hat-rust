@@ -34,7 +34,7 @@ pub struct Error {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct RegisterAgent {
+pub struct AgentRegistered {
     pub id: Uuid,
 }
 

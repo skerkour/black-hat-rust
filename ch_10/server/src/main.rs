@@ -90,7 +90,6 @@ fn routes(
         .and(warp::path("agents"))
         .and(warp::path::end())
         .and(warp::post())
-        .and(api::json_body())
         .and_then(api::routes::post_agents);
 
     // GET /api/agents

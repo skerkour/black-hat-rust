@@ -65,12 +65,20 @@ impl Repository {
         }
     }
 
-    pub async fn find_job_where_output_is_null(&self, db: &Pool<Postgres>) -> Result<Job, Error> {
+    pub async fn find_job_for_agent(
+        &self,
+        db: &Pool<Postgres>,
+        agent_id: Uuid,
+    ) -> Result<Job, Error> {
         const QUERY: &str = "SELECT * FROM jobs
-            WHERE output IS NULL
+            WHERE agent_id = $1 AND output IS NULL
             LIMIT 1";
 
-        match sqlx::query_as::<_, Job>(QUERY).fetch_optional(db).await {
+        match sqlx::query_as::<_, Job>(QUERY)
+            .bind(agent_id)
+            .fetch_optional(db)
+            .await
+        {
             Err(err) => {
                 error!("find_job_where_output_is_null: finding job: {}", &err);
                 Err(err.into())

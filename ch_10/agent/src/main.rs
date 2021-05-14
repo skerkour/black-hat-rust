@@ -22,7 +22,10 @@ fn main() -> Result<(), Box<dyn Error>> {
             Some(job) => {
                 let output = String::from_utf8(Command::new(job.command).output()?.stdout)?;
 
-                let job_result = api::UpdateJobResult { id: job.id, output };
+                let job_result = api::UpdateJobResult {
+                    job_id: job.id,
+                    output,
+                };
                 let _ = api_client
                     .post(post_job_result_route.as_str())
                     .send_json(ureq::json!(job_result));
