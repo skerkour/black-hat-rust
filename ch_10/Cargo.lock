@@ -202,9 +202,9 @@ dependencies = [
  "base64",
  "clap",
  "common",
- "rand",
  "reqwest",
  "thiserror",
+ "uuid",
 ]
 
 [[package]]

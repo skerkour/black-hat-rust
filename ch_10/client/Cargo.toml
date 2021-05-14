@@ -13,5 +13,5 @@ clap = "2.33"
 anyhow = "1.0"
 thiserror = "1.0"
 base64 = "0.13"
-rand = "0.8"
 reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls", "blocking"] }
+uuid = { version = "0.8", features = ["serde", "v4"] }

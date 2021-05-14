@@ -5,7 +5,6 @@ use uuid::Uuid;
 
 pub fn run(api_client: &ureq::Agent, agent_id: Uuid) -> ! {
     let sleep_for = Duration::from_secs(1);
-
     let get_job_route = format!("{}/api/agents/{}/job", consts::SERVER_URL, agent_id);
     let post_job_result_route = format!("{}/api/jobs/result", consts::SERVER_URL);
 

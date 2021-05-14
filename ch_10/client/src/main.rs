@@ -5,25 +5,25 @@ mod cli;
 mod config;
 mod error;
 
-use config::Config;
 pub use error::Error;
 
 fn main() -> Result<(), anyhow::Error> {
     let cli = App::new(clap::crate_name!())
         .version(clap::crate_version!())
         .about(clap::crate_description!())
-        .subcommand(SubCommand::with_name(cli::TOKEN).about("Generates a secure token"))
-        .subcommand(SubCommand::with_name(cli::LIST).about("List all active agents"))
+        .subcommand(SubCommand::with_name(cli::AGENTS).about("List all agents"))
+        .subcommand(SubCommand::with_name(cli::EXEC).about("Execute a command"))
         .setting(clap::AppSettings::ArgRequiredElseHelp)
         .setting(clap::AppSettings::DisableVersion)
         .setting(clap::AppSettings::VersionlessSubcommands)
         .get_matches();
 
-    if let Some(_) = cli.subcommand_matches(cli::TOKEN) {
-        cli::token::run()?;
-    } else if let Some(_) = cli.subcommand_matches(cli::LIST) {
-        let config = Config::load()?;
-        cli::list::run(config)?;
+    let api_client = api::Client::new(config::SERVER_URL.to_string());
+
+    if let Some(_) = cli.subcommand_matches(cli::AGENTS) {
+        cli::agents::run(&api_client)?;
+    } else if let Some(_) = cli.subcommand_matches(cli::EXEC) {
+        cli::exec::run(&api_client)?;
     }
 
     Ok(())

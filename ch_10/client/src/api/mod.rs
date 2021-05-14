@@ -1,4 +1,3 @@
-use crate::config::Config;
 use reqwest::redirect;
 use std::time::Duration;
 
@@ -7,11 +6,11 @@ mod list_agents;
 #[derive(Debug, Clone)]
 pub struct Client {
     pub http_client: reqwest::blocking::Client,
-    config: Config,
+    server_url: String,
 }
 
 impl Client {
-    pub fn new(config: Config) -> Client {
+    pub fn new(server_url: String) -> Client {
         let http_timeout = Duration::from_secs(5);
         let http_client = reqwest::blocking::Client::builder()
             .redirect(redirect::Policy::limited(4))
@@ -21,7 +20,7 @@ impl Client {
 
         Client {
             http_client,
-            config,
+            server_url,
         }
     }
 }
