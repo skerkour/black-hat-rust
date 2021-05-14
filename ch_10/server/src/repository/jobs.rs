@@ -64,4 +64,19 @@ impl Repository {
             Ok(Some(res)) => Ok(res),
         }
     }
+
+    pub async fn find_job_where_output_is_null(&self, db: &Pool<Postgres>) -> Result<Job, Error> {
+        const QUERY: &str = "SELECT * FROM jobs
+            WHERE output IS NULL
+            LIMIT 1";
+
+        match sqlx::query_as::<_, Job>(QUERY).fetch_optional(db).await {
+            Err(err) => {
+                error!("find_job_where_output_is_null: finding job: {}", &err);
+                Err(err.into())
+            }
+            Ok(None) => Err(Error::NotFound("Job not found.".to_string())),
+            Ok(Some(res)) => Ok(res),
+        }
+    }
 }

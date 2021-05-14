@@ -1,12 +1,8 @@
 use crate::Repository;
 use sqlx::{Pool, Postgres};
 
-mod create_job;
-mod get_agent_job;
-mod get_job_result;
-mod list_agents;
-mod register_agent;
-mod update_job_result;
+mod agents;
+mod jobs;
 
 #[derive(Debug)]
 pub struct Service {

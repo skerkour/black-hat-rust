@@ -40,7 +40,7 @@ pub struct RegisterAgent {
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct CreateJob {
-    pub agent: Uuid,
+    pub agent_id: Uuid,
     pub command: String,
 }
 
@@ -55,7 +55,7 @@ pub struct Job {
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct UpdateJobResult {
-    pub id: Uuid,
+    pub job_id: Uuid,
     pub output: String,
 }
 
