@@ -1,6 +1,4 @@
-use api::AppState;
-use std::{convert::Infallible, sync::Arc};
-use warp::Filter;
+use std::sync::Arc;
 
 mod api;
 mod config;
@@ -26,7 +24,7 @@ async fn main() -> Result<(), anyhow::Error> {
     let service = Service::new(db_pool);
     let app_state = Arc::new(api::AppState::new(service));
 
-    let routes = routes(app_state);
+    let routes = api::routes::routes(app_state);
 
     log::info!("starting server on: 0.0.0.0:{}", config.port);
 
@@ -41,84 +39,4 @@ async fn main() -> Result<(), anyhow::Error> {
     server.await;
 
     Ok(())
-}
-
-fn routes(
-    app_state: Arc<AppState>,
-) -> impl Filter<Extract = impl warp::Reply, Error = Infallible> + Clone {
-    let api = warp::path("api");
-    let api_with_state = api.and(api::with_state(app_state));
-
-    // GET /api
-    let index = api
-        .and(warp::path::end())
-        .and(warp::get())
-        .and_then(api::routes::index);
-
-    // POST /api/jobs
-    let post_jobs = api_with_state
-        .clone()
-        .and(warp::path("jobs"))
-        .and(warp::path::end())
-        .and(warp::post())
-        .and(api::json_body())
-        .and_then(api::routes::create_job);
-
-    // GET /api/jobs/{job_id}/result
-    let get_job = api_with_state
-        .clone()
-        .and(warp::path("jobs"))
-        .and(warp::path::param())
-        .and(warp::path("result"))
-        .and(warp::path::end())
-        .and(warp::get())
-        .and_then(api::routes::get_job_result);
-
-    // POST /api/jobs/result
-    let post_job_result = api_with_state
-        .clone()
-        .and(warp::path("jobs"))
-        .and(warp::path("result"))
-        .and(warp::path::end())
-        .and(warp::post())
-        .and(api::json_body())
-        .and_then(api::routes::post_job_result);
-
-    // POST /api/agents
-    let post_agents = api_with_state
-        .clone()
-        .and(warp::path("agents"))
-        .and(warp::path::end())
-        .and(warp::post())
-        .and_then(api::routes::post_agents);
-
-    // GET /api/agents
-    let get_agents = api_with_state
-        .clone()
-        .and(warp::path("agents"))
-        .and(warp::path::end())
-        .and(warp::get())
-        .and_then(api::routes::get_agents);
-
-    // GET /api/agents/{agent_id}/job
-    let get_agents_job = api_with_state
-        .clone()
-        .and(warp::path("agents"))
-        .and(warp::path::param())
-        .and(warp::path("job"))
-        .and(warp::path::end())
-        .and(warp::get())
-        .and_then(api::routes::get_agent_job);
-
-    let routes = index
-        .or(post_jobs)
-        .or(get_job)
-        .or(post_job_result)
-        .or(post_agents)
-        .or(get_agents)
-        .or(get_agents_job)
-        .with(warp::log("server"))
-        .recover(api::handle_error);
-
-    routes
 }

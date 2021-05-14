@@ -9,6 +9,9 @@ members = [
 
 [profile.release]
 lto = true
+codegen-units = 1
+
+[profile.release.package.agent]
+opt-level = 'z'
 debug = false
 debug-assertions = false
-codegen-units = 1
