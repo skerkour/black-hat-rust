@@ -9,6 +9,10 @@ impl Service {
         self.repo.find_job_by_id(&self.db, job_id).await
     }
 
+    pub async fn list_jobs(&self) -> Result<Vec<Job>, Error> {
+        self.repo.find_all_jobs(&self.db).await
+    }
+
     pub async fn get_agent_job(&self, agent_id: Uuid) -> Result<Option<Job>, Error> {
         let mut agent = self.repo.find_agent_by_id(&self.db, agent_id).await?;
 
@@ -32,12 +36,25 @@ impl Service {
     }
 
     pub async fn create_job(&self, input: CreateJob) -> Result<(), Error> {
+        let mut command_with_args: Vec<String> = input
+            .command
+            .split_whitespace()
+            .into_iter()
+            .map(|s| s.to_owned())
+            .collect();
+        if command_with_args.is_empty() {
+            return Err(Error::InvalidArgument("Command is not valid".to_string()));
+        }
+
+        let command = command_with_args.remove(0);
+
         let now = Utc::now();
         let new_job = Job {
             id: Uuid::new_v4(),
             created_at: now,
             executed_at: None,
-            command: input.command,
+            command,
+            args: command_with_args,
             output: None,
             agent_id: input.agent_id,
         };

@@ -88,4 +88,16 @@ impl Repository {
             Ok(Some(res)) => Ok(res),
         }
     }
+
+    pub async fn find_all_jobs(&self, db: &Pool<Postgres>) -> Result<Vec<Job>, Error> {
+        const QUERY: &str = "SELECT * FROM jobs ORDER BY created_at";
+
+        match sqlx::query_as::<_, Job>(QUERY).fetch_all(db).await {
+            Err(err) => {
+                error!("find_all_jobs: finding jobs: {}", &err);
+                Err(err.into())
+            }
+            Ok(res) => Ok(res),
+        }
+    }
 }

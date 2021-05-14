@@ -80,3 +80,12 @@ pub async fn get_agent_job(
     let res_json = warp::reply::json(&res);
     Ok(warp::reply::with_status(res_json, StatusCode::OK))
 }
+
+pub async fn get_jobs(state: Arc<AppState>) -> Result<impl warp::Reply, Rejection> {
+    let jobs = state.service.list_jobs().await?;
+    let res = api::JobsList { jobs };
+
+    let res = api::Response::ok(res);
+    let res_json = warp::reply::json(&res);
+    Ok(warp::reply::with_status(res_json, StatusCode::OK))
+}

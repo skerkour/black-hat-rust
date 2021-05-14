@@ -78,3 +78,8 @@ pub struct Agent {
 pub struct AgentsList {
     pub agents: Vec<Agent>,
 }
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct JobsList {
+    pub jobs: Vec<Job>,
+}
