@@ -50,6 +50,7 @@ pub struct Job {
     pub created_at: DateTime<Utc>,
     pub executed_at: Option<DateTime<Utc>>,
     pub command: String,
+    pub args: Vec<String>,
     pub output: Option<String>,
 }
 
@@ -63,4 +64,17 @@ pub struct UpdateJobResult {
 pub struct AgentJob {
     pub id: Uuid,
     pub command: String,
+    pub args: Vec<String>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Agent {
+    pub id: Uuid,
+    pub created_at: DateTime<Utc>,
+    pub last_seen_at: DateTime<Utc>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct AgentsList {
+    pub agents: Vec<Agent>,
 }

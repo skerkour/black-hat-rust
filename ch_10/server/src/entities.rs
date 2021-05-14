@@ -8,6 +8,7 @@ pub struct Job {
     pub created_at: DateTime<Utc>,
     pub executed_at: Option<DateTime<Utc>>,
     pub command: String,
+    pub args: Json<Vec<String>>,
     pub output: Option<String>,
 
     pub agent_id: Uuid,

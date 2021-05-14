@@ -64,6 +64,7 @@ pub async fn get_agent_job(
                 let agent_job = api::AgentJob {
                     id: job.id,
                     command: job.command,
+                    args: job.args,
                 };
 
                 let res = api::Response::ok(agent_job);

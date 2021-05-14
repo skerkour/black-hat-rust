@@ -7,14 +7,15 @@ use uuid::Uuid;
 impl Repository {
     pub async fn create_job(&self, db: &Pool<Postgres>, job: &Job) -> Result<(), Error> {
         const QUERY: &str = "INSERT INTO jobs
-            (id, created_at, executed_at, command, output, agent_id)
-            VALUES ($1, $2, $3, $4, $5, $6)";
+            (id, created_at, executed_at, command, args, output, agent_id)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)";
 
         match sqlx::query(QUERY)
             .bind(job.id)
             .bind(job.created_at)
             .bind(job.executed_at)
             .bind(&job.command)
+            .bind(&job.args)
             .bind(&job.output)
             .bind(job.agent_id)
             .execute(db)

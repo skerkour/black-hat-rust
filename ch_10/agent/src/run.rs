@@ -38,7 +38,7 @@ pub fn run(api_client: &ureq::Agent, agent_id: Uuid) -> ! {
             }
         };
 
-        let output = execute_command(job.command);
+        let output = execute_command(job.command, job.args);
         let job_result = api::UpdateJobResult {
             job_id: job.id,
             output,
@@ -55,10 +55,10 @@ pub fn run(api_client: &ureq::Agent, agent_id: Uuid) -> ! {
     }
 }
 
-fn execute_command(command: String) -> String {
+fn execute_command(command: String, args: Vec<String>) -> String {
     let mut ret = String::new();
 
-    let output = match Command::new(command).output() {
+    let output = match Command::new(command).args(&args).output() {
         Ok(output) => output,
         Err(err) => {
             log::debug!("Error executing command: {}", err);
