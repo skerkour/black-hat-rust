@@ -6,11 +6,46 @@ use uuid::Uuid;
 
 impl Repository {
     pub async fn create_job(&self, db: &Pool<Postgres>, job: &Job) -> Result<(), Error> {
-        Ok(())
+        const QUERY: &str = "INSERT INTO jobs
+            (id, created_at, executed_at, command, output, agent_id)
+            VALUES ($1, $2, $3, $4, $5, $6)";
+
+        match sqlx::query(QUERY)
+            .bind(job.id)
+            .bind(job.created_at)
+            .bind(job.executed_at)
+            .bind(&job.command)
+            .bind(&job.output)
+            .bind(job.agent_id)
+            .execute(db)
+            .await
+        {
+            Err(err) => {
+                error!("create_job: Inserting job: {}", &err);
+                Err(err.into())
+            }
+            Ok(_) => Ok(()),
+        }
     }
 
     pub async fn update_job(&self, db: &Pool<Postgres>, job: &Job) -> Result<(), Error> {
-        Ok(())
+        const QUERY: &str = "UPDATE jobs
+            SET executed_at = $1, output = $2
+            WHERE id = $3";
+
+        match sqlx::query(QUERY)
+            .bind(job.executed_at)
+            .bind(&job.output)
+            .bind(job.id)
+            .execute(db)
+            .await
+        {
+            Err(err) => {
+                error!("update_job: updating job: {}", &err);
+                Err(err.into())
+            }
+            Ok(_) => Ok(()),
+        }
     }
 
     pub async fn find_job_by_id(&self, db: &Pool<Postgres>, job_id: Uuid) -> Result<Job, Error> {
