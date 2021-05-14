@@ -100,10 +100,11 @@ fn routes(
         .and(warp::get())
         .and_then(api::routes::get_agents);
 
-    // GET /api/agents/job
+    // GET /api/agents/{agent_id}/job
     let get_agents_job = api_with_state
         .clone()
         .and(warp::path("agents"))
+        .and(warp::path::param())
         .and(warp::path("job"))
         .and(warp::path::end())
         .and(warp::get())

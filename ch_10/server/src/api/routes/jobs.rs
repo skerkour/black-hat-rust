@@ -51,12 +51,15 @@ pub async fn get_job_result(
     Ok(warp::reply::with_status(res_json, StatusCode::OK))
 }
 
-pub async fn get_agent_job(state: Arc<AppState>) -> Result<impl warp::Reply, warp::Rejection> {
+pub async fn get_agent_job(
+    state: Arc<AppState>,
+    agent_id: Uuid,
+) -> Result<impl warp::Reply, warp::Rejection> {
     let sleep_for = Duration::from_secs(1);
 
     // long polling: 5 secs
     for _ in 0..5u64 {
-        match state.service.get_agent_job().await? {
+        match state.service.get_agent_job(agent_id).await? {
             Some(job) => {
                 let agent_job = api::AgentJob {
                     id: job.id,
