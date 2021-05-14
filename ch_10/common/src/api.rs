@@ -7,21 +7,21 @@ use uuid::Uuid;
 pub struct Response<T: Serialize> {
     pub data: Option<T>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub errors: Option<Vec<Error>>,
+    pub error: Option<Error>,
 }
 
 impl<T: Serialize> Response<T> {
     pub fn ok(data: T) -> Response<T> {
         return Response {
             data: Some(data),
-            errors: None,
+            error: None,
         };
     }
 
     pub fn err(err: Error) -> Response<()> {
         return Response::<()> {
             data: None,
-            errors: Some(vec![err.into()]),
+            error: Some(err.into()),
         };
     }
 }
