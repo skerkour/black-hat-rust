@@ -21,6 +21,8 @@ async fn main() -> Result<(), anyhow::Error> {
     let config = Config::load()?;
 
     let db_pool = db::connect(&config.database_url).await?;
+    db::migrate(&db_pool).await?;
+
     let service = Service::new(db_pool);
     let app_state = Arc::new(api::AppState::new(service));
 
