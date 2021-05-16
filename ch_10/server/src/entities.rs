@@ -1,8 +1,9 @@
 use chrono::{DateTime, Utc};
-use serde::{Deserialize, Serialize};
+use common::api;
+use sqlx::types::Json;
 use uuid::Uuid;
 
-#[derive(Debug, Serialize, Deserialize, Clone, sqlx::FromRow)]
+#[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Job {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,
@@ -14,9 +15,32 @@ pub struct Job {
     pub agent_id: Uuid,
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, sqlx::FromRow)]
+impl Into<api::Job> for Job {
+    fn into(self) -> api::Job {
+        api::Job {
+            id: self.id,
+            created_at: self.created_at,
+            executed_at: self.executed_at,
+            command: self.command,
+            args: self.args.0,
+            output: self.output,
+        }
+    }
+}
+
+#[derive(Debug, Clone, sqlx::FromRow)]
 pub struct Agent {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,
     pub last_seen_at: DateTime<Utc>,
+}
+
+impl Into<api::Agent> for Agent {
+    fn into(self) -> api::Agent {
+        api::Agent {
+            id: self.id,
+            created_at: self.created_at,
+            last_seen_at: self.last_seen_at,
+        }
+    }
 }

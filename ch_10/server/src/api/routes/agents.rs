@@ -5,6 +5,7 @@ use warp::{http::StatusCode, Rejection};
 
 pub async fn get_agents(state: Arc<AppState>) -> Result<impl warp::Reply, Rejection> {
     let agents = state.service.list_agents().await?;
+    let agents = agents.into_iter().map(Into::into).collect();
     let res = api::AgentsList { agents };
 
     let res = api::Response::ok(res);

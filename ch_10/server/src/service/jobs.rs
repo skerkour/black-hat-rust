@@ -2,6 +2,7 @@ use super::Service;
 use crate::{entities::Job, Error};
 use chrono::Utc;
 use common::api::{CreateJob, UpdateJobResult};
+use sqlx::types::Json;
 use uuid::Uuid;
 
 impl Service {
@@ -54,7 +55,7 @@ impl Service {
             created_at: now,
             executed_at: None,
             command,
-            args: command_with_args,
+            args: Json(command_with_args),
             output: None,
             agent_id: input.agent_id,
         };

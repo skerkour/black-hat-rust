@@ -20,19 +20,18 @@ fn main() -> Result<(), anyhow::Error> {
                     Arg::with_name("agent")
                         .short("a")
                         .long("agent")
-                        .value_name("AGENT")
                         .help("The agent id to execute the command on")
-                        .takes_value(true),
+                        .takes_value(true)
+                        .required(true),
                 )
                 .arg(
-                    Arg::with_name("COMMAND")
+                    Arg::with_name("command")
                         .help("The command to execute, with its arguments.")
                         .required(true)
                         .index(1),
                 ),
         )
         .setting(clap::AppSettings::ArgRequiredElseHelp)
-        .setting(clap::AppSettings::DisableVersion)
         .setting(clap::AppSettings::VersionlessSubcommands)
         .get_matches();
 
@@ -40,8 +39,11 @@ fn main() -> Result<(), anyhow::Error> {
 
     if let Some(_) = cli.subcommand_matches(cli::AGENTS) {
         cli::agents::run(&api_client)?;
-    } else if let Some(_) = cli.subcommand_matches(cli::EXEC) {
-        cli::exec::run(&api_client)?;
+    } else if let Some(matches) = cli.subcommand_matches(cli::EXEC) {
+        // we can sfaely unwrap as the arguments are required
+        let agent_id = matches.value_of("agent").unwrap();
+        let command = matches.value_of("command").unwrap();
+        cli::exec::run(&api_client, agent_id, command)?;
     }
 
     Ok(())
