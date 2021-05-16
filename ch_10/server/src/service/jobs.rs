@@ -37,8 +37,8 @@ impl Service {
     }
 
     pub async fn create_job(&self, input: CreateJob) -> Result<(), Error> {
-        let mut command_with_args: Vec<String> = input
-            .command
+        let command = input.command.trim();
+        let mut command_with_args: Vec<String> = command
             .split_whitespace()
             .into_iter()
             .map(|s| s.to_owned())
