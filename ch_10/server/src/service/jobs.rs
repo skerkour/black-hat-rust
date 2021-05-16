@@ -36,7 +36,7 @@ impl Service {
         self.repo.update_job(&self.db, &job).await
     }
 
-    pub async fn create_job(&self, input: CreateJob) -> Result<(), Error> {
+    pub async fn create_job(&self, input: CreateJob) -> Result<Job, Error> {
         let command = input.command.trim();
         let mut command_with_args: Vec<String> = command
             .split_whitespace()
@@ -60,6 +60,8 @@ impl Service {
             agent_id: input.agent_id,
         };
 
-        self.repo.create_job(&self.db, &new_job).await
+        self.repo.create_job(&self.db, &new_job).await?;
+
+        Ok(new_job)
     }
 }

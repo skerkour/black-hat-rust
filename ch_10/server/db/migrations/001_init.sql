@@ -15,4 +15,4 @@ CREATE TABLE jobs (
 
   agent_id UUID NOT NULL REFERENCES agents(id) ON DELETE CASCADE
 );
-CREATE UNIQUE INDEX index_jobs_on_agent_id ON jobs (agent_id);
+CREATE INDEX index_jobs_on_agent_id ON jobs (agent_id);

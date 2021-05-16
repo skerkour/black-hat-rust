@@ -9,6 +9,7 @@ pub async fn create_job(
     input: api::CreateJob,
 ) -> Result<impl warp::Reply, warp::Rejection> {
     let job = state.service.create_job(input).await?;
+    let job: api::Job = job.into();
 
     let res = api::Response::ok(job);
     let res_json = warp::reply::json(&res);

@@ -24,6 +24,7 @@ impl Into<api::Job> for Job {
             command: self.command,
             args: self.args.0,
             output: self.output,
+            agent_id: self.agent_id,
         }
     }
 }

@@ -52,6 +52,7 @@ pub struct Job {
     pub command: String,
     pub args: Vec<String>,
     pub output: Option<String>,
+    pub agent_id: Uuid,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]

@@ -2,7 +2,7 @@ use thiserror::Error;
 
 #[derive(Error, Debug, Clone)]
 pub enum Error {
-    #[error("Internal error")]
+    #[error("Internal error: {0}")]
     Internal(String),
     #[error("{0}")]
     NotFound(String),
