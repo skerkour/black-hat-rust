@@ -4,3 +4,4 @@ pub const JOBS: &str = "jobs";
 
 pub mod agents;
 pub mod exec;
+pub mod jobs;

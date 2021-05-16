@@ -15,3 +15,4 @@ thiserror = "1.0"
 base64 = "0.13"
 reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls", "blocking"] }
 uuid = { version = "0.8", features = ["serde", "v4"] }
+prettytable-rs = "0.8"

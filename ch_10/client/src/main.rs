@@ -39,6 +39,8 @@ fn main() -> Result<(), anyhow::Error> {
 
     if let Some(_) = cli.subcommand_matches(cli::AGENTS) {
         cli::agents::run(&api_client)?;
+    } else if let Some(_) = cli.subcommand_matches(cli::JOBS) {
+        cli::jobs::run(&api_client)?;
     } else if let Some(matches) = cli.subcommand_matches(cli::EXEC) {
         // we can sfaely unwrap as the arguments are required
         let agent_id = matches.value_of("agent").unwrap();
