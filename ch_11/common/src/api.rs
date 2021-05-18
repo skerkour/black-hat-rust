@@ -34,38 +34,56 @@ pub struct Error {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct RegisterAgent {
+    pub id: Uuid,
+    pub identity_public_key: Vec<u8>,
+    pub public_prekey: Vec<u8>,
+    pub public_prekey_signature: Vec<u8>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct AgentRegistered {
     pub id: Uuid,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct CreateJob {
+    pub id: Uuid,
     pub agent_id: Uuid,
-    pub command: String,
+    pub encrypted_job: Vec<u8>,
+    pub ephemeral_public_key: Vec<u8>,
+    pub nonce: Vec<u8>,
+    pub signature: Vec<u8>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Job {
-    pub id: Uuid,
-    pub created_at: DateTime<Utc>,
-    pub executed_at: Option<DateTime<Utc>>,
     pub command: String,
     pub args: Vec<String>,
-    pub output: Option<String>,
-    pub agent_id: Uuid,
+    pub result_ephemeral_public_key: Vec<u8>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct UpdateJobResult {
     pub job_id: Uuid,
-    pub output: String,
+    pub encrypted_job_result: Vec<u8>,
+    pub ephemeral_public_key: Vec<u8>,
+    pub nonce: Vec<u8>,
+    pub signature: Vec<u8>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct EncryptedJobResult {
+    pub output: Option<String>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct AgentJob {
     pub id: Uuid,
-    pub command: String,
-    pub args: Vec<String>,
+    pub encrypted_job: Vec<u8>,
+    pub ephemeral_public_key: Vec<u8>,
+    pub nonce: Vec<u8>,
+    pub signature: Vec<u8>,
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -73,14 +91,12 @@ pub struct Agent {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,
     pub last_seen_at: DateTime<Utc>,
+    pub identity_public_key: Vec<u8>,
+    pub public_prekey: Vec<u8>,
+    pub public_prekey_signature: Vec<u8>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct AgentsList {
     pub agents: Vec<Agent>,
-}
-
-#[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct JobsList {
-    pub jobs: Vec<Job>,
 }

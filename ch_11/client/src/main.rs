@@ -12,7 +12,7 @@ fn main() -> Result<(), anyhow::Error> {
         .version(clap::crate_version!())
         .about(clap::crate_description!())
         .subcommand(SubCommand::with_name(cli::AGENTS).about("List all agents"))
-        .subcommand(SubCommand::with_name(cli::JOBS).about("List all jobs"))
+        .subcommand(SubCommand::with_name(cli::IDENTITY).about("Generates a new identity keypair"))
         .subcommand(
             SubCommand::with_name(cli::EXEC)
                 .about("Execute a command")

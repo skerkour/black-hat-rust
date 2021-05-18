@@ -3,7 +3,7 @@
 ####################################################################################################
 FROM rust:latest AS builder
 
-WORKDIR /ch_10
+WORKDIR /ch_11
 
 COPY ./ .
 
@@ -15,7 +15,7 @@ RUN cargo build -p server --release
 FROM debian:buster-slim
 
 # Create unprivileged user
-ENV USER=ch_10
+ENV USER=ch_11
 ENV UID=10001
 
 RUN adduser \
@@ -28,12 +28,12 @@ RUN adduser \
     "${USER}"
 
 
-WORKDIR /ch_10
+WORKDIR /ch_11
 
 # Copy our build
-COPY --from=builder /ch_10/target/release/server ./
+COPY --from=builder /ch_11/target/release/server ./
 
 # Use an unprivileged user
-USER ch_10:ch_10
+USER ch_11:ch_11
 
-CMD ["/ch_10/server"]
+CMD ["/ch_11/server"]

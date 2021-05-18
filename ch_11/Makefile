@@ -1,4 +1,4 @@
-DOCKER_IMAGE = bhr_ch10_server:latest
+DOCKER_IMAGE = bhr_ch11_server:latest
 
 .PHONY: all
 all: build docker
