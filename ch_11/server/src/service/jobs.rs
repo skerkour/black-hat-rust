@@ -14,7 +14,10 @@ impl Service {
         let job = self.repo.find_job_by_id(&self.db, job_id).await?;
 
         match &job.encrypted_result {
-            Some(_) => Ok(Some(job)),
+            Some(_) => {
+                self.repo.delete_job(&self.db, job.id).await?;
+                Ok(Some(job))
+            }
             None => Ok(None),
         }
     }
@@ -54,12 +57,12 @@ impl Service {
         job_result_buffer.append(&mut input.nonce.to_vec());
 
         let signature = ed25519_dalek::Signature::try_from(&input.signature[0..64])?;
+        let agent_identity_public_key =
+            ed25519_dalek::PublicKey::from_bytes(&agent.identity_public_key)?;
 
-        if !self
-            .config
-            .client_identity_public_key
+        if agent_identity_public_key
             .verify(&job_result_buffer, &signature)
-            .is_ok()
+            .is_err()
         {
             return Err(Error::InvalidArgument("Signature is not valid".to_string()));
         }
@@ -100,7 +103,6 @@ impl Service {
             return Err(Error::InvalidArgument("Signature is not valid".to_string()));
         }
 
-        let now = Utc::now();
         let new_job = Job {
             id: input.id,
             agent_id: input.agent_id,

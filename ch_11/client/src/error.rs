@@ -19,3 +19,15 @@ impl std::convert::From<reqwest::Error> for Error {
         Error::Internal(err.to_string())
     }
 }
+
+impl std::convert::From<ed25519_dalek::SignatureError> for Error {
+    fn from(err: ed25519_dalek::SignatureError) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
+
+impl std::convert::From<base64::DecodeError> for Error {
+    fn from(err: base64::DecodeError) -> Self {
+        Error::Internal(err.to_string())
+    }
+}

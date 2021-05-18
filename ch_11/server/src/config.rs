@@ -1,7 +1,5 @@
-use common::crypto;
-
 use crate::Error;
-use std::convert::TryFrom;
+use common::crypto;
 
 #[derive(Clone, Debug)]
 pub struct Config {
@@ -37,7 +35,7 @@ impl Config {
         }
 
         let client_identity_public_key =
-            ed25519_dalek::PublicKey::try_from(&client_identity_public_key_bytes[0..64])?;
+            ed25519_dalek::PublicKey::from_bytes(&client_identity_public_key_bytes[0..64])?;
 
         Ok(Config {
             port,

@@ -92,9 +92,9 @@ impl Repository {
     }
 
     pub async fn delete_job(&self, db: &Pool<Postgres>, job_id: Uuid) -> Result<(), Error> {
-        const QUERY: &str = "SELECT * FROM jobs ORDER BY created_at";
+        const QUERY: &str = "DELETE FROM jobs WHERE id = $1";
 
-        sqlx::query(QUERY).execute(db).await?;
+        sqlx::query(QUERY).bind(job_id).execute(db).await?;
         Ok(())
     }
 }

@@ -237,10 +237,13 @@ dependencies = [
  "base64",
  "clap",
  "common",
+ "ed25519-dalek",
  "prettytable-rs",
+ "rand 0.7.3",
  "reqwest",
  "thiserror",
  "uuid",
+ "x25519-dalek",
 ]
 
 [[package]]

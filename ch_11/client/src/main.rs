@@ -7,6 +7,8 @@ mod error;
 
 pub use error::Error;
 
+use crate::config::Config;
+
 fn main() -> Result<(), anyhow::Error> {
     let cli = App::new(clap::crate_name!())
         .version(clap::crate_version!())
@@ -39,13 +41,14 @@ fn main() -> Result<(), anyhow::Error> {
 
     if let Some(_) = cli.subcommand_matches(cli::AGENTS) {
         cli::agents::run(&api_client)?;
-    } else if let Some(_) = cli.subcommand_matches(cli::JOBS) {
-        cli::jobs::run(&api_client)?;
+    } else if let Some(_) = cli.subcommand_matches(cli::IDENTITY) {
+        cli::identity::run();
     } else if let Some(matches) = cli.subcommand_matches(cli::EXEC) {
         // we can sfaely unwrap as the arguments are required
         let agent_id = matches.value_of("agent").unwrap();
         let command = matches.value_of("command").unwrap();
-        cli::exec::run(&api_client, agent_id, command)?;
+        let conf = Config::load()?;
+        cli::exec::run(&api_client, agent_id, command, conf)?;
     }
 
     Ok(())

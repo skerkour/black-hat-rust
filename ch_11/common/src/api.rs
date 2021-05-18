@@ -37,7 +37,6 @@ pub struct Error {
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct RegisterAgent {
-    pub id: Uuid,
     pub identity_public_key: [u8; crypto::ED25519_PUBLIC_KEY_SIZE],
     pub public_prekey: [u8; crypto::X25519_PUBLIC_KEY_SIZE],
     // we use Vec<u8> to avoid serde ownership errors

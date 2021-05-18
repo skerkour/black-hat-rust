@@ -29,8 +29,6 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     let register_agent_route = format!("{}/api/agents", config::SERVER_URL);
     let mut rand_generator = rand::rngs::OsRng {};
 
-    let agent_id = Uuid::new_v4();
-
     let identity_keypair = ed25519_dalek::Keypair::generate(&mut rand_generator);
 
     let mut private_prekey = [0u8; crypto::X25519_PRIVATE_KEY_SIZE];
@@ -39,18 +37,9 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
 
     let public_prekey_signature = identity_keypair.sign(&public_prekey);
 
-    let conf = config::Config {
-        agent_id,
-        identity_public_key: identity_keypair.public,
-        identity_private_key: identity_keypair.secret,
-        public_prekey,
-        private_prekey,
-    };
-
     let register_agent = RegisterAgent {
-        id: conf.agent_id,
-        identity_public_key: conf.identity_public_key.to_bytes(),
-        public_prekey: conf.public_prekey.clone(),
+        identity_public_key: identity_keypair.secret.to_bytes(),
+        public_prekey: public_prekey.clone(),
         public_prekey_signature: public_prekey_signature.to_bytes().to_vec(),
     };
 
@@ -62,6 +51,14 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     if let Some(err) = api_res.error {
         return Err(Error::Api(err.message));
     }
+
+    let conf = config::Config {
+        agent_id: api_res.data.unwrap().id,
+        identity_public_key: identity_keypair.public,
+        identity_private_key: identity_keypair.secret,
+        public_prekey,
+        private_prekey,
+    };
 
     Ok(conf)
 }

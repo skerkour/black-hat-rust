@@ -4,12 +4,18 @@ use crate::{
     Error,
 };
 use chrono::Utc;
-use common::api;
+use common::{api, crypto};
+use ed25519_dalek::Verifier;
+use std::convert::TryFrom;
 use uuid::Uuid;
 
 impl Service {
     pub async fn list_agents(&self) -> Result<Vec<entities::Agent>, Error> {
         self.repo.find_all_agents(&self.db).await
+    }
+
+    pub async fn find_agent(&self, agent_id: Uuid) -> Result<entities::Agent, Error> {
+        self.repo.find_agent_by_id(&self.db, agent_id).await
     }
 
     pub async fn register_agent(
@@ -18,40 +24,36 @@ impl Service {
     ) -> Result<api::AgentRegistered, Error> {
         let id = Uuid::new_v4();
         let created_at = Utc::now();
+
         // verify input
-        // if input.signature.len() != crypto::ED25519_SIGNATURE_SIZE {
-        //     return Err(Error::InvalidArgument(
-        //         "Signature size is not valid".to_string(),
-        //     ));
-        // }
+        if input.public_prekey_signature.len() != crypto::ED25519_SIGNATURE_SIZE {
+            return Err(Error::InvalidArgument(
+                "Signature size is not valid".to_string(),
+            ));
+        }
 
-        // let mut job_result_buffer = input.job_id.as_bytes().to_vec();
-        // job_result_buffer.append(&mut input.encrypted_job_result.clone());
-        // job_result_buffer.append(&mut input.ephemeral_public_key.to_vec());
-        // job_result_buffer.append(&mut input.nonce.to_vec());
+        let agent_identity_public_key =
+            ed25519_dalek::PublicKey::from_bytes(&input.identity_public_key)?;
+        let signature = ed25519_dalek::Signature::try_from(&input.public_prekey_signature[0..64])?;
 
-        // let signature = ed25519_dalek::Signature::try_from(&input.signature[0..64])?;
-
-        // if !self
-        //     .config
-        //     .client_identity_public_key
-        //     .verify(&job_result_buffer, &signature)
-        //     .is_ok()
-        // {
-        //     return Err(Error::InvalidArgument("Signature is not valid".to_string()));
-        // }
+        if agent_identity_public_key
+            .verify(&input.public_prekey, &signature)
+            .is_err()
+        {
+            return Err(Error::InvalidArgument("Signature is not valid".to_string()));
+        }
 
         let agent = Agent {
             id,
             created_at,
             last_seen_at: created_at,
-            identity_public_key: (),
-            public_prekey: (),
-            public_prekey_signature: (),
+            identity_public_key: input.identity_public_key.to_vec(),
+            public_prekey: input.public_prekey.to_vec(),
+            public_prekey_signature: input.public_prekey_signature.to_vec(),
         };
 
         self.repo.create_agent(&self.db, &agent).await?;
 
-        Ok(AgentRegistered { id })
+        Ok(api::AgentRegistered { id })
     }
 }

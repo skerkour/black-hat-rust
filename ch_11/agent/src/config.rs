@@ -16,6 +16,7 @@ pub struct Config {
     pub identity_private_key: ed25519_dalek::SecretKey,
     pub public_prekey: [u8; 32],
     pub private_prekey: [u8; 32],
+    pub client_identity_public_key: ed25519_dalek::PublicKey,
 }
 
 impl TryFrom<SerializedConfig> for Config {
@@ -30,12 +31,19 @@ impl TryFrom<SerializedConfig> for Config {
 
         let private_prekey = conf.private_prekey;
         let public_prekey = x25519(private_prekey.clone(), X25519_BASEPOINT_BYTES);
+
+        let client_public_key_bytes = base64::decode(CLIENT_IDENTITY_PUBLIC_KEY)?;
+
+        let client_identity_public_key =
+            ed25519_dalek::PublicKey::from_bytes(&conf.identity_private_key)?;
+
         Ok(Config {
             agent_id,
             identity_public_key,
             identity_private_key,
             public_prekey,
             private_prekey,
+            client_identity_public_key,
         })
     }
 }

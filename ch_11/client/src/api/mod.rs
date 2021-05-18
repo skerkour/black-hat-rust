@@ -2,9 +2,9 @@ use reqwest::redirect;
 use std::time::Duration;
 
 mod create_job;
+mod get_agent;
 mod get_job_result;
 mod list_agents;
-mod list_jobs;
 
 #[derive(Debug)]
 pub struct Client {
