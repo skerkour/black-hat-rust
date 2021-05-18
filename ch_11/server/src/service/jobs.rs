@@ -1,17 +1,17 @@
 use super::Service;
 use crate::{entities::Job, Error};
 use chrono::Utc;
-use common::api::{CreateJob, UpdateJobResult};
+use common::{
+    api::{CreateJob, UpdateJobResult},
+    crypto,
+};
+use ed25519_dalek::Verifier;
 use sqlx::types::Json;
 use uuid::Uuid;
 
 impl Service {
     pub async fn find_job(&self, job_id: Uuid) -> Result<Job, Error> {
         self.repo.find_job_by_id(&self.db, job_id).await
-    }
-
-    pub async fn list_jobs(&self) -> Result<Vec<Job>, Error> {
-        self.repo.find_all_jobs(&self.db).await
     }
 
     pub async fn get_agent_job(&self, agent_id: Uuid) -> Result<Option<Job>, Error> {
@@ -37,27 +37,45 @@ impl Service {
     }
 
     pub async fn create_job(&self, input: CreateJob) -> Result<Job, Error> {
-        let command = input.command.trim();
-        let mut command_with_args: Vec<String> = command
-            .split_whitespace()
-            .into_iter()
-            .map(|s| s.to_owned())
-            .collect();
-        if command_with_args.is_empty() {
-            return Err(Error::InvalidArgument("Command is not valid".to_string()));
+        // validate input
+
+        if input.encrypted_job.len() > super::ENCRYPTED_JOB_MAX_SIZE {
+            return Err(Error::InvalidArgument("Job is too large".to_string()));
         }
 
-        let command = command_with_args.remove(0);
+        if input.signature.len() != crypto::ED25519_SIGNATURE_SIZE {
+            return Err(Error::InvalidArgument(
+                "Signature size is not valid".to_string(),
+            ));
+        }
+
+        let mut job_buffer = input.id.as_bytes().to_vec();
+        job_buffer.append(input.agent_id.as_bytes());
+        job_buffer.append(input.encrypted_job.clone());
+        job_buffer.append(input.ephemeral_public_key.clone());
+        job_buffer.append(input.nonce.clone());
+
+        if !self
+            .config
+            .client_identity_public_key
+            .verify(&job_buffer, &input.signature)
+            .is_ok()
+        {
+            return Err(Error::InvalidArgument("Signature is not valid".to_string()));
+        }
 
         let now = Utc::now();
         let new_job = Job {
-            id: Uuid::new_v4(),
-            created_at: now,
-            executed_at: None,
-            command,
-            args: Json(command_with_args),
-            output: None,
+            id: input.id,
             agent_id: input.agent_id,
+            encrypted_job: input.encrypted_job,
+            ephemeral_public_key: input.ephemeral_public_key,
+            nonce: input.nonce,
+            signature: input.signature,
+            encrypted_result: None,
+            result_ephemeral_public_key: None,
+            result_nonce: None,
+            result_signature: None,
         };
 
         self.repo.create_job(&self.db, &new_job).await?;

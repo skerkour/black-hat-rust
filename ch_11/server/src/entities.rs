@@ -1,5 +1,5 @@
 use chrono::{DateTime, Utc};
-use common::api;
+use common::{api, crypto};
 use sqlx::types::Json;
 use uuid::Uuid;
 
@@ -8,13 +8,13 @@ pub struct Job {
     pub id: Uuid,
     pub agent_id: Uuid,
     pub encrypted_job: Vec<u8>,
-    pub ephemeral_public_key: [u8; X25519_PUBLIC_KEYSIZE],
-    pub nonce: Vec<u8>,
-    pub signature: Vec<u8>,
+    pub ephemeral_public_key: [u8; crypto::X25519_PUBLIC_KEYSIZE],
+    pub nonce: [u8; crypto::XCHACHA20_POLY1305_NONCE_SIZE],
+    pub signature: [u8; crypto::ED25519_SIGNATURE_SIZE],
     pub encrypted_result: Option<Vec<u8>>,
-    pub result_ephemeral_public_key: Option<[u8; ed25519_dalek::PUBLIC_KEY_LENGTH]>,
-    pub result_nonce: Option<Vec<u8>>,
-    pub result_signature: Vec<u8>,
+    pub result_ephemeral_public_key: Option<[u8; crypto::ED25519_PUBLIC_KEY_SIZE]>,
+    pub result_nonce: Option<[u8; crypto::XCHACHA20_POLY1305_NONCE_SIZE]>,
+    pub result_signature: Option<[u8; crypto::ED25519_SIGNATURE_SIZE]>,
 }
 
 impl Into<api::Job> for Job {
@@ -40,8 +40,8 @@ pub struct Agent {
     pub created_at: DateTime<Utc>,
     pub last_seen_at: DateTime<Utc>,
     pub identity_public_key: Vec<u8>,
-    pub public_prekey: [u8; X25519_PUBLIC_KEYSIZE],
-    pub public_prekey_signature: [u8; ed25519_dalek::SIGNATURE_LENGTH],
+    pub public_prekey: [u8; crypto::X25519_PUBLIC_KEYSIZE],
+    pub public_prekey_signature: [u8; crypto::ED25519_SIGNATURE_SIZE],
 }
 
 impl Into<api::Agent> for Agent {
@@ -52,7 +52,7 @@ impl Into<api::Agent> for Agent {
             last_seen_at: self.last_seen_at,
             identity_public_key: self.identity_public_key,
             public_prekey: self.public_prekey,
-            public_prekey_signature: self.public_prekey_signature.to_vec(),
+            public_prekey_signature: self.public_prekey_signature,
         }
     }
 }
