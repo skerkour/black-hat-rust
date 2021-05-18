@@ -52,6 +52,7 @@ impl Service {
         }
 
         let mut job_result_buffer = input.job_id.as_bytes().to_vec();
+        job_result_buffer.append(&mut agent.id.as_bytes().to_vec());
         job_result_buffer.append(&mut input.encrypted_job_result.clone());
         job_result_buffer.append(&mut input.ephemeral_public_key.to_vec());
         job_result_buffer.append(&mut input.nonce.to_vec());

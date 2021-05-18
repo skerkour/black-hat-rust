@@ -30,7 +30,7 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
         ed25519_dalek::PublicKey::from_bytes(&agent.identity_public_key)?;
 
     // encrypt job
-    let (input, job_ephemeral_private_key) = encrypt_and_sign_job_result(
+    let (input, job_ephemeral_private_key) = encrypt_and_sign_job(
         &conf,
         command,
         args,
@@ -60,7 +60,7 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
     Ok(())
 }
 
-fn encrypt_and_sign_job_result(
+fn encrypt_and_sign_job(
     conf: &config::Config,
     command: String,
     args: Vec<String>,
@@ -75,7 +75,13 @@ fn encrypt_and_sign_job_result(
 
     // generate ephemeral keypair for job result
     // generate ephemeral keypair for job encryption
+
+    // key exange with public_prekey & keypair for job encryption
     // encrypt job
+
+    // return job & ephemeral private key for job result
+
+    // sign job_id, agent_id, encrypted_job, ephemeral_public_key, nonce
 
     unimplemented!();
 }
@@ -86,5 +92,7 @@ fn decrypt_and_verify_job_output(
     job_ephemeral_private_key: [u8; crypto::X25519_PRIVATE_KEY_SIZE],
     agent_identity_public_key: &ed25519_dalek::PublicKey,
 ) -> Result<String, Error> {
+    // verify job_id, agent_id, encrypted_job_result, result_ephemeral_public_key, result_nonce
+
     unimplemented!();
 }

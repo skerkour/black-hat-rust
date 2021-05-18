@@ -82,6 +82,8 @@ fn decrypt_and_verify_job(
     conf: &config::Config,
     encrypted_job: AgentJob,
 ) -> Result<(Uuid, JobPayload), Error> {
+    // verify job_id, agent_id, encrypted_job, ephemeral_public_key, nonce
+
     todo!();
 }
 
@@ -90,5 +92,6 @@ fn encrypt_and_sign_job_result(
     job_id: Uuid,
     output: String,
 ) -> Result<UpdateJobResult, Error> {
+    // sign job_id, agent_id, encrypted_job_result, result_ephemeral_public_key, result_nonce
     unimplemented!();
 }
