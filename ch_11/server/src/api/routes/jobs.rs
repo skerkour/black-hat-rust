@@ -1,8 +1,9 @@
 use crate::api::AppState;
 use common::api;
+use std::convert::TryInto;
 use std::{sync::Arc, time::Duration};
 use uuid::Uuid;
-use warp::{http::StatusCode, Rejection};
+use warp::http::StatusCode;
 
 pub async fn create_job(
     state: Arc<AppState>,
@@ -64,8 +65,13 @@ pub async fn get_agent_job(
             Some(job) => {
                 let agent_job = api::AgentJob {
                     id: job.id,
-                    command: job.command,
-                    args: job.args.0,
+                    encrypted_job: job.encrypted_job,
+                    ephemeral_public_key: job
+                        .ephemeral_public_key
+                        .try_into()
+                        .expect("get_agent_job: invalid ephemeral_public_key"),
+                    nonce: job.nonce.try_into().expect("get_agent_job: invalid nonce"),
+                    signature: job.signature,
                 };
 
                 let res = api::Response::ok(agent_job);

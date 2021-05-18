@@ -6,6 +6,7 @@ use common::{
     crypto,
 };
 use ed25519_dalek::Verifier;
+use std::convert::TryFrom;
 use uuid::Uuid;
 
 impl Service {
@@ -34,9 +35,39 @@ impl Service {
 
     pub async fn update_job_result(&self, input: UpdateJobResult) -> Result<(), Error> {
         let mut job = self.repo.find_job_by_id(&self.db, input.job_id).await?;
+        let agent = self.repo.find_agent_by_id(&self.db, job.agent_id).await?;
 
-        job.executed_at = Some(Utc::now());
-        job.output = Some(input.output);
+        // validate input
+        if input.encrypted_job_result.len() > super::ENCRYPTED_JOB_RESULT_MAX_SIZE {
+            return Err(Error::InvalidArgument("Result is too large".to_string()));
+        }
+
+        if input.signature.len() != crypto::ED25519_SIGNATURE_SIZE {
+            return Err(Error::InvalidArgument(
+                "Signature size is not valid".to_string(),
+            ));
+        }
+
+        let mut job_result_buffer = input.job_id.as_bytes().to_vec();
+        job_result_buffer.append(&mut input.encrypted_job_result.clone());
+        job_result_buffer.append(&mut input.ephemeral_public_key.to_vec());
+        job_result_buffer.append(&mut input.nonce.to_vec());
+
+        let signature = ed25519_dalek::Signature::try_from(&input.signature[0..64])?;
+
+        if !self
+            .config
+            .client_identity_public_key
+            .verify(&job_result_buffer, &signature)
+            .is_ok()
+        {
+            return Err(Error::InvalidArgument("Signature is not valid".to_string()));
+        }
+
+        job.encrypted_result = Some(input.encrypted_job_result);
+        job.result_ephemeral_public_key = Some(input.ephemeral_public_key.to_vec());
+        job.result_nonce = Some(input.nonce.to_vec());
+        job.result_signature = Some(input.signature);
         self.repo.update_job(&self.db, &job).await
     }
 
@@ -52,18 +83,18 @@ impl Service {
             ));
         }
 
-        let mut job_buffer_iter = input.id.as_bytes().into_iter();
-        job_buffer_iter.chain(input.agent_id.as_bytes());
-        job_buffer_iter.chain(input.encrypted_job.clone());
-        job_buffer_iter.chain(input.ephemeral_public_key.clone());
-        job_buffer_iter.chain(input.nonce.clone());
+        let mut job_buffer = input.id.as_bytes().to_vec();
+        job_buffer.append(&mut input.agent_id.as_bytes().to_vec());
+        job_buffer.append(&mut input.encrypted_job.clone());
+        job_buffer.append(&mut input.ephemeral_public_key.to_vec());
+        job_buffer.append(&mut input.nonce.to_vec());
 
-        let job_buffer: Vec<u8> = job_buffer_iter.collect();
+        let signature = ed25519_dalek::Signature::try_from(&input.signature[0..64])?;
 
         if !self
             .config
             .client_identity_public_key
-            .verify(&job_buffer, &input.signature)
+            .verify(&job_buffer, &signature)
             .is_ok()
         {
             return Err(Error::InvalidArgument("Signature is not valid".to_string()));
@@ -74,8 +105,8 @@ impl Service {
             id: input.id,
             agent_id: input.agent_id,
             encrypted_job: input.encrypted_job,
-            ephemeral_public_key: input.ephemeral_public_key,
-            nonce: input.nonce,
+            ephemeral_public_key: input.ephemeral_public_key.to_vec(),
+            nonce: input.nonce.to_vec(),
             signature: input.signature,
             encrypted_result: None,
             result_ephemeral_public_key: None,

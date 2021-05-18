@@ -1,5 +1,5 @@
 use chrono::{DateTime, Utc};
-use common::{api, crypto};
+use common::api;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, sqlx::FromRow)]

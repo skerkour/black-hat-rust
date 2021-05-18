@@ -1,3 +1,4 @@
+use crate::config;
 use crate::Repository;
 use sqlx::{Pool, Postgres};
 

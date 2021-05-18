@@ -12,8 +12,8 @@ impl Repository {
 
         match sqlx::query(QUERY)
             .bind(job.id)
-            .bind(job.encrypted_job)
-            .bind(job.ephemeral_public_key)
+            .bind(&job.encrypted_job)
+            .bind(&job.ephemeral_public_key)
             .bind(&job.nonce)
             .bind(&job.signature)
             .bind(job.agent_id)

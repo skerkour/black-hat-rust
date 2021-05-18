@@ -1,4 +1,7 @@
+use common::crypto;
+
 use crate::Error;
+use std::convert::TryFrom;
 
 #[derive(Clone, Debug)]
 pub struct Config {
@@ -27,8 +30,14 @@ impl Config {
         let client_identity_public_key_bytes = base64::decode(CLIENT_IDENTITY_PUBLIC_KEY)
             .map_err(|err| Error::Internal(err.to_string()))?;
 
+        if client_identity_public_key_bytes.len() != crypto::ED25519_PUBLIC_KEY_SIZE {
+            return Err(Error::InvalidArgument(
+                "CLIENT_IDENTITY_PUBLIC_KEY size is not valid".to_string(),
+            ));
+        }
+
         let client_identity_public_key =
-            ed25519_dalek::PublicKey::from(&client_identity_public_key_bytes)?;
+            ed25519_dalek::PublicKey::try_from(&client_identity_public_key_bytes[0..64])?;
 
         Ok(Config {
             port,
