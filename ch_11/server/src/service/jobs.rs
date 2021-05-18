@@ -6,12 +6,16 @@ use common::{
     crypto,
 };
 use ed25519_dalek::Verifier;
-use sqlx::types::Json;
 use uuid::Uuid;
 
 impl Service {
-    pub async fn find_job(&self, job_id: Uuid) -> Result<Job, Error> {
-        self.repo.find_job_by_id(&self.db, job_id).await
+    pub async fn get_job_result(&self, job_id: Uuid) -> Result<Option<Job>, Error> {
+        let job = self.repo.find_job_by_id(&self.db, job_id).await?;
+
+        match &job.encrypted_result {
+            Some(_) => Ok(Some(job)),
+            None => Ok(None),
+        }
     }
 
     pub async fn get_agent_job(&self, agent_id: Uuid) -> Result<Option<Job>, Error> {
@@ -38,7 +42,6 @@ impl Service {
 
     pub async fn create_job(&self, input: CreateJob) -> Result<Job, Error> {
         // validate input
-
         if input.encrypted_job.len() > super::ENCRYPTED_JOB_MAX_SIZE {
             return Err(Error::InvalidArgument("Job is too large".to_string()));
         }
@@ -49,11 +52,13 @@ impl Service {
             ));
         }
 
-        let mut job_buffer = input.id.as_bytes().to_vec();
-        job_buffer.append(input.agent_id.as_bytes());
-        job_buffer.append(input.encrypted_job.clone());
-        job_buffer.append(input.ephemeral_public_key.clone());
-        job_buffer.append(input.nonce.clone());
+        let mut job_buffer_iter = input.id.as_bytes().into_iter();
+        job_buffer_iter.chain(input.agent_id.as_bytes());
+        job_buffer_iter.chain(input.encrypted_job.clone());
+        job_buffer_iter.chain(input.ephemeral_public_key.clone());
+        job_buffer_iter.chain(input.nonce.clone());
+
+        let job_buffer: Vec<u8> = job_buffer_iter.collect();
 
         if !self
             .config

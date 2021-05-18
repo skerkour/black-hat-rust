@@ -1,7 +1,7 @@
 use crate::{config, Error};
 use common::{
     api::{self, RegisterAgent},
-    crypto::X25519_PRIVATE_KEYSIZE,
+    crypto,
 };
 use ed25519_dalek::Signer;
 use rand::RngCore;
@@ -33,7 +33,7 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
 
     let identity_keypair = ed25519_dalek::Keypair::generate(&mut rand_generator);
 
-    let mut private_prekey = [0u8; X25519_PRIVATE_KEYSIZE];
+    let mut private_prekey = [0u8; crypto::X25519_PRIVATE_KEY_SIZE];
     rand_generator.fill_bytes(&mut private_prekey);
     let public_prekey = x25519(private_prekey.clone(), X25519_BASEPOINT_BYTES);
 

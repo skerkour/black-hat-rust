@@ -1,6 +1,5 @@
 use chrono::{DateTime, Utc};
 use common::{api, crypto};
-use sqlx::types::Json;
 use uuid::Uuid;
 
 #[derive(Debug, Clone, sqlx::FromRow)]
@@ -8,13 +7,13 @@ pub struct Job {
     pub id: Uuid,
     pub agent_id: Uuid,
     pub encrypted_job: Vec<u8>,
-    pub ephemeral_public_key: [u8; crypto::X25519_PUBLIC_KEYSIZE],
-    pub nonce: [u8; crypto::XCHACHA20_POLY1305_NONCE_SIZE],
-    pub signature: [u8; crypto::ED25519_SIGNATURE_SIZE],
+    pub ephemeral_public_key: Vec<u8>,
+    pub nonce: Vec<u8>,
+    pub signature: Vec<u8>,
     pub encrypted_result: Option<Vec<u8>>,
-    pub result_ephemeral_public_key: Option<[u8; crypto::ED25519_PUBLIC_KEY_SIZE]>,
-    pub result_nonce: Option<[u8; crypto::XCHACHA20_POLY1305_NONCE_SIZE]>,
-    pub result_signature: Option<[u8; crypto::ED25519_SIGNATURE_SIZE]>,
+    pub result_ephemeral_public_key: Option<Vec<u8>>,
+    pub result_nonce: Option<Vec<u8>>,
+    pub result_signature: Option<Vec<u8>>,
 }
 
 impl Into<api::Job> for Job {
@@ -40,8 +39,8 @@ pub struct Agent {
     pub created_at: DateTime<Utc>,
     pub last_seen_at: DateTime<Utc>,
     pub identity_public_key: Vec<u8>,
-    pub public_prekey: [u8; crypto::X25519_PUBLIC_KEYSIZE],
-    pub public_prekey_signature: [u8; crypto::ED25519_SIGNATURE_SIZE],
+    pub public_prekey: Vec<u8>,
+    pub public_prekey_signature: Vec<u8>,
 }
 
 impl Into<api::Agent> for Agent {
