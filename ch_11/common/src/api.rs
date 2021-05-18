@@ -36,8 +36,9 @@ pub struct Error {
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct RegisterAgent {
     pub id: Uuid,
-    pub identity_public_key: Vec<u8>,
-    pub public_prekey: Vec<u8>,
+    pub identity_public_key: [u8; ed25519_dalek::PUBLIC_KEY_LENGTH],
+    pub public_prekey: [u8; 32],
+    // we use Vec<u8> to avoid serde ownership errors
     pub public_prekey_signature: Vec<u8>,
 }
 

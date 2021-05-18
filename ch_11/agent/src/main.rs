@@ -1,6 +1,6 @@
 use std::time::Duration;
 
-mod consts;
+mod config;
 mod error;
 mod init;
 mod run;
@@ -13,6 +13,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .user_agent("ch_11_agent/0.1")
         .build();
 
-    let agent_id = init::init(&api_client)?;
-    run::run(&api_client, agent_id);
+    let client_identity_public_key = base64::decode(config::CLIENT_IDENTITY_PUBLIC_KEY)
+        .map_err(|err| Error::Internal(err.to_string()))?;
+
+    let conf = init::init(&api_client)?;
+    run::run(&api_client, conf);
 }

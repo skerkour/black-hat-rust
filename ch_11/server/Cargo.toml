@@ -20,3 +20,4 @@ dotenv = "0.15"
 thiserror = "1.0"
 serde = { version = "1" }
 log = "0.4"
+ed25519-dalek = "1"

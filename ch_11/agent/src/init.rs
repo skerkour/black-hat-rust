@@ -1,73 +1,101 @@
-use crate::{consts, Error};
-use common::api;
+use crate::{config, Error};
+use common::api::{self, RegisterAgent};
+use ed25519_dalek::Signer;
+use rand::RngCore;
 use std::fs;
 use std::path::PathBuf;
 use uuid::Uuid;
+use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
-pub fn init(api_client: &ureq::Agent) -> Result<Uuid, Error> {
-    let saved_agent_id = get_saved_agent_id()?;
+const X25519_PRIVATE_KEYSIZE: usize = 32;
 
-    let agent_id = match saved_agent_id {
+pub fn init(api_client: &ureq::Agent) -> Result<config::Config, Error> {
+    let saved_agent_id = get_saved_agent_config()?;
+
+    let conf = match saved_agent_id {
         Some(agent_id) => agent_id,
         None => {
-            let agent_id = register(api_client)?;
-            save_agent_id(agent_id)?;
-            agent_id
+            let conf = register(api_client)?;
+            save_agent_config(&conf)?;
+            conf
         }
     };
 
-    Ok(agent_id)
+    Ok(conf)
 }
 
-pub fn register(api_client: &ureq::Agent) -> Result<Uuid, Error> {
-    let register_agent_route = format!("{}/api/agents", consts::SERVER_URL);
+pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
+    let register_agent_route = format!("{}/api/agents", config::SERVER_URL);
+    let mut rand_generator = rand::rngs::OsRng {};
+
+    let agent_id = Uuid::new_v4();
+
+    let identity_keypair = ed25519_dalek::Keypair::generate(&mut rand_generator);
+
+    let mut private_prekey = [0u8; X25519_PRIVATE_KEYSIZE];
+    rand_generator.fill_bytes(&mut private_prekey);
+    let public_prekey = x25519(private_prekey.clone(), X25519_BASEPOINT_BYTES);
+
+    let public_prekey_signature = identity_keypair.sign(&public_prekey);
+
+    let conf = config::Config {
+        agent_id,
+        identity_public_key: identity_keypair.public.to_bytes(),
+        identity_private_key: identity_keypair.secret.to_bytes(),
+        public_prekey,
+        private_prekey,
+    };
+
+    let register_agent = RegisterAgent {
+        id: conf.agent_id,
+        identity_public_key: conf.identity_public_key.clone(),
+        public_prekey: conf.public_prekey.clone(),
+        public_prekey_signature: public_prekey_signature.to_bytes().to_vec(),
+    };
 
     let api_res: api::Response<api::AgentRegistered> = api_client
         .post(register_agent_route.as_str())
         .call()?
         .into_json()?;
 
-    let agent_id = match (api_res.data, api_res.error) {
-        (Some(data), None) => Ok(data.id),
-        (None, Some(err)) => Err(Error::Api(err.message)),
-        (None, None) => Err(Error::Api(
-            "Received invalid api response: data and error are both null.".to_string(),
-        )),
-        (Some(_), Some(_)) => Err(Error::Api(
-            "Received invalid api response: data and error are both non null.".to_string(),
-        )),
-    }?;
+    if let Some(err) = api_res.error {
+        return Err(Error::Api(err.message));
+    }
 
-    Ok(agent_id)
+    Ok(conf)
 }
 
-pub fn save_agent_id(agent_id: Uuid) -> Result<(), Error> {
-    let agent_id_file = get_agent_id_file_path()?;
-    fs::write(agent_id_file, agent_id.as_bytes())?;
+pub fn save_agent_config(conf: &config::Config) -> Result<(), Error> {
+    let agent_config_file = get_agent_config_file_path()?;
+
+    let config_json = serde_json::to_string(conf)?;
+
+    fs::write(agent_config_file, config_json.as_bytes())?;
 
     Ok(())
 }
 
-pub fn get_saved_agent_id() -> Result<Option<Uuid>, Error> {
-    let agent_id_file = get_agent_id_file_path()?;
+pub fn get_saved_agent_config() -> Result<Option<config::Config>, Error> {
+    let agent_id_file = get_agent_config_file_path()?;
 
     if agent_id_file.exists() {
         let agent_file_content = fs::read(agent_id_file)?;
 
-        let agent_id = Uuid::from_slice(&agent_file_content)?;
-        Ok(Some(agent_id))
+        let conf: config::Config = serde_json::from_slice(&agent_file_content)?;
+
+        Ok(Some(conf))
     } else {
         Ok(None)
     }
 }
 
-pub fn get_agent_id_file_path() -> Result<PathBuf, Error> {
+pub fn get_agent_config_file_path() -> Result<PathBuf, Error> {
     let mut home_dir = match dirs::home_dir() {
         Some(home_dir) => home_dir,
         None => return Err(Error::Internal("Error getting home directory.".to_string())),
     };
 
-    home_dir.push(consts::AGENT_ID_FILE);
+    home_dir.push(config::AGENT_ID_FILE);
 
     Ok(home_dir)
 }

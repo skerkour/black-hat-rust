@@ -36,3 +36,9 @@ impl std::convert::From<uuid::Error> for Error {
         Error::Internal(err.to_string())
     }
 }
+
+impl std::convert::From<serde_json::Error> for Error {
+    fn from(err: serde_json::Error) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
