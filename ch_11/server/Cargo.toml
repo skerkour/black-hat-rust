@@ -21,3 +21,4 @@ thiserror = "1.0"
 serde = { version = "1" }
 log = "0.4"
 ed25519-dalek = "1"
+base64 = "0.13"

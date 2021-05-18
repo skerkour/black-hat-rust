@@ -2,8 +2,8 @@ use crate::{config, Error};
 use common::api::{self, RegisterAgent};
 use ed25519_dalek::Signer;
 use rand::RngCore;
-use std::fs;
 use std::path::PathBuf;
+use std::{convert::TryInto, fs};
 use uuid::Uuid;
 use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
@@ -40,15 +40,15 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
 
     let conf = config::Config {
         agent_id,
-        identity_public_key: identity_keypair.public.to_bytes(),
-        identity_private_key: identity_keypair.secret.to_bytes(),
+        identity_public_key: identity_keypair.public,
+        identity_private_key: identity_keypair.secret,
         public_prekey,
         private_prekey,
     };
 
     let register_agent = RegisterAgent {
         id: conf.agent_id,
-        identity_public_key: conf.identity_public_key.clone(),
+        identity_public_key: conf.identity_public_key.to_bytes(),
         public_prekey: conf.public_prekey.clone(),
         public_prekey_signature: public_prekey_signature.to_bytes().to_vec(),
     };
@@ -68,7 +68,8 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
 pub fn save_agent_config(conf: &config::Config) -> Result<(), Error> {
     let agent_config_file = get_agent_config_file_path()?;
 
-    let config_json = serde_json::to_string(conf)?;
+    let serialized_conf: config::SerializedConfig = conf.into();
+    let config_json = serde_json::to_string(&serialized_conf)?;
 
     fs::write(agent_config_file, config_json.as_bytes())?;
 
@@ -81,8 +82,9 @@ pub fn get_saved_agent_config() -> Result<Option<config::Config>, Error> {
     if agent_id_file.exists() {
         let agent_file_content = fs::read(agent_id_file)?;
 
-        let conf: config::Config = serde_json::from_slice(&agent_file_content)?;
-
+        let serialized_conf: config::SerializedConfig =
+            serde_json::from_slice(&agent_file_content)?;
+        let conf = serialized_conf.try_into()?;
         Ok(Some(conf))
     } else {
         Ok(None)

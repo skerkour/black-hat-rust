@@ -42,3 +42,9 @@ impl std::convert::From<serde_json::Error> for Error {
         Error::Internal(err.to_string())
     }
 }
+
+impl std::convert::From<ed25519_dalek::SignatureError> for Error {
+    fn from(err: ed25519_dalek::SignatureError) -> Self {
+        Error::Internal(err.to_string())
+    }
+}

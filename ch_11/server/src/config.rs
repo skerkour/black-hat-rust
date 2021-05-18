@@ -9,7 +9,7 @@ pub struct Config {
 
 const ENV_DATABASE_URL: &str = "DATABASE_URL";
 const ENV_PORT: &str = "PORT";
-pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "TODO";
+const CLIENT_IDENTITY_PUBLIC_KEY: &str = "TODO";
 
 const DEFAULT_PORT: u16 = 8080;
 
@@ -24,7 +24,17 @@ impl Config {
         let database_url =
             std::env::var(ENV_DATABASE_URL).map_err(|_| env_not_found(ENV_DATABASE_URL))?;
 
-        Ok(Config { port, database_url })
+        let client_identity_public_key_bytes = base64::decode(CLIENT_IDENTITY_PUBLIC_KEY)
+            .map_err(|err| Error::Internal(err.to_string()))?;
+
+        let client_identity_public_key =
+            ed25519_dalek::PublicKey::from(&client_identity_public_key_bytes)?;
+
+        Ok(Config {
+            port,
+            database_url,
+            client_identity_public_key,
+        })
     }
 }
 
