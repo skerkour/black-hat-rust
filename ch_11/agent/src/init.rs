@@ -7,7 +7,6 @@ use ed25519_dalek::Signer;
 use rand::RngCore;
 use std::path::PathBuf;
 use std::{convert::TryInto, fs};
-use uuid::Uuid;
 use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
 pub fn init(api_client: &ureq::Agent) -> Result<config::Config, Error> {
@@ -43,6 +42,10 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
         public_prekey_signature: public_prekey_signature.to_bytes().to_vec(),
     };
 
+    let client_public_key_bytes = base64::decode(config::CLIENT_IDENTITY_PUBLIC_KEY)?;
+    let client_identity_public_key =
+        ed25519_dalek::PublicKey::from_bytes(&client_public_key_bytes)?;
+
     let api_res: api::Response<api::AgentRegistered> = api_client
         .post(register_agent_route.as_str())
         .call()?
@@ -58,6 +61,7 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
         identity_private_key: identity_keypair.secret,
         public_prekey,
         private_prekey,
+        client_identity_public_key,
     };
 
     Ok(conf)

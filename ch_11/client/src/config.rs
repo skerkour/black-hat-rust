@@ -1,7 +1,7 @@
 use crate::Error;
 
 pub const SERVER_URL: &str = "http://localhost:8080";
-pub const IDENTITY_PRIVATE_KEY: &str = "TODO";
+pub const IDENTITY_PRIVATE_KEY: &str = "wToLgDfjCxFijRA+YKi6T9j7bTc/4grwoTRJZJs5DU8=";
 
 #[derive(Debug)]
 pub struct Config {

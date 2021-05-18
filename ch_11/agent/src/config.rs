@@ -7,7 +7,7 @@ use crate::Error;
 
 pub const SERVER_URL: &str = "http://localhost:8080";
 pub const AGENT_ID_FILE: &str = "ch_11";
-pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "TODO";
+pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "xQ6gstFLtTbDC06LDb5dAQap+fXVG45BnRZj0L5th+M=";
 
 #[derive(Debug)]
 pub struct Config {
@@ -33,9 +33,8 @@ impl TryFrom<SerializedConfig> for Config {
         let public_prekey = x25519(private_prekey.clone(), X25519_BASEPOINT_BYTES);
 
         let client_public_key_bytes = base64::decode(CLIENT_IDENTITY_PUBLIC_KEY)?;
-
         let client_identity_public_key =
-            ed25519_dalek::PublicKey::from_bytes(&conf.identity_private_key)?;
+            ed25519_dalek::PublicKey::from_bytes(&client_public_key_bytes)?;
 
         Ok(Config {
             agent_id,

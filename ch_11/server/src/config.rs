@@ -1,5 +1,4 @@
 use crate::Error;
-use common::crypto;
 
 #[derive(Clone, Debug)]
 pub struct Config {
@@ -10,7 +9,7 @@ pub struct Config {
 
 const ENV_DATABASE_URL: &str = "DATABASE_URL";
 const ENV_PORT: &str = "PORT";
-const CLIENT_IDENTITY_PUBLIC_KEY: &str = "TODO";
+const ENV_CLIENT_IDENTITY_PUBLIC_KEY: &str = "CLIENT_IDENTITY_PUBLIC_KEY";
 
 const DEFAULT_PORT: u16 = 8080;
 
@@ -25,17 +24,14 @@ impl Config {
         let database_url =
             std::env::var(ENV_DATABASE_URL).map_err(|_| env_not_found(ENV_DATABASE_URL))?;
 
-        let client_identity_public_key_bytes = base64::decode(CLIENT_IDENTITY_PUBLIC_KEY)
+        let client_identity_key_str = std::env::var(ENV_CLIENT_IDENTITY_PUBLIC_KEY)
+            .ok()
+            .unwrap_or(String::new());
+        let client_identity_public_key_bytes = base64::decode(&client_identity_key_str)
             .map_err(|err| Error::Internal(err.to_string()))?;
 
-        if client_identity_public_key_bytes.len() != crypto::ED25519_PUBLIC_KEY_SIZE {
-            return Err(Error::InvalidArgument(
-                "CLIENT_IDENTITY_PUBLIC_KEY size is not valid".to_string(),
-            ));
-        }
-
         let client_identity_public_key =
-            ed25519_dalek::PublicKey::from_bytes(&client_identity_public_key_bytes[0..64])?;
+            ed25519_dalek::PublicKey::from_bytes(&client_identity_public_key_bytes)?;
 
         Ok(Config {
             port,
