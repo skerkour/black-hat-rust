@@ -1,5 +1,5 @@
 use crate::{config, Error};
-use common::api::{self, AgentJob, Job, UpdateJobResult};
+use common::api::{self, AgentJob, JobPayload, UpdateJobResult};
 use std::{process::Command, thread::sleep, time::Duration};
 use uuid::Uuid;
 
@@ -81,7 +81,7 @@ fn execute_command(command: String, args: Vec<String>) -> String {
 fn decrypt_and_verify_job(
     conf: &config::Config,
     encrypted_job: AgentJob,
-) -> Result<(Uuid, Job), Error> {
+) -> Result<(Uuid, JobPayload), Error> {
     todo!();
 }
 

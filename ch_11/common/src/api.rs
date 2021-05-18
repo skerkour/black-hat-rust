@@ -3,6 +3,8 @@ use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use uuid::Uuid;
 
+use crate::crypto::X25519_PUBLIC_KEYSIZE;
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Response<T: Serialize> {
     pub data: Option<T>,
@@ -37,7 +39,7 @@ pub struct Error {
 pub struct RegisterAgent {
     pub id: Uuid,
     pub identity_public_key: [u8; ed25519_dalek::PUBLIC_KEY_LENGTH],
-    pub public_prekey: [u8; 32],
+    pub public_prekey: [u8; X25519_PUBLIC_KEYSIZE],
     // we use Vec<u8> to avoid serde ownership errors
     pub public_prekey_signature: Vec<u8>,
 }
@@ -52,23 +54,37 @@ pub struct CreateJob {
     pub id: Uuid,
     pub agent_id: Uuid,
     pub encrypted_job: Vec<u8>,
-    pub ephemeral_public_key: Vec<u8>,
+    pub ephemeral_public_key: [u8; X25519_PUBLIC_KEYSIZE],
     pub nonce: Vec<u8>,
     pub signature: Vec<u8>,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Job {
+    pub id: Uuid,
+    pub agent_id: Uuid,
+    pub encrypted_job: Vec<u8>,
+    pub ephemeral_public_key: [u8; X25519_PUBLIC_KEYSIZE],
+    pub nonce: Vec<u8>,
+    pub signature: Vec<u8>,
+    pub encrypted_result: Option<Vec<u8>>,
+    pub result_ephemeral_public_key: Option<[u8; ed25519_dalek::PUBLIC_KEY_LENGTH]>,
+    pub result_nonce: Option<Vec<u8>>,
+    pub result_signature: Vec<u8>,
+}
+
+#[derive(Debug, Clone, Deserialize, Serialize)]
+pub struct JobPayload {
     pub command: String,
     pub args: Vec<String>,
-    pub result_ephemeral_public_key: Vec<u8>,
+    pub result_ephemeral_public_key: [u8; X25519_PUBLIC_KEYSIZE],
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct UpdateJobResult {
     pub job_id: Uuid,
     pub encrypted_job_result: Vec<u8>,
-    pub ephemeral_public_key: Vec<u8>,
+    pub ephemeral_public_key: [u8; X25519_PUBLIC_KEYSIZE],
     pub nonce: Vec<u8>,
     pub signature: Vec<u8>,
 }
@@ -82,7 +98,7 @@ pub struct EncryptedJobResult {
 pub struct AgentJob {
     pub id: Uuid,
     pub encrypted_job: Vec<u8>,
-    pub ephemeral_public_key: Vec<u8>,
+    pub ephemeral_public_key: [u8; X25519_PUBLIC_KEYSIZE],
     pub nonce: Vec<u8>,
     pub signature: Vec<u8>,
 }
@@ -92,8 +108,8 @@ pub struct Agent {
     pub id: Uuid,
     pub created_at: DateTime<Utc>,
     pub last_seen_at: DateTime<Utc>,
-    pub identity_public_key: Vec<u8>,
-    pub public_prekey: Vec<u8>,
+    pub identity_public_key: [u8; ed25519_dalek::PUBLIC_KEY_LENGTH],
+    pub public_prekey: [u8; X25519_PUBLIC_KEYSIZE],
     pub public_prekey_signature: Vec<u8>,
 }
 

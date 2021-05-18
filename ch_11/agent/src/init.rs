@@ -1,13 +1,14 @@
 use crate::{config, Error};
-use common::api::{self, RegisterAgent};
+use common::{
+    api::{self, RegisterAgent},
+    crypto::X25519_PRIVATE_KEYSIZE,
+};
 use ed25519_dalek::Signer;
 use rand::RngCore;
 use std::path::PathBuf;
 use std::{convert::TryInto, fs};
 use uuid::Uuid;
 use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
-
-const X25519_PRIVATE_KEYSIZE: usize = 32;
 
 pub fn init(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     let saved_agent_id = get_saved_agent_config()?;
