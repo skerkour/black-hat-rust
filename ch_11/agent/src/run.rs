@@ -14,6 +14,7 @@ use std::convert::TryFrom;
 use std::{process::Command, thread::sleep, time::Duration};
 use uuid::Uuid;
 use x25519_dalek::x25519;
+use zeroize::Zeroize;
 
 pub fn run(api_client: &ureq::Agent, conf: config::Config) -> ! {
     let sleep_for = Duration::from_secs(1);
@@ -139,17 +140,20 @@ fn decrypt_and_verify_job(
     }
 
     // key exange
-    let shared_secret = x25519(conf.private_prekey, job.ephemeral_public_key);
+    let mut shared_secret = x25519(conf.private_prekey, job.ephemeral_public_key);
 
     // derive key
     let mut kdf =
         blake2::VarBlake2b::new_keyed(&shared_secret, crypto::XCHACHA20_POLY1305_KEY_SIZE);
     kdf.update(&job.nonce);
-    let key = kdf.finalize_boxed();
+    let mut key = kdf.finalize_boxed();
 
     // decrypt job
     let cipher = XChaCha20Poly1305::new(key.as_ref().into());
     let decrypted_job_bytes = cipher.decrypt(&job.nonce.into(), job.encrypted_job.as_ref())?;
+
+    shared_secret.zeroize();
+    key.zeroize();
 
     // deserialize job
     let job_payload: api::JobPayload = serde_json::from_slice(&decrypted_job_bytes)?;
@@ -174,7 +178,7 @@ fn encrypt_and_sign_job_result(
     );
 
     // key exange for job result encryption
-    let shared_secret = x25519(ephemeral_private_key, job_result_ephemeral_public_key);
+    let mut shared_secret = x25519(ephemeral_private_key, job_result_ephemeral_public_key);
 
     // generate nonce
     let mut nonce = [0u8; crypto::XCHACHA20_POLY1305_NONCE_SIZE];
@@ -184,7 +188,7 @@ fn encrypt_and_sign_job_result(
     let mut kdf =
         blake2::VarBlake2b::new_keyed(&shared_secret, crypto::XCHACHA20_POLY1305_KEY_SIZE);
     kdf.update(&nonce);
-    let key = kdf.finalize_boxed();
+    let mut key = kdf.finalize_boxed();
 
     // serialize job result
     let job_result_payload = api::JobResult { output };
@@ -193,6 +197,9 @@ fn encrypt_and_sign_job_result(
     // encrypt job
     let cipher = XChaCha20Poly1305::new(key.as_ref().into());
     let encrypted_job_result = cipher.encrypt(&nonce.into(), job_result_payload_json.as_ref())?;
+
+    shared_secret.zeroize();
+    key.zeroize();
 
     // sign job_id, agent_id, encrypted_job_result, result_ephemeral_public_key, result_nonce
     let mut buffer_to_sign = job_id.as_bytes().to_vec();

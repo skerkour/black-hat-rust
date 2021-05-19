@@ -15,6 +15,7 @@ use std::convert::TryFrom;
 use std::{thread::sleep, time::Duration};
 use uuid::Uuid;
 use x25519_dalek::x25519;
+use zeroize::Zeroize;
 
 pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> Result<(), Error> {
     let agent_id = Uuid::parse_str(agent_id)?;
@@ -60,7 +61,7 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
                 job_ephemeral_private_key,
                 &agent_identity_public_key,
             )?;
-            println!("{}", job_output);
+            print!("{}", job_output);
             break;
         }
         sleep(sleep_for);
@@ -115,7 +116,7 @@ fn encrypt_and_sign_job(
     );
 
     // key exange for job encryption
-    let shared_secret = x25519(job_ephemeral_private_key, agent_public_prekey);
+    let mut shared_secret = x25519(job_ephemeral_private_key, agent_public_prekey);
 
     // generate nonce
     let mut nonce = [0u8; crypto::XCHACHA20_POLY1305_NONCE_SIZE];
@@ -125,7 +126,7 @@ fn encrypt_and_sign_job(
     let mut kdf =
         blake2::VarBlake2b::new_keyed(&shared_secret, crypto::XCHACHA20_POLY1305_KEY_SIZE);
     kdf.update(&nonce);
-    let key = kdf.finalize_boxed();
+    let mut key = kdf.finalize_boxed();
 
     // serialize job
     let encrypted_job_payload = api::JobPayload {
@@ -138,6 +139,9 @@ fn encrypt_and_sign_job(
     // encrypt job
     let cipher = XChaCha20Poly1305::new(key.as_ref().into());
     let encrypted_job = cipher.encrypt(&nonce.into(), encrypted_job_json.as_ref())?;
+
+    shared_secret.zeroize();
+    key.zeroize();
 
     // other input data
     let job_id = Uuid::new_v4();
@@ -207,18 +211,21 @@ fn decrypt_and_verify_job_output(
     }
 
     // key exange with public_prekey & keypair for job encryption
-    let shared_secret = x25519(job_ephemeral_private_key, result_ephemeral_public_key);
+    let mut shared_secret = x25519(job_ephemeral_private_key, result_ephemeral_public_key);
 
     // derive key
     let mut kdf =
         blake2::VarBlake2b::new_keyed(&shared_secret, crypto::XCHACHA20_POLY1305_KEY_SIZE);
     kdf.update(&result_nonce);
-    let key = kdf.finalize_boxed();
+    let mut key = kdf.finalize_boxed();
 
     // decrypt job
     let cipher = XChaCha20Poly1305::new(key.as_ref().into());
     let decrypted_job_bytes =
         cipher.decrypt(&result_nonce.into(), encrypted_job_result.as_ref())?;
+
+    shared_secret.zeroize();
+    key.zeroize();
 
     // deserialize job
     let job_result: api::JobResult = serde_json::from_slice(&decrypted_job_bytes)?;
