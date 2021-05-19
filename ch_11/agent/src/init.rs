@@ -48,7 +48,7 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
 
     let api_res: api::Response<api::AgentRegistered> = api_client
         .post(register_agent_route.as_str())
-        .call()?
+        .send_json(ureq::json!(register_agent))?
         .into_json()?;
 
     if let Some(err) = api_res.error {

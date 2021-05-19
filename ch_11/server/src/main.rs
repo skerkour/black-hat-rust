@@ -15,7 +15,7 @@ pub use service::Service;
 
 #[tokio::main(flavor = "multi_thread")]
 async fn main() -> Result<(), anyhow::Error> {
-    std::env::set_var("RUST_LOG", "server=info");
+    std::env::set_var("RUST_LOG", "server=debug");
     env_logger::init();
 
     let config = Config::load()?;

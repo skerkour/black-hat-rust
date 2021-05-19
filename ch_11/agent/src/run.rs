@@ -50,12 +50,30 @@ pub fn run(api_client: &ureq::Agent, conf: config::Config) -> ! {
             }
         };
 
-        let (job_id, job) = decrypt_and_verify_job(&conf, encrypted_job)?;
+        let (job_id, job) = match decrypt_and_verify_job(&conf, encrypted_job) {
+            Ok(res) => res,
+            Err(err) => {
+                log::debug!("Error decrypting job: {}", err);
+                sleep(sleep_for);
+                continue;
+            }
+        };
 
         let output = execute_command(job.command, job.args);
 
-        let job_result =
-            encrypt_and_sign_job_result(&conf, job_id, output, job.result_ephemeral_public_key)?;
+        let job_result = match encrypt_and_sign_job_result(
+            &conf,
+            job_id,
+            output,
+            job.result_ephemeral_public_key,
+        ) {
+            Ok(res) => res,
+            Err(err) => {
+                log::debug!("Error encrypting job result: {}", err);
+                sleep(sleep_for);
+                continue;
+            }
+        };
 
         match api_client
             .post(post_job_result_route.as_str())

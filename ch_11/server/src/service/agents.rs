@@ -28,7 +28,7 @@ impl Service {
         // verify input
         if input.public_prekey_signature.len() != crypto::ED25519_SIGNATURE_SIZE {
             return Err(Error::InvalidArgument(
-                "Signature size is not valid".to_string(),
+                "Agent's public prekey Signature size is not valid".to_string(),
             ));
         }
 
@@ -36,12 +36,16 @@ impl Service {
             ed25519_dalek::PublicKey::from_bytes(&input.identity_public_key)?;
         let signature = ed25519_dalek::Signature::try_from(&input.public_prekey_signature[0..64])?;
 
+        log::debug!("register_agent: input is valid");
+
         if agent_identity_public_key
             .verify(&input.public_prekey, &signature)
             .is_err()
         {
             return Err(Error::InvalidArgument("Signature is not valid".to_string()));
         }
+
+        log::debug!("register_agent: agent's public_prekey signature verified");
 
         let agent = Agent {
             id,

@@ -13,9 +13,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .user_agent("ch_11_agent/0.1")
         .build();
 
-    let client_identity_public_key = base64::decode(config::CLIENT_IDENTITY_PUBLIC_KEY)
-        .map_err(|err| Error::Internal(err.to_string()))?;
-
     let conf = init::init(&api_client)?;
     run::run(&api_client, conf);
 }
