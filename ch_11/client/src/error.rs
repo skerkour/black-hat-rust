@@ -31,3 +31,15 @@ impl std::convert::From<base64::DecodeError> for Error {
         Error::Internal(err.to_string())
     }
 }
+
+impl std::convert::From<serde_json::Error> for Error {
+    fn from(err: serde_json::Error) -> Self {
+        Error::Internal(err.to_string())
+    }
+}
+
+impl std::convert::From<chacha20poly1305::aead::Error> for Error {
+    fn from(err: chacha20poly1305::aead::Error) -> Self {
+        Error::Internal(err.to_string())
+    }
+}

@@ -14,6 +14,7 @@ name = "agent"
 version = "0.1.0"
 dependencies = [
  "base64",
+ "blake2",
  "chacha20poly1305",
  "common",
  "dirs 3.0.2",
@@ -25,6 +26,7 @@ dependencies = [
  "ureq",
  "uuid",
  "x25519-dalek",
+ "zeroize",
 ]
 
 [[package]]
@@ -134,6 +136,17 @@ dependencies = [
  "radium",
  "tap",
  "wyz",
+]
+
+[[package]]
+name = "blake2"
+version = "0.9.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "10a5720225ef5daecf08657f23791354e1685a8c91a4c60c7f3d3b2892f978f4"
+dependencies = [
+ "crypto-mac 0.8.0",
+ "digest",
+ "opaque-debug",
 ]
 
 [[package]]
@@ -279,6 +292,7 @@ version = "0.1.0"
 dependencies = [
  "anyhow",
  "base64",
+ "blake2",
  "chacha20poly1305",
  "clap",
  "common",
@@ -286,9 +300,11 @@ dependencies = [
  "prettytable-rs",
  "rand 0.7.3",
  "reqwest",
+ "serde_json",
  "thiserror",
  "uuid",
  "x25519-dalek",
+ "zeroize",
 ]
 
 [[package]]
@@ -359,6 +375,16 @@ dependencies = [
  "autocfg",
  "cfg-if",
  "lazy_static",
+]
+
+[[package]]
+name = "crypto-mac"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b584a330336237c1eecd3e94266efb216c56ed91225d634cb2991c5f3fd1aeab"
+dependencies = [
+ "generic-array",
+ "subtle",
 ]
 
 [[package]]
@@ -755,7 +781,7 @@ version = "0.10.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "c1441c6b1e930e2817404b5046f1f989899143a12bf92de603b69f4e0aee1e15"
 dependencies = [
- "crypto-mac",
+ "crypto-mac 0.10.0",
  "digest",
 ]
 
