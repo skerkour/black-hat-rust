@@ -3,16 +3,15 @@ use crate::{
     config::{self, Config},
     Error,
 };
-use blake2::{
-    digest::{Update, VariableOutput},
-    Digest,
-};
+use blake2::digest::{Update, VariableOutput};
 use chacha20poly1305::{
     aead::{Aead, NewAead},
     XChaCha20Poly1305,
 };
 use common::{api, crypto};
+use ed25519_dalek::Verifier;
 use rand::RngCore;
+use std::convert::TryFrom;
 use std::{thread::sleep, time::Duration};
 use uuid::Uuid;
 use x25519_dalek::x25519;
@@ -47,6 +46,7 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
         agent.id,
         agent.public_prekey,
         &agent.public_prekey_signature,
+        &agent_identity_public_key,
     )?;
 
     // create job
@@ -57,7 +57,6 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
         if let Some(_) = &job.encrypted_result {
             // decrypt job's output
             let job_output = decrypt_and_verify_job_output(
-                &conf,
                 job,
                 job_ephemeral_private_key,
                 &agent_identity_public_key,
@@ -76,12 +75,25 @@ fn encrypt_and_sign_job(
     command: String,
     args: Vec<String>,
     agent_id: Uuid,
-    public_prekey: [u8; crypto::X25519_PUBLIC_KEY_SIZE],
-    public_prekey_signature: &[u8],
+    agent_public_prekey: [u8; crypto::X25519_PUBLIC_KEY_SIZE],
+    agent_public_prekey_signature: &[u8],
+    agent_identity_public_key: &ed25519_dalek::PublicKey,
 ) -> Result<(api::CreateJob, [u8; crypto::X25519_PRIVATE_KEY_SIZE]), Error> {
-    if public_prekey_signature.len() != crypto::ED25519_SIGNATURE_SIZE {
+    if agent_public_prekey_signature.len() != crypto::ED25519_SIGNATURE_SIZE {
         return Err(Error::Internal(
             "Agent's prekey signature size is not valid".to_string(),
+        ));
+    }
+
+    // verify agent's prekey
+    let agent_public_prekey_buffer = agent_public_prekey.to_vec();
+    let signature = ed25519_dalek::Signature::try_from(&agent_public_prekey_signature[0..64])?;
+    if agent_identity_public_key
+        .verify(&agent_public_prekey_buffer, &signature)
+        .is_err()
+    {
+        return Err(Error::Internal(
+            "Agent's prekey Signature is not valid".to_string(),
         ));
     }
 
@@ -108,7 +120,7 @@ fn encrypt_and_sign_job(
     rand_generator.fill_bytes(&mut nonce);
 
     // key exange with public_prekey & keypair for job encryption
-    let shared_secret = x25519(job_ephemeral_private_key, public_prekey);
+    let shared_secret = x25519(job_ephemeral_private_key, agent_public_prekey);
 
     // derive key
     let mut kdf =
@@ -155,12 +167,61 @@ fn encrypt_and_sign_job(
 }
 
 fn decrypt_and_verify_job_output(
-    conf: &config::Config,
     job: api::Job,
     job_ephemeral_private_key: [u8; crypto::X25519_PRIVATE_KEY_SIZE],
     agent_identity_public_key: &ed25519_dalek::PublicKey,
 ) -> Result<String, Error> {
     // verify job_id, agent_id, encrypted_job_result, result_ephemeral_public_key, result_nonce
+    let encrypted_job_result = job
+        .encrypted_result
+        .ok_or(Error::Internal("Job's result is missing".to_string()))?;
+    let result_ephemeral_public_key = job.result_ephemeral_public_key.ok_or(Error::Internal(
+        "Job's result ephemeral public key is missing".to_string(),
+    ))?;
+    let result_nonce = job
+        .result_nonce
+        .ok_or(Error::Internal("Job's result nonce is missing".to_string()))?;
 
-    unimplemented!();
+    let mut buffer_to_verify = job.id.as_bytes().to_vec();
+    buffer_to_verify.append(&mut job.agent_id.as_bytes().to_vec());
+    buffer_to_verify.append(&mut encrypted_job_result.clone());
+    buffer_to_verify.append(&mut result_ephemeral_public_key.to_vec());
+    buffer_to_verify.append(&mut result_nonce.to_vec());
+
+    let result_signature = job.result_signature.ok_or(Error::Internal(
+        "Job's result signature is missing".to_string(),
+    ))?;
+    if result_signature.len() != crypto::ED25519_SIGNATURE_SIZE {
+        return Err(Error::Internal(
+            "Job's result signature size is not valid".to_string(),
+        ));
+    }
+    let signature = ed25519_dalek::Signature::try_from(&result_signature[0..64])?;
+    if agent_identity_public_key
+        .verify(&buffer_to_verify, &signature)
+        .is_err()
+    {
+        return Err(Error::Internal(
+            "Agent's prekey Signature is not valid".to_string(),
+        ));
+    }
+
+    // key exange with public_prekey & keypair for job encryption
+    let shared_secret = x25519(job_ephemeral_private_key, result_ephemeral_public_key);
+
+    // derive key
+    let mut kdf =
+        blake2::VarBlake2b::new_keyed(&shared_secret, crypto::XCHACHA20_POLY1305_KEY_SIZE);
+    kdf.update(&result_nonce);
+    let key = kdf.finalize_boxed();
+
+    // decrypt job
+    let cipher = XChaCha20Poly1305::new(key.as_ref().into());
+    let decrypted_job_bytes =
+        cipher.decrypt(&result_nonce.into(), encrypted_job_result.as_ref())?;
+
+    // deserialize job
+    let job_result: api::JobResult = serde_json::from_slice(&decrypted_job_bytes)?;
+
+    Ok(job_result.output)
 }

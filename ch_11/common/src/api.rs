@@ -89,7 +89,7 @@ pub struct UpdateJobResult {
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
-pub struct EncryptedJobResult {
+pub struct JobResult {
     pub output: String,
 }
 
