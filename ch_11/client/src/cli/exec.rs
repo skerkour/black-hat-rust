@@ -115,12 +115,12 @@ fn encrypt_and_sign_job(
         x25519_dalek::X25519_BASEPOINT_BYTES,
     );
 
+    // key exange for job encryption
+    let shared_secret = x25519(job_ephemeral_private_key, agent_public_prekey);
+
     // generate nonce
     let mut nonce = [0u8; crypto::XCHACHA20_POLY1305_NONCE_SIZE];
     rand_generator.fill_bytes(&mut nonce);
-
-    // key exange with public_prekey & keypair for job encryption
-    let shared_secret = x25519(job_ephemeral_private_key, agent_public_prekey);
 
     // derive key
     let mut kdf =

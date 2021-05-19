@@ -26,7 +26,6 @@ dependencies = [
  "ureq",
  "uuid",
  "x25519-dalek",
- "zeroize",
 ]
 
 [[package]]
@@ -304,7 +303,6 @@ dependencies = [
  "thiserror",
  "uuid",
  "x25519-dalek",
- "zeroize",
 ]
 
 [[package]]
