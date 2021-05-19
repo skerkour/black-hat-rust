@@ -8,7 +8,9 @@ use common::{
     api::{self, AgentJob, JobPayload, UpdateJobResult},
     crypto,
 };
+use ed25519_dalek::Verifier;
 use rand::RngCore;
+use std::convert::TryFrom;
 use std::{process::Command, thread::sleep, time::Duration};
 use uuid::Uuid;
 use x25519_dalek::x25519;
@@ -52,7 +54,8 @@ pub fn run(api_client: &ureq::Agent, conf: config::Config) -> ! {
 
         let output = execute_command(job.command, job.args);
 
-        let job_result = encrypt_and_sign_job_result(&conf, job_id, output)?;
+        let job_result =
+            encrypt_and_sign_job_result(&conf, job_id, output, job.result_ephemeral_public_key)?;
 
         match api_client
             .post(post_job_result_route.as_str())
@@ -90,11 +93,50 @@ fn execute_command(command: String, args: Vec<String>) -> String {
 
 fn decrypt_and_verify_job(
     conf: &config::Config,
-    encrypted_job: AgentJob,
+    job: AgentJob,
 ) -> Result<(Uuid, JobPayload), Error> {
-    // verify job_id, agent_id, encrypted_job, ephemeral_public_key, nonce
+    // verify input
+    if job.signature.len() != crypto::ED25519_SIGNATURE_SIZE {
+        return Err(Error::Internal(
+            "Job's signature size is not valid".to_string(),
+        ));
+    }
 
-    todo!();
+    // verify job_id, agent_id, encrypted_job, ephemeral_public_key, nonce
+    let mut buffer_to_verify = job.id.as_bytes().to_vec();
+    buffer_to_verify.append(&mut conf.agent_id.as_bytes().to_vec());
+    buffer_to_verify.append(&mut job.encrypted_job.clone());
+    buffer_to_verify.append(&mut job.ephemeral_public_key.to_vec());
+    buffer_to_verify.append(&mut job.nonce.to_vec());
+
+    let signature = ed25519_dalek::Signature::try_from(&job.signature[0..64])?;
+    if conf
+        .client_identity_public_key
+        .verify(&buffer_to_verify, &signature)
+        .is_err()
+    {
+        return Err(Error::Internal(
+            "Agent's prekey Signature is not valid".to_string(),
+        ));
+    }
+
+    // key exange
+    let shared_secret = x25519(conf.private_prekey, job.ephemeral_public_key);
+
+    // derive key
+    let mut kdf =
+        blake2::VarBlake2b::new_keyed(&shared_secret, crypto::XCHACHA20_POLY1305_KEY_SIZE);
+    kdf.update(&job.nonce);
+    let key = kdf.finalize_boxed();
+
+    // decrypt job
+    let cipher = XChaCha20Poly1305::new(key.as_ref().into());
+    let decrypted_job_bytes = cipher.decrypt(&job.nonce.into(), job.encrypted_job.as_ref())?;
+
+    // deserialize job
+    let job_payload: api::JobPayload = serde_json::from_slice(&decrypted_job_bytes)?;
+
+    Ok((job.id, job_payload))
 }
 
 fn encrypt_and_sign_job_result(
@@ -105,7 +147,7 @@ fn encrypt_and_sign_job_result(
 ) -> Result<UpdateJobResult, Error> {
     let mut rand_generator = rand::rngs::OsRng {};
 
-    // generate ephemeral keypair for job encryption
+    // generate ephemeral keypair for job result encryption
     let mut ephemeral_private_key = [0u8; crypto::X25519_PRIVATE_KEY_SIZE];
     rand_generator.fill_bytes(&mut ephemeral_private_key);
     let ephemeral_public_key = x25519(

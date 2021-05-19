@@ -196,6 +196,7 @@ fn decrypt_and_verify_job_output(
             "Job's result signature size is not valid".to_string(),
         ));
     }
+
     let signature = ed25519_dalek::Signature::try_from(&result_signature[0..64])?;
     if agent_identity_public_key
         .verify(&buffer_to_verify, &signature)
