@@ -8,7 +8,7 @@ impl Repository {
     pub async fn create_agent(&self, db: &Pool<Postgres>, agent: &Agent) -> Result<(), Error> {
         const QUERY: &str = "INSERT INTO agents
             (id, created_at, last_seen_at, identity_public_key, public_prekey, public_prekey_signature)
-            VALUES ($1, $2, $3)";
+            VALUES ($1, $2, $3, $4, $5, $6)";
 
         match sqlx::query(QUERY)
             .bind(agent.id)

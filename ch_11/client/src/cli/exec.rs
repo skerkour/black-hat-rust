@@ -53,8 +53,7 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
     let job_id = api_client.create_job(input)?;
 
     loop {
-        let job = api_client.get_job_result(job_id)?;
-        if let Some(_) = &job.encrypted_result {
+        if let Some(job) = api_client.get_job_result(job_id)? {
             // decrypt job's output
             let job_output = decrypt_and_verify_job_output(
                 job,

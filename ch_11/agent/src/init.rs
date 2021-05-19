@@ -37,7 +37,7 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     let public_prekey_signature = identity_keypair.sign(&public_prekey);
 
     let register_agent = RegisterAgent {
-        identity_public_key: identity_keypair.secret.to_bytes(),
+        identity_public_key: identity_keypair.public.to_bytes(),
         public_prekey: public_prekey.clone(),
         public_prekey_signature: public_prekey_signature.to_bytes().to_vec(),
     };

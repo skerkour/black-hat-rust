@@ -74,7 +74,7 @@ impl Repository {
         agent_id: Uuid,
     ) -> Result<Job, Error> {
         const QUERY: &str = "SELECT * FROM jobs
-            WHERE agent_id = $1 AND output IS NULL
+            WHERE agent_id = $1 AND encrypted_result IS NULL
             LIMIT 1";
 
         match sqlx::query_as::<_, Job>(QUERY)
@@ -83,7 +83,7 @@ impl Repository {
             .await
         {
             Err(err) => {
-                error!("find_job_where_output_is_null: finding job: {}", &err);
+                error!("find_job_for_agent: finding job: {}", &err);
                 Err(err.into())
             }
             Ok(None) => Err(Error::NotFound("Job not found.".to_string())),
