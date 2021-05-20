@@ -40,7 +40,7 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
         ed25519_dalek::PublicKey::from_bytes(&agent.identity_public_key)?;
 
     // encrypt job
-    let (input, job_ephemeral_private_key) = encrypt_and_sign_job(
+    let (input, mut job_ephemeral_private_key) = encrypt_and_sign_job(
         &conf,
         command,
         args,
@@ -66,6 +66,8 @@ pub fn run(api_client: &Client, agent_id: &str, command: &str, conf: Config) -> 
         }
         sleep(sleep_for);
     }
+
+    job_ephemeral_private_key.zeroize();
 
     Ok(())
 }
