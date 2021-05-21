@@ -1,0 +1,24 @@
+[package]
+name = "agent"
+version = "0.1.0"
+authors = ["Sylvain Kerkour <sylvain@kerkour.fr>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+common = { path = "../common" }
+
+ureq = { version = "2.1", features = ["tls", "json"] }
+log = "0.4"
+uuid = { version = "0.8", features = ["serde", "v4"] }
+dirs = "3.0"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+rand = "0.7"
+ed25519-dalek = "1"
+x25519-dalek = "1"
+base64 = "0.13"
+chacha20poly1305 = "0.8"
+blake2 = "0.9"
+zeroize = "1.3"
