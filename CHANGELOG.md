@@ -8,8 +8,10 @@ All notable changes to the book will be documented in this file.
 ### Added
 
 * Preface
-* chapter 03: First draft
-* chapter 04: First draft
+* chapter 03
+* chapter 04
+* chapter 05
+
 
 ### Changed
 
