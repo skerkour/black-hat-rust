@@ -32,6 +32,7 @@ $ cargo run -p client -- exec -a eeeb0586-d55c-4086-b9cd-55aae794bab2 ls
 Cargo.lock
 Cargo.toml
 Dockerfile
+Dockerfile.agent
 Makefile
 README.md
 agent
