@@ -12,7 +12,6 @@ All notable changes to the book will be documented in this file.
 * chapter 04
 * chapter 05
 
-
 ### Changed
 
 * chapter 01: Added the "Consequences of a hack" section
