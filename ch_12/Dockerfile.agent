@@ -1,0 +1,10 @@
+FROM rust:latest
+
+RUN apt update && apt upgrade -y
+RUN apt install -y mingw-w64 musl musl-tools make binutils upx
+
+RUN rustup target add x86_64-pc-windows-gnu
+
+RUN rustup target add x86_64-unknown-linux-musl
+
+WORKDIR /bhr
