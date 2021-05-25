@@ -2,7 +2,7 @@ DOCKER_IMAGE = bhr_ch12_server:latest
 AGENT_BUILDER_DOCKER_IMAGE = bhr_ch12_agent_builder:latest
 
 .PHONY: all
-all: build docker
+all: agent agent docker
 
 .PHONY: build
 build: agent client server
