@@ -60,7 +60,7 @@ pub fn run(api_client: &ureq::Agent, conf: config::Config) -> ! {
             }
         };
 
-        let output = commands::exec(job.command, job.args);
+        let output = commands::exec::exec(job.command, job.args);
 
         let job_result = match encrypt_and_sign_job_result(
             &conf,

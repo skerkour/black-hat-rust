@@ -1,3 +1,3 @@
-pub(super) fn install() -> Result<(), crate::Error> {
+pub(crate) fn install() -> Result<(), crate::Error> {
     Ok(())
 }

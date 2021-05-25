@@ -1,6 +1,6 @@
 use std::process::Command;
 
-pub(super) fn exec(command: String, args: Vec<String>) -> String {
+pub(crate) fn exec(command: String, args: Vec<String>) -> String {
     let mut ret = String::new();
 
     let output = match Command::new(command).args(&args).output() {
