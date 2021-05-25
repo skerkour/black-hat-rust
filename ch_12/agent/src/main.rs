@@ -1,5 +1,6 @@
 use std::time::Duration;
 
+mod commands;
 mod config;
 mod error;
 mod init;

