@@ -11,6 +11,11 @@ All notable changes to the book will be documented in this file.
 * chapter 03: First draft
 * chapter 04: First draft
 
+### Changed
+
+* chapter 01: Added the "Consequences of a hack" section
+
+
 
 ## v2021.2 - 2021-03-21
 
@@ -23,6 +28,7 @@ All notable changes to the book will be documented in this file.
 
 * chapter 01: Replaced the "but you have to be aware" section by a "Rust tips" sections
 * chapter 01: misc fixes and rephrasing
+
 
 
 ## v2021.1 - 2021-02-04
