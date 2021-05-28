@@ -7,9 +7,9 @@ all: agent agent docker
 .PHONY: build
 build: agent client server
 
+
 .PHONY: agent
 agent: agent_linux_docker agent_windows_docker
-
 
 .PHONY: agent_linux_docker
 agent_linux_docker:
@@ -31,21 +31,23 @@ agent_windows:
 	strip -s target/x86_64-pc-windows-gnu/release/agent.exe
 	upx -9 --force target/x86_64-pc-windows-gnu/release/agent.exe
 
+
 .PHONY: client
 client:
 	cargo build -p client --release
+
 
 .PHONY: server
 server:
 	cargo build -p server --release
 
-.PHONY: docker
-docker:
-	docker build -t $(DOCKER_IMAGE) .
 
+.PHONY: docker_server
+docker_server:
+	docker build -t $(DOCKER_IMAGE) . -f Dockerfile.server
 
-.PHONY: docker_agent
-docker_agent:
+.PHONY: docker_agent_builder
+docker_agent_builder:
 	docker build -t $(AGENT_BUILDER_DOCKER_IMAGE) . -f Dockerfile.agent
 
 
@@ -56,3 +58,7 @@ dev:
 .PHONY: fmt
 fmt:
 	cargo fmt
+
+.PHONY: check
+check:
+	cargo check
