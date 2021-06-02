@@ -1,6 +1,14 @@
 # Phishing with WASM
 
 
+## Setup
+
+```
+$ cargo install wasm-pack
+$ cargo install cargo-watch
+```
+
+
 ## Dev
 
 ```
