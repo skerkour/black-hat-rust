@@ -57,7 +57,7 @@ impl Component for LoginForm {
                 self.api_task = None;
                 let window: Window = web_sys::window().expect("window not available");
                 let location = window.location();
-                let _ = location.set_href("https://bloom.sh/login");
+                let _ = location.set_href("https://academy.kerkour.com/black-hat-rust");
             }
             Msg::ApiResponse(Err(err)) => {
                 self.error = Some(err);
