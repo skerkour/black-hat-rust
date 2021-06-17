@@ -19,7 +19,7 @@ Scanners, exploits, phishing toolkit, implants... From theory to practice, we wi
 
 
 The security programming field is defined by its extremely large scope (from shellcodes to servers and web apps). Rust is the long-awaited one-size-fits-all programming language meeting all those requirements thanks to its unparalleled guarantees and feature set. Here is why.
-<!-- 
+<!--
 
 Rust is turning a new page in the history of programming languages by providing unparalleled guarantees and features, whether it be for defensive or offensive security. I will venture to say that Rust is the long awaited one-size-fits-all programming language. Here is why. -->
 
@@ -28,9 +28,9 @@ Free Updates and DRM Free, of course :)
 ## Who this book is for
 
 This is NOT a 1000th tutorial about sqlmap and Metasploit, nor will it teach you the fundamentals of programming.
- 
+
 Instead, it's a from-theory-to-practice manual and you may enjoy it if any of the following:
- 
+
 - You keep screaming "show me the code!" when reading about cyber attacks and malwares
 - You want to learn real-world and idiomatic rust practices
 - You believe that the best defense is thinking like an attacker
@@ -47,7 +47,9 @@ Instead, it's a from-theory-to-practice manual and you may enjoy it if any of th
 
 As of today, the book is a work in progress. It is available in the context of an Early Access program which means that the chapters will be sent to you as soon as they are written, and feedback is very much appreciated.
 
-estimated final publication: **July 2021**
+estimated beta release: **July 14, 2021**
+
+estimated final publication: **August 2021**
 
 estimated number of pages: **~320**
 
@@ -81,7 +83,7 @@ Leveraging all we learned previously, we will build an extremely fast web crawle
 
 ### Part II: Exploitation
 
-#### 6 - Finding vulnerabilities with Fuzzing <span title="coming soon">🕒</span>
+#### 6 - Finding vulnerabilities <span title="coming soon">🕒</span>
 Once the external reconnaissance performed, it's time to find entry points. In this chapter we will learn how automated fuzzing can help us to find vulnerabilities that can be exploited to then gain access to our target's systems.
 
 #### 7 - Exploit development <span title="coming soon">🕒</span>
@@ -124,7 +126,7 @@ If you have any questions or ideas, feel free to [join the discussion on the For
 
 ## Newsletter
 
-Want to stay updated? I'll write you once a week about avoiding complexity, hacking, and entrepreneurship. 
+Want to stay updated? I'll write you once a week about avoiding complexity, hacking, and entrepreneurship.
 
 **https://kerkour.com/subscribe**
 
