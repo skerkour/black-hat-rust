@@ -139,7 +139,7 @@ fn decrypt_and_verify_job(
         ));
     }
 
-    // key exange
+    // key exchange
     let mut shared_secret = x25519(conf.private_prekey, job.ephemeral_public_key);
 
     // derive key
@@ -177,7 +177,7 @@ fn encrypt_and_sign_job_result(
         x25519_dalek::X25519_BASEPOINT_BYTES,
     );
 
-    // key exange for job result encryption
+    // key exchange for job result encryption
     let mut shared_secret = x25519(ephemeral_private_key, job_result_ephemeral_public_key);
 
     // generate nonce
