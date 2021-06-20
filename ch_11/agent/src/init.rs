@@ -42,10 +42,6 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
         public_prekey_signature: public_prekey_signature.to_bytes().to_vec(),
     };
 
-    let client_public_key_bytes = base64::decode(config::CLIENT_IDENTITY_PUBLIC_KEY)?;
-    let client_identity_public_key =
-        ed25519_dalek::PublicKey::from_bytes(&client_public_key_bytes)?;
-
     let api_res: api::Response<api::AgentRegistered> = api_client
         .post(register_agent_route.as_str())
         .send_json(ureq::json!(register_agent))?
@@ -54,6 +50,10 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     if let Some(err) = api_res.error {
         return Err(Error::Api(err.message));
     }
+
+    let client_public_key_bytes = base64::decode(config::CLIENT_IDENTITY_PUBLIC_KEY)?;
+    let client_identity_public_key =
+        ed25519_dalek::PublicKey::from_bytes(&client_public_key_bytes)?;
 
     let conf = config::Config {
         agent_id: api_res.data.unwrap().id,
