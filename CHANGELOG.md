@@ -8,9 +8,12 @@ All notable changes to the book will be documented in this file.
 ### Added
 
 * Preface
+* Beta section
 * chapter 03
 * chapter 04
 * chapter 05
+* chapter 10
+* chapter 11
 
 ### Changed
 
