@@ -1,3 +1,5 @@
+use yew::html::ImplicitClone;
+
 #[derive(thiserror::Error, Clone, Debug)]
 pub enum Error {
     /// 401
@@ -24,3 +26,5 @@ pub enum Error {
     #[error("Http Error")]
     RequestError,
 }
+
+impl ImplicitClone for Error {}

@@ -6,6 +6,7 @@ pub struct ErrorAlert {
 
 #[derive(Properties, Clone)]
 pub struct Props {
+    #[prop_or_default]
     pub error: Option<crate::Error>,
 }
 

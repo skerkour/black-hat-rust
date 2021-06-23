@@ -98,7 +98,7 @@ impl Component for LoginForm {
                             class="form-control form-control-lg"
                             type="email"
                             placeholder="Email"
-                            value=&self.email
+                            value=self.email.clone()
                             oninput=oninput_email
                             id="email-input"
                         />
@@ -108,7 +108,7 @@ impl Component for LoginForm {
                             class="form-control form-control-lg"
                             type="password"
                             placeholder="Password"
-                            value=&self.password
+                            value=self.password.clone()
                             oninput=oninput_password
                         />
                     </div>
