@@ -1,0 +1,5 @@
+## fmt
+
+```shell
+$ cargo fmt
+```
