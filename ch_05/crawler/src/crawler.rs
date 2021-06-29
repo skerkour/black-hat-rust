@@ -1,1 +1,2 @@
-
+pub struct Crawler {
+}
