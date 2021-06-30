@@ -1,7 +1,16 @@
 use clap::{App, Arg, SubCommand};
 
 mod crawler;
+mod error;
+mod processors;
 mod spiders;
+
+use error::Error;
+
+use crate::{
+    crawler::Crawler,
+    processors::{print::PrintProcessor, Processor},
+};
 
 fn main() -> Result<(), anyhow::Error> {
     let cli = App::new(clap::crate_name!())
@@ -31,7 +40,15 @@ fn main() -> Result<(), anyhow::Error> {
         }
     } else if let Some(matches) = cli.subcommand_matches("run") {
         // we can safely unwrap as the argument is required
-        let spider = matches.value_of("spider").unwrap();
+        let spider_name = matches.value_of("spider").unwrap();
+        let mut spiders = spiders::all_spiders();
+        let crawler = Crawler::new();
+        let processor: Box<dyn Processor> = Box::new(PrintProcessor::new());
+
+        match spiders.remove(spider_name) {
+            Some(spider) => crawler.run(spider, processor),
+            None => return Err(Error::InvalidSpider(spider_name.to_string()).into()),
+        }
     }
 
     Ok(())
