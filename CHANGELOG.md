@@ -3,7 +3,7 @@
 All notable changes to the book will be documented in this file.
 
 
-## v2021.3 - ???
+## v2021.3 - 2021-07-14
 
 ### Added
 
