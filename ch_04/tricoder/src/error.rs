@@ -6,6 +6,8 @@ pub enum Error {
     CliUsage,
     #[error("Reqwest: {0}")]
     Reqwest(String),
+    #[error("{0}: HTTP response is too large")]
+    HttpResponseIsTooLarge(String),
 }
 
 impl std::convert::From<reqwest::Error> for Error {
