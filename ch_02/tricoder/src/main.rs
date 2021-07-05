@@ -29,14 +29,12 @@ fn main() -> Result<()> {
     let scan_result: Vec<Subdomain> = subdomains::enumerate(&http_client, target)?
         .into_par_iter()
         .map(ports::scan_ports)
-        .map(|subdomain| ports::scan_http(&http_client, subdomain))
         .collect();
 
     for subdomain in scan_result {
         println!("{}:", &subdomain.domain);
         for port in &subdomain.open_ports {
-            let protocol = if port.is_http { "http" } else { "tcp" };
-            println!("    {}: {}", port.port, protocol);
+            println!("    {}", port.port);
         }
 
         println!("");

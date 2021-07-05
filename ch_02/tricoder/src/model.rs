@@ -10,7 +10,6 @@ pub struct Subdomain {
 pub struct Port {
     pub port: u16,
     pub is_open: bool,
-    pub is_http: bool,
 }
 
 #[derive(Debug, Deserialize, Clone)]
