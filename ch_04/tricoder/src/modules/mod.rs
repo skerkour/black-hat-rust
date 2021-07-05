@@ -14,6 +14,10 @@ pub fn all_http_modules() -> Vec<Box<dyn HttpModule>> {
         Box::new(http::PrometheusDashboardUnauthenticatedAccess::new()),
         Box::new(http::KibanaUnauthenticatedAccess::new()),
         Box::new(http::GitlabOpenRegistrations::new()),
+        Box::new(http::GitHeadDisclosure::new()),
+        Box::new(http::GitDirectoryDisclosure::new()),
+        Box::new(http::GitConfigDisclosure::new()),
+        Box::new(http::EtcdUnauthenticatedAccess::new()),
     ];
 }
 
@@ -49,4 +53,8 @@ pub enum HttpFinding {
     PrometheusDashboardUnauthenticatedAccess(String),
     KibanaUnauthenticatedAccess(String),
     GitlabOpenRegistrations(String),
+    GitHeadDisclosure(String),
+    GitDirectoryDisclosure(String),
+    GitConfigDisclosure(String),
+    EtcdUnauthenticatedAccess(String),
 }
