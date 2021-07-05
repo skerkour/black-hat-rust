@@ -12,6 +12,7 @@ pub fn all_http_modules() -> Vec<Box<dyn HttpModule>> {
         Box::new(http::DirectoryListingDisclosure::new()),
         Box::new(http::TraefikDashboardUnauthenticatedAccess::new()),
         Box::new(http::PrometheusDashboardUnauthenticatedAccess::new()),
+        Box::new(http::KibanaUnauthenticatedAccess::new()),
     ];
 }
 
@@ -45,4 +46,5 @@ pub enum HttpFinding {
     DirectoryListingDisclosure(String),
     TraefikDashboardUnauthenticatedAccess(String),
     PrometheusDashboardUnauthenticatedAccess(String),
+    KibanaUnauthenticatedAccess(String),
 }

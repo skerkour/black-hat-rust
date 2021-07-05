@@ -8,3 +8,5 @@ mod traefik_dashboard_unauthenticated_access;
 pub use traefik_dashboard_unauthenticated_access::TraefikDashboardUnauthenticatedAccess;
 mod prometheus_dashboard_unauthenticated_access;
 pub use prometheus_dashboard_unauthenticated_access::PrometheusDashboardUnauthenticatedAccess;
+mod kibana_unauthenticated_access;
+pub use kibana_unauthenticated_access::KibanaUnauthenticatedAccess;
