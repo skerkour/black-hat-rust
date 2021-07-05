@@ -12,10 +12,9 @@ use tokio::sync::Mutex;
 
 mod common_ports;
 mod error;
-mod http;
 mod model;
+mod modules;
 mod ports;
-mod subdomains;
 pub use error::Error;
 use model::Subdomain;
 
