@@ -7,10 +7,11 @@ mod subdomains;
 
 pub fn all_http_modules() -> Vec<Box<dyn HttpModule>> {
     return vec![
-        Box::new(http::ds_store_disclosure::DsStoreDisclosure::new()),
-        Box::new(http::dotenv_disclosure::DotEnvDisclosure::new()),
-        Box::new(http::directory_listing_disclosure::DirectoryListingDisclosure::new()),
-        Box::new(http::traefik_dashboard_unauthenticated_access::TraefikDashboardUnauthenticatedAccess::new()),
+        Box::new(http::DsStoreDisclosure::new()),
+        Box::new(http::DotEnvDisclosure::new()),
+        Box::new(http::DirectoryListingDisclosure::new()),
+        Box::new(http::TraefikDashboardUnauthenticatedAccess::new()),
+        Box::new(http::PrometheusDashboardUnauthenticatedAccess::new()),
     ];
 }
 
@@ -43,4 +44,5 @@ pub enum HttpFinding {
     DotEnvFileDisclosure(String),
     DirectoryListingDisclosure(String),
     TraefikDashboardUnauthenticatedAccess(String),
+    PrometheusDashboardUnauthenticatedAccess(String),
 }

@@ -1,4 +1,10 @@
-pub mod directory_listing_disclosure;
-pub mod dotenv_disclosure;
-pub mod ds_store_disclosure;
-pub mod traefik_dashboard_unauthenticated_access;
+mod directory_listing_disclosure;
+pub use directory_listing_disclosure::DirectoryListingDisclosure;
+mod dotenv_disclosure;
+pub use dotenv_disclosure::DotEnvDisclosure;
+mod ds_store_disclosure;
+pub use ds_store_disclosure::DsStoreDisclosure;
+mod traefik_dashboard_unauthenticated_access;
+pub use traefik_dashboard_unauthenticated_access::TraefikDashboardUnauthenticatedAccess;
+mod prometheus_dashboard_unauthenticated_access;
+pub use prometheus_dashboard_unauthenticated_access::PrometheusDashboardUnauthenticatedAccess;

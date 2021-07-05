@@ -5,26 +5,26 @@ use crate::{
 use async_trait::async_trait;
 use reqwest::Client;
 
-pub struct TraefikDashboardUnauthenticatedAccess {}
+pub struct PrometheusDashboardUnauthenticatedAccess {}
 
-impl TraefikDashboardUnauthenticatedAccess {
+impl PrometheusDashboardUnauthenticatedAccess {
     pub fn new() -> Self {
-        TraefikDashboardUnauthenticatedAccess {}
+        PrometheusDashboardUnauthenticatedAccess {}
     }
 }
 
-impl Module for TraefikDashboardUnauthenticatedAccess {
+impl Module for PrometheusDashboardUnauthenticatedAccess {
     fn name(&self) -> String {
-        String::from("http/traefik_dashboard_unauthenticated_access")
+        String::from("http/prometheus_dashboard_unauthenticated_access")
     }
 
     fn description(&self) -> String {
-        String::from("Check for Traefik Dashboard Unauthenticated Access")
+        String::from("Check for Prometheus Dashboard Unauthenticated Access")
     }
 }
 
 #[async_trait]
-impl HttpModule for TraefikDashboardUnauthenticatedAccess {
+impl HttpModule for PrometheusDashboardUnauthenticatedAccess {
     async fn scan(
         &self,
         http_client: &Client,
@@ -47,13 +47,10 @@ impl HttpModule for TraefikDashboardUnauthenticatedAccess {
         }
 
         let body = res.text().await?;
-        if (body.contains(r#"ng-app="traefik""#)
-            && body.contains(r#"href="https://docs.traefik.io""#)
-            && body.contains(r#"href="https://traefik.io""#))
-            || body
-                .contains(r#"fixed-top"><head><meta charset="utf-8"><title>Traefik</title><base"#)
+        if body
+            .contains(r#"<title>Prometheus Time Series Collection and Processing Server</title>"#)
         {
-            return Ok(Some(HttpFinding::TraefikDashboardUnauthenticatedAccess(
+            return Ok(Some(HttpFinding::PrometheusDashboardUnauthenticatedAccess(
                 url,
             )));
         }
