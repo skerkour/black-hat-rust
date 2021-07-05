@@ -20,6 +20,7 @@ pub fn all_http_modules() -> Vec<Box<dyn HttpModule>> {
         Box::new(http::EtcdUnauthenticatedAccess::new()),
         Box::new(http::Cve2017_9506::new()),
         Box::new(http::Cve2018_7600::new()),
+        Box::new(http::ElasticsearchUnauthenticatedAccess::new()),
     ];
 }
 
@@ -61,4 +62,5 @@ pub enum HttpFinding {
     EtcdUnauthenticatedAccess(String),
     Cve2017_9506(String),
     Cve2018_7600(String),
+    ElasticsearchUnauthenticatedAccess(String),
 }
