@@ -3,16 +3,17 @@ use crate::{
     Error,
 };
 use async_trait::async_trait;
+use reqwest::Client;
 
-pub struct DotEnv {}
+pub struct DotEnvDisclosure {}
 
-impl DotEnv {
+impl DotEnvDisclosure {
     pub fn new() -> Self {
-        DotEnv {}
+        DotEnvDisclosure {}
     }
 }
 
-impl Module for DotEnv {
+impl Module for DotEnvDisclosure {
     fn name(&self) -> String {
         String::from("http/dotenv")
     }
@@ -23,10 +24,14 @@ impl Module for DotEnv {
 }
 
 #[async_trait]
-impl HttpModule for DotEnv {
-    async fn scan(&self, endpoint: &str) -> Result<Option<HttpFinding>, Error> {
+impl HttpModule for DotEnvDisclosure {
+    async fn scan(
+        &self,
+        http_client: &Client,
+        endpoint: &str,
+    ) -> Result<Option<HttpFinding>, Error> {
         let url = format!("{}/.env", &endpoint);
-        let res = reqwest::get(&url).await?;
+        let res = http_client.get(&url).send().await?;
 
         if res.status().is_success() {
             return Ok(Some(HttpFinding::DotEnvFileDisclosure(url)));

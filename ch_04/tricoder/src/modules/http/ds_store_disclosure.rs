@@ -3,16 +3,17 @@ use crate::{
     Error,
 };
 use async_trait::async_trait;
+use reqwest::Client;
 
-pub struct DsStore {}
+pub struct DsStoreDisclosure {}
 
-impl DsStore {
+impl DsStoreDisclosure {
     pub fn new() -> Self {
-        DsStore {}
+        DsStoreDisclosure {}
     }
 }
 
-impl Module for DsStore {
+impl Module for DsStoreDisclosure {
     fn name(&self) -> String {
         String::from("http/ds_store")
     }
@@ -23,10 +24,14 @@ impl Module for DsStore {
 }
 
 #[async_trait]
-impl HttpModule for DsStore {
-    async fn scan(&self, endpoint: &str) -> Result<Option<HttpFinding>, Error> {
+impl HttpModule for DsStoreDisclosure {
+    async fn scan(
+        &self,
+        http_client: &Client,
+        endpoint: &str,
+    ) -> Result<Option<HttpFinding>, Error> {
         let url = format!("{}/.DS_Store", &endpoint);
-        let res = reqwest::get(&url).await?;
+        let res = http_client.get(&url).send().await?;
 
         if !res.status().is_success() {
             return Ok(None);
@@ -43,7 +48,7 @@ impl HttpModule for DsStore {
 
         let body = res.bytes().await?;
         if is_ds_store(&body.as_ref()) {
-            return Ok(Some(HttpFinding::DotEnvFileDisclosure(url)));
+            return Ok(Some(HttpFinding::DsStoreFileDisclosure(url)));
         }
 
         Ok(None)
