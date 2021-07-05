@@ -20,3 +20,7 @@ mod git_config_disclosure;
 pub use git_config_disclosure::GitConfigDisclosure;
 mod etcd_unauthenticated_access;
 pub use etcd_unauthenticated_access::EtcdUnauthenticatedAccess;
+mod cve_2017_9506;
+pub use cve_2017_9506::Cve2017_9506;
+mod cve_2018_7600;
+pub use cve_2018_7600::Cve2018_7600;

@@ -18,6 +18,8 @@ pub fn all_http_modules() -> Vec<Box<dyn HttpModule>> {
         Box::new(http::GitDirectoryDisclosure::new()),
         Box::new(http::GitConfigDisclosure::new()),
         Box::new(http::EtcdUnauthenticatedAccess::new()),
+        Box::new(http::Cve2017_9506::new()),
+        Box::new(http::Cve2018_7600::new()),
     ];
 }
 
@@ -57,4 +59,6 @@ pub enum HttpFinding {
     GitDirectoryDisclosure(String),
     GitConfigDisclosure(String),
     EtcdUnauthenticatedAccess(String),
+    Cve2017_9506(String),
+    Cve2018_7600(String),
 }
