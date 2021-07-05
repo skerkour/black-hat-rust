@@ -10,3 +10,5 @@ mod prometheus_dashboard_unauthenticated_access;
 pub use prometheus_dashboard_unauthenticated_access::PrometheusDashboardUnauthenticatedAccess;
 mod kibana_unauthenticated_access;
 pub use kibana_unauthenticated_access::KibanaUnauthenticatedAccess;
+mod gitlab_open_registrations;
+pub use gitlab_open_registrations::GitlabOpenRegistrations;
