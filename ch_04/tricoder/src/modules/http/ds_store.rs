@@ -18,7 +18,7 @@ impl Module for DsStore {
     }
 
     fn description(&self) -> String {
-        String::from("Check if a .DS_Store file is present")
+        String::from("Check if a .DS_Store file disclosure")
     }
 }
 
@@ -27,6 +27,10 @@ impl HttpModule for DsStore {
     async fn scan(&self, endpoint: &str) -> Result<Option<HttpFinding>, Error> {
         let url = format!("{}/.DS_Store", &endpoint);
         let mut res = reqwest::get(&url).await?;
+
+        if !res.status().is_success() {
+            return Ok(None);
+        }
 
         if res.content_length().is_none() {
             return Err(Error::HttpResponseIsTooLarge(self.name()));
@@ -39,7 +43,7 @@ impl HttpModule for DsStore {
 
         let body = res.bytes().await?;
         if is_ds_store(&body.as_ref()) {
-            return Ok(Some(HttpFinding::DsStoreFile(url)));
+            return Ok(Some(HttpFinding::DotEnvFileDisclosure(url)));
         }
 
         Ok(None)

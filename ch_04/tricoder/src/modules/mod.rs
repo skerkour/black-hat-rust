@@ -28,5 +28,6 @@ pub trait HttpModule: Module {
 
 pub enum HttpFinding {
     UnauthenticatedElasticsearchAccess(String),
-    DsStoreFile(String),
+    DsStoreFileDisclosure(String),
+    DotEnvFileDisclosure(String),
 }

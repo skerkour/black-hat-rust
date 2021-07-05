@@ -18,7 +18,7 @@ impl Module for DotEnv {
     }
 
     fn description(&self) -> String {
-        String::from("Check if a .env file is present")
+        String::from("Check if a .env file disclosure")
     }
 }
 
@@ -28,13 +28,8 @@ impl HttpModule for DotEnv {
         let url = format!("{}/.env", &endpoint);
         let mut res = reqwest::get(&url).await?;
 
-        if res.content_length().is_none() {
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
-        if res.content_length().unwrap() > 5_000_000 {
-            // prevent DOS
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
+        if res.status().is_success() {
+            return Ok(Some(HttpFinding::DotEnvFileDisclosure(url)));
         }
 
         Ok(None)
