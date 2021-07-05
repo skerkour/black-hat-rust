@@ -26,7 +26,7 @@ impl Module for DsStore {
 impl HttpModule for DsStore {
     async fn scan(&self, endpoint: &str) -> Result<Option<HttpFinding>, Error> {
         let url = format!("{}/.DS_Store", &endpoint);
-        let mut res = reqwest::get(&url).await?;
+        let res = reqwest::get(&url).await?;
 
         if !res.status().is_success() {
             return Ok(None);

@@ -11,6 +11,10 @@ pub fn all_http_modules() -> Vec<Box<dyn HttpModule>> {
     ];
 }
 
+pub fn all_subdomains_modules() -> Vec<Box<dyn SubdomainModule>> {
+    return vec![];
+}
+
 pub trait Module {
     fn name(&self) -> String;
     fn description(&self) -> String;
