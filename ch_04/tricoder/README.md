@@ -8,5 +8,5 @@ Assets mapper and vulnerability scanner
 # List modules
 $ cargo run -- modules
 # Scan a target
-$ cargo run --release -- target.com
+$ cargo run --release -- scan target.com
 ```
