@@ -75,7 +75,7 @@ mod tests {
         ignorecase = true
         precomposeunicode = true
 [remote "origin"]
-        url = git@github.com:bloom42/phaser.git
+        url = git@github.com:skerkour/black-hat-rust.git
         fetch = +refs/heads/*:refs/remotes/origin/*
 [branch "master"]
         remote = origin
