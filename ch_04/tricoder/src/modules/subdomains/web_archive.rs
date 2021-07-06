@@ -31,8 +31,6 @@ struct WebArchiveResponse(Vec<Vec<String>>);
 #[async_trait]
 impl SubdomainModule for WebArchive {
     async fn enumerate(&self, domain: &str) -> Result<Vec<Subdomain>, Error> {
-        let mut subdomains = HashSet::new();
-
         let url = format!("https://web.archive.org/cdx/search/cdx?matchType=domain&fl=original&output=json&collapse=urlkey&url={}", domain);
         let res = reqwest::get(&url).await?;
 
@@ -54,7 +52,7 @@ impl SubdomainModule for WebArchive {
             Err(_) => return Err(Error::InvalidHttpResponse(self.name())),
         };
 
-        web_archive_urls
+        let subdomains: HashSet<String> = web_archive_urls
             .0
             .into_iter()
             .flatten()
@@ -67,9 +65,8 @@ impl SubdomainModule for WebArchive {
                     .ok()
             })
             .filter_map(|url| url.host_str())
-            .for_each(|host| {
-                subdomains.insert(host.to_string());
-            });
+            .map(String::from)
+            .collect();
 
         Ok(subdomains
             .into_iter()
