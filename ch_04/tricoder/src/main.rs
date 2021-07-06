@@ -1,3 +1,5 @@
+use std::env;
+
 use anyhow::Result;
 use clap::{App, Arg, SubCommand};
 
@@ -10,6 +12,7 @@ mod ports;
 pub use error::Error;
 
 fn main() -> Result<()> {
+    env::set_var("RUST_LOG", "info,trust_dns_proto=error");
     env_logger::init();
 
     let cli = App::new(clap::crate_name!())
