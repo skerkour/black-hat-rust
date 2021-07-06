@@ -1,5 +1,5 @@
 use crate::{
-    common_ports::MOST_COMMON_PORTS_100,
+    common_ports::MOST_COMMON_PORTS,
     modules::{Port, Subdomain},
 };
 use futures::{stream, StreamExt};
@@ -10,7 +10,7 @@ use tokio::net::TcpStream;
 pub async fn scan_ports(concurrency: usize, mut subdomain: Subdomain) -> Subdomain {
     let hostname = &subdomain.domain.clone();
 
-    subdomain.open_ports = stream::iter(MOST_COMMON_PORTS_100.into_iter())
+    subdomain.open_ports = stream::iter(MOST_COMMON_PORTS.into_iter())
         .map(|port| async move {
             let port = scan_port(hostname, *port).await;
             if port.is_open {
