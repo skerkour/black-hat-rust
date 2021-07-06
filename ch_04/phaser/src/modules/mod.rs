@@ -42,7 +42,7 @@ pub trait Module {
 
 #[async_trait]
 pub trait SubdomainModule: Module {
-    async fn enumerate(&self, domain: &str) -> Result<Vec<Subdomain>, Error>;
+    async fn enumerate(&self, domain: &str) -> Result<Vec<String>, Error>;
 }
 
 #[derive(Debug, Clone)]
@@ -71,7 +71,6 @@ pub trait HttpModule: Module {
 }
 
 pub enum HttpFinding {
-    UnauthenticatedElasticsearchAccess(String),
     DsStoreFileDisclosure(String),
     DotEnvFileDisclosure(String),
     DirectoryListingDisclosure(String),

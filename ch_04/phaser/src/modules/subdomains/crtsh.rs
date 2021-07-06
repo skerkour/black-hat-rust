@@ -68,11 +68,8 @@
 //     Ok(subdomains)
 // }
 
-// pub async fn resolves(dns_resolver: &DnsResolver, domain: &Subdomain) -> bool {
-//     dns_resolver.lookup_ip(domain.domain.as_str()).await.is_ok()
-// }
 use crate::{
-    modules::{Module, Subdomain, SubdomainModule},
+    modules::{Module, SubdomainModule},
     Error,
 };
 use async_trait::async_trait;
@@ -104,7 +101,7 @@ struct CrtShEntry {
 
 #[async_trait]
 impl SubdomainModule for Crtsh {
-    async fn enumerate(&self, domain: &str) -> Result<Vec<Subdomain>, Error> {
+    async fn enumerate(&self, domain: &str) -> Result<Vec<String>, Error> {
         let url = format!("https://crt.sh/?q=%25.{}&output=json", domain);
         let res = reqwest::get(&url).await?;
 
@@ -140,12 +137,6 @@ impl SubdomainModule for Crtsh {
             .filter(|subdomain: &String| !subdomain.contains("*"))
             .collect();
 
-        Ok(subdomains
-            .into_iter()
-            .map(|subdomain| Subdomain {
-                domain: subdomain,
-                open_ports: Vec::new(),
-            })
-            .collect())
+        Ok(subdomains.into_iter().collect())
     }
 }
