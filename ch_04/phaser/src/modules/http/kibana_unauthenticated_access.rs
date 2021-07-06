@@ -37,15 +37,6 @@ impl HttpModule for KibanaUnauthenticatedAccess {
             return Ok(None);
         }
 
-        if res.content_length().is_none() {
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
-        if res.content_length().unwrap() > 2_000_000 {
-            // prevent DOS
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
         let body = res.text().await?;
         if body.contains(r#"</head><body kbn-chrome id="kibana-body"><kbn-initial-state"#)
         || body.contains(r#"<div class="ui-app-loading"><h1><strong>Kibana</strong><small>&nbsp;is loading."#)

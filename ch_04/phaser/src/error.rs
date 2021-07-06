@@ -6,8 +6,6 @@ pub enum Error {
     CliUsage,
     #[error("Reqwest: {0}")]
     Reqwest(String),
-    #[error("{0}: HTTP response is too large")]
-    HttpResponseIsTooLarge(String),
     #[error("tokio join error: {0}")]
     TokioJoinError(String),
     #[error("{0}: Invalid HTTP response")]

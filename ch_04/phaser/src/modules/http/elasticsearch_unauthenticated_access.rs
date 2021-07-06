@@ -45,15 +45,6 @@ impl HttpModule for ElasticsearchUnauthenticatedAccess {
             return Ok(None);
         }
 
-        if res.content_length().is_none() {
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
-        if res.content_length().unwrap() > 2_000_000 {
-            // prevent DOS
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
         let info: ElasticsearchInfo = match res.json().await {
             Ok(info) => info,
             Err(_) => return Ok(None), // JSON is not valid, so not an elastisearch server

@@ -109,15 +109,6 @@ impl SubdomainModule for Crtsh {
             return Err(Error::InvalidHttpResponse(self.name()));
         }
 
-        if res.content_length().is_none() {
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
-        if res.content_length().unwrap() > 5_000_000 {
-            // prevent DOS
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
         let crtsh_entries: Vec<CrtShEntry> = match res.json().await {
             Ok(info) => info,
             Err(_) => return Err(Error::InvalidHttpResponse(self.name())),

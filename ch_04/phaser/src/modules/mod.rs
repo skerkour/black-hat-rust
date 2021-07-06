@@ -55,6 +55,7 @@ pub struct Subdomain {
 pub struct Port {
     pub port: u16,
     pub is_open: bool,
+    pub findings: Vec<HttpFinding>,
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,6 +71,7 @@ pub trait HttpModule: Module {
     ) -> Result<Option<HttpFinding>, Error>;
 }
 
+#[derive(Debug, Clone)]
 pub enum HttpFinding {
     DsStoreFileDisclosure(String),
     DotEnvFileDisclosure(String),

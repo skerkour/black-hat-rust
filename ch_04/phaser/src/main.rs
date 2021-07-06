@@ -10,6 +10,8 @@ mod ports;
 pub use error::Error;
 
 fn main() -> Result<()> {
+    env_logger::init();
+
     let cli = App::new(clap::crate_name!())
         .version(clap::crate_version!())
         .about(clap::crate_description!())

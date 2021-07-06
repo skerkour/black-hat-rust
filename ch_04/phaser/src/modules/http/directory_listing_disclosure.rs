@@ -50,15 +50,6 @@ impl HttpModule for DirectoryListingDisclosure {
             return Ok(None);
         }
 
-        if res.content_length().is_none() {
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
-        if res.content_length().unwrap() > 5_000_000 {
-            // prevent DOS
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
         let body = res.text().await?;
         if self.is_directory_listing(body).await? {
             return Ok(Some(HttpFinding::DirectoryListingDisclosure(url)));

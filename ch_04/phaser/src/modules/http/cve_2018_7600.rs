@@ -59,15 +59,6 @@ impl HttpModule for Cve2018_7600 {
             .send()
             .await?;
 
-        if res.content_length().is_none() {
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
-        if res.content_length().unwrap() > 5_000_000 {
-            // prevent DOS
-            return Err(Error::HttpResponseIsTooLarge(self.name()));
-        }
-
         let body = res.text().await?;
 
         if let Some(matchs) = self.form_regex.captures(&body) {
@@ -82,15 +73,6 @@ impl HttpModule for Cve2018_7600 {
                     .form(&form)
                     .send()
                     .await?;
-
-                if res.content_length().is_none() {
-                    return Err(Error::HttpResponseIsTooLarge(self.name()));
-                }
-
-                if res.content_length().unwrap() > 5_000_000 {
-                    // prevent DOS
-                    return Err(Error::HttpResponseIsTooLarge(self.name()));
-                }
 
                 let body = res.text().await?;
 

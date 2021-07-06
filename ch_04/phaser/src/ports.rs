@@ -54,6 +54,7 @@ async fn scan_port(hostname: &str, port: u16) -> Port {
         return Port {
             port: port,
             is_open: false,
+            findings: Vec::new(),
         };
     }
 
@@ -68,5 +69,6 @@ async fn scan_port(hostname: &str, port: u16) -> Port {
     Port {
         port: port,
         is_open,
+        findings: Vec::new(),
     }
 }
