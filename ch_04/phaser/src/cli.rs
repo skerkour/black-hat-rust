@@ -150,7 +150,7 @@ pub fn scan(target: &str) -> Result<(), Error> {
                     match module.scan(&http_client, &target).await {
                         Ok(Some(finding)) => println!("{:?}", &finding),
                         Ok(None) => {}
-                        Err(err) => log::error!("{}", err),
+                        Err(err) => log::debug!("Error: {}", err),
                     };
                 }
             })
