@@ -22,7 +22,6 @@ pub fn modules() {
     }
 
     println!("HTTP modules");
-
     for module in http_modules {
         println!("    {}: {}", module.name(), module.description());
     }
