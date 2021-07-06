@@ -10,6 +10,8 @@ pub enum Error {
     HttpResponseIsTooLarge(String),
     #[error("tokio join error: {0}")]
     TokioJoinError(String),
+    #[error("{0}: Invalid HTTP response")]
+    InvalidHttpResponse(String),
 }
 
 impl std::convert::From<reqwest::Error> for Error {

@@ -1,4 +1,4 @@
-use crate::{model::Subdomain, Error};
+use crate::Error;
 use async_trait::async_trait;
 use reqwest::Client;
 
@@ -33,10 +33,30 @@ pub trait Module {
     fn description(&self) -> String;
 }
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// Subdomains
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
 #[async_trait]
 pub trait SubdomainModule: Module {
-    async fn enumerate(&self) -> Result<Vec<Subdomain>, Error>;
+    async fn enumerate(&self, domain: &str) -> Result<Vec<Subdomain>, Error>;
 }
+
+#[derive(Debug, Clone)]
+pub struct Subdomain {
+    pub domain: String,
+    pub open_ports: Vec<Port>,
+}
+
+#[derive(Debug, Clone)]
+pub struct Port {
+    pub port: u16,
+    pub is_open: bool,
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// HTTP
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 #[async_trait]
 pub trait HttpModule: Module {

@@ -1096,6 +1096,7 @@ dependencies = [
  "tokio",
  "tokio-stream",
  "trust-dns-resolver",
+ "url",
 ]
 
 [[package]]
