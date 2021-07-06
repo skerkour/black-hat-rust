@@ -38,7 +38,7 @@ fn main() -> Result<()> {
     let scan_result = runtime.block_on(async move {
         let subdomains = subdomains::enumerate(&http_client, target).await?;
 
-        // Concurrent stream method 1: Using collect
+        // Concurrent stream method 1: Using buffer_unordered + collect
         let subdomains: Vec<Subdomain> = stream::iter(subdomains.into_iter())
             .map(|subdomain| async move { ports::scan_ports(ports_concurrency, subdomain).await })
             .buffer_unordered(subdomains_concurrency)
