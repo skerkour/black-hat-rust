@@ -3,10 +3,8 @@ use futures::{stream, StreamExt};
 use reqwest::Client;
 use std::{
     env,
-    sync::Arc,
     time::{Duration, Instant},
 };
-use tokio::sync::Mutex;
 
 mod error;
 pub use error::Error;
@@ -40,24 +38,27 @@ fn main() -> Result<()> {
     let scan_result = runtime.block_on(async move {
         let subdomains = subdomains::enumerate(&http_client, target).await?;
 
-        // Concurrent stream method 1: Using an Arc<Mutex<T>>
-        let res: Arc<Mutex<Vec<Subdomain>>> = Arc::new(Mutex::new(Vec::new()));
-
-        stream::iter(subdomains.into_iter())
-            .for_each_concurrent(subdomains_concurrency, |subdomain| {
-                let res = res.clone();
-                async move {
-                    let subdomain = ports::scan_ports(ports_concurrency, subdomain).await;
-                    res.lock().await.push(subdomain)
-                }
-            })
+        // Concurrent stream method 1: Using collect
+        let subdomains: Vec<Subdomain> = stream::iter(subdomains.into_iter())
+            .map(|subdomain| async move { ports::scan_ports(ports_concurrency, subdomain).await })
+            .buffer_unordered(subdomains_concurrency)
+            .collect()
             .await;
 
-        Ok::<_, crate::Error>(
-            Arc::try_unwrap(res)
-                .expect("Moving out from subdomains Arc")
-                .into_inner(),
-        )
+        // Concurrent stream method 2: Using an Arc<Mutex<T>>
+        // let res: Arc<Mutex<Vec<Subdomain>>> = Arc::new(Mutex::new(Vec::new()));
+
+        // stream::iter(subdomains.into_iter())
+        //     .for_each_concurrent(subdomains_concurrency, |subdomain| {
+        //         let res = res.clone();
+        //         async move {
+        //             let subdomain = ports::scan_ports(ports_concurrency, subdomain).await;
+        //             res.lock().await.push(subdomain)
+        //         }
+        //     })
+        //     .await;
+
+        Ok::<_, crate::Error>(subdomains)
     })?;
 
     let scan_duration = scan_start.elapsed();
