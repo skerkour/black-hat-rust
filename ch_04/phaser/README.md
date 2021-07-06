@@ -1,4 +1,4 @@
-# Tricoder
+# Phaser
 
 Assets mapper and vulnerability scanner
 
