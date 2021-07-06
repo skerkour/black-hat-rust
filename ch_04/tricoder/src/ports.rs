@@ -1,6 +1,6 @@
 use crate::{
     common_ports::MOST_COMMON_PORTS_100,
-    model::{Port, Subdomain},
+    modules::{Port, Subdomain},
 };
 use futures::StreamExt;
 use std::net::{SocketAddr, ToSocketAddrs};

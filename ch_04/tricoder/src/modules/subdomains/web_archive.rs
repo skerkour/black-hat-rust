@@ -64,8 +64,7 @@ impl SubdomainModule for WebArchive {
                     })
                     .ok()
             })
-            .filter_map(|url| url.host_str())
-            .map(String::from)
+            .filter_map(|url| url.host_str().map(|host| host.to_string()))
             .collect();
 
         Ok(subdomains

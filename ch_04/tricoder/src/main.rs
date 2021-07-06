@@ -16,7 +16,6 @@ mod model;
 mod modules;
 mod ports;
 pub use error::Error;
-use model::Subdomain;
 
 fn main() -> Result<()> {
     let cli = App::new(clap::crate_name!())
