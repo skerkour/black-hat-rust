@@ -40,7 +40,7 @@ fn main() -> Result<()> {
 
         // Concurrent stream method 1: Using buffer_unordered + collect
         let subdomains: Vec<Subdomain> = stream::iter(subdomains.into_iter())
-            .map(|subdomain| async move { ports::scan_ports(ports_concurrency, subdomain).await })
+            .map(|subdomain| ports::scan_ports(ports_concurrency, subdomain))
             .buffer_unordered(subdomains_concurrency)
             .collect()
             .await;
