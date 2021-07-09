@@ -2,7 +2,7 @@ use futures::{stream, StreamExt};
 use rand::{thread_rng, Rng};
 use std::time::Duration;
 
-#[tokio::main(flavor = "multi_thread", worker_threads = 10)]
+#[tokio::main(flavor = "multi_thread")]
 async fn main() {
     stream::iter(0..200u64)
         .for_each_concurrent(20, |number| async move {
