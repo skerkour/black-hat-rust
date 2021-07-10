@@ -24,9 +24,12 @@ fn process(processor: &dyn Processor, x: i64) {
 }
 
 pub fn main2() {
-    let processor1 = Cisc {};
-    let processor2 = Risc {};
+    let processors: Vec<Box<dyn Processor>> = vec![
+        Box::new(Cisc {}),
+        Box::new(Risc {}),
+    ];
 
-    process(&processor1, 1);
-    process(&processor2, 2);
+    for processor in processors {
+        process(&*processor, 1);
+    }
 }
