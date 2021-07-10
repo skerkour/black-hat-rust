@@ -70,7 +70,7 @@ mod tests {
         let body = String::from("Content <title>Index of kerkour.com</title> test");
         let body2 = String::from(">ccece> Contrnt <tle>Index of kerkour.com</title> test");
         let body3 = String::from("");
-        let body4 = String::from("lol lol lol ol ol< LO> OL  <title>Index</title> test");
+        let body4 = String::from("test test test test test< test> test  <title>Index</title> test");
 
         assert_eq!(true, module.is_directory_listing(body).await.unwrap());
         assert_eq!(false, module.is_directory_listing(body2).await.unwrap());
