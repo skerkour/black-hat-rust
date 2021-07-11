@@ -6,4 +6,8 @@ impl GoogleSpider {
     }
 }
 
-impl super::Spider for GoogleSpider {}
+impl super::Spider for GoogleSpider {
+    fn name(&self) -> String {
+        String::from("google")
+    }
+}

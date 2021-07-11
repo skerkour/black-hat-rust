@@ -6,4 +6,8 @@ impl GitHubSpider {
     }
 }
 
-impl super::Spider for GitHubSpider {}
+impl super::Spider for GitHubSpider {
+    fn name(&self) -> String {
+        String::from("github")
+    }
+}
