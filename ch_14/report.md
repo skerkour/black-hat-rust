@@ -1,4 +1,4 @@
-# [Vulnerability X] leading to [impact Y]
+# [Vulnerability X] leads to [impact Y]
 
 
 ## Summary
