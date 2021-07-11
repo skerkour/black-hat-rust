@@ -4,13 +4,22 @@
 ## Summary
 
 
-*Exaplain your findings, but without entering in the details, and the impact it can have on the company and its customers / users*
+*Exaplain your findings, but without entering in the details*
+
+
+### Impact
+
+*There is great chance that the reward you will receive will be related to the impact of your finding. So explain clearly how this bug can impact the company and its users / customers*
 
 
 ## Technical details
 
 
 *POC...*
+
+### Attack scenario
+
+*Explain how the bug could be triggered
 
 
 ## Mitigation recommendation
