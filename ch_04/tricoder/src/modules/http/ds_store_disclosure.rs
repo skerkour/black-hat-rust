@@ -11,6 +11,16 @@ impl DsStoreDisclosure {
     pub fn new() -> Self {
         DsStoreDisclosure {}
     }
+
+    pub fn is_ds_store_file(&self, content: &[u8]) -> bool {
+        if content.len() < 8 {
+            return false;
+        }
+
+        let signature = [0x0, 0x0, 0x0, 0x1, 0x42, 0x75, 0x64, 0x31];
+
+        return content[0..8] == signature;
+    }
 }
 
 impl Module for DsStoreDisclosure {
@@ -38,7 +48,7 @@ impl HttpModule for DsStoreDisclosure {
         }
 
         let body = res.bytes().await?;
-        if is_ds_store(&body.as_ref()) {
+        if self.is_ds_store_file(&body.as_ref()) {
             return Ok(Some(HttpFinding::DsStoreFileDisclosure(url)));
         }
 
@@ -46,27 +56,18 @@ impl HttpModule for DsStoreDisclosure {
     }
 }
 
-fn is_ds_store(content: &[u8]) -> bool {
-    if content.len() < 8 {
-        return false;
-    }
-
-    let signature = [0x0, 0x0, 0x0, 0x1, 0x42, 0x75, 0x64, 0x31];
-
-    return content[0..8] == signature;
-}
-
 #[cfg(test)]
 mod tests {
     #[test]
     fn is_ds_store() {
+        let module = super::DsStoreDisclosure::new();
         let body = "testtesttest";
         let body2 = [
             0x00, 0x00, 0x00, 0x01, 0x42, 0x75, 0x64, 0x31, 0x00, 0x00, 0x30, 0x00, 0x00, 0x00,
             0x08, 0x0,
         ];
 
-        assert_eq!(false, super::is_ds_store(body.as_bytes()));
-        assert_eq!(true, super::is_ds_store(&body2));
+        assert_eq!(false, module.is_ds_store_file(body.as_bytes()));
+        assert_eq!(true, module.is_ds_store_file(&body2));
     }
 }

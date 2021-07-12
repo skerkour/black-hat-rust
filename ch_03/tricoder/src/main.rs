@@ -1,4 +1,3 @@
-use anyhow::Result;
 use futures::{stream, StreamExt};
 use reqwest::Client;
 use std::{
@@ -14,7 +13,7 @@ mod subdomains;
 use model::Subdomain;
 mod common_ports;
 
-fn main() -> Result<()> {
+fn main() -> Result<(), anyhow::Error> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() != 2 {

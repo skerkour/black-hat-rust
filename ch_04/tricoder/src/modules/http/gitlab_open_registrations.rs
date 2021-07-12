@@ -38,7 +38,7 @@ impl HttpModule for GitlabOpenRegistrations {
         }
 
         let body = res.text().await?;
-        if body.to_lowercase().contains("ref:") && body.contains("Register") {
+        if body.contains("This is a self-managed instance of GitLab") && body.contains("Register") {
             return Ok(Some(HttpFinding::GitlabOpenRegistrations(url)));
         }
 
