@@ -1,0 +1,17 @@
+[package]
+name = "emails"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+tokio = { version = "1", features = ["full"] }
+
+lettre = { version = "0.10.0-rc.3", default-features = false, features = ["smtp-transport", "tokio1-rustls-tls", "hostname", "r2d2", "builder"] }
+rusoto_core = { version = "0.47", default-features = false, features = ["rustls"] }
+rusoto_ses = { version = "0.47", default-features = false, features = ["rustls"] }
+base64 = "0.13"
+serde = "1.0"
+anyhow = "1.0"
+tera = { version = "1", default-features = false }
