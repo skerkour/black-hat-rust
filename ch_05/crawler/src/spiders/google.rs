@@ -9,8 +9,13 @@ impl GoogleSpider {
     }
 }
 
+#[derive(Debug, Clone)]
+pub struct GoogleItem {}
+
 #[async_trait]
 impl super::Spider for GoogleSpider {
+    type Item = GoogleItem;
+
     fn name(&self) -> String {
         String::from("google")
     }
@@ -19,7 +24,11 @@ impl super::Spider for GoogleSpider {
         Vec::new()
     }
 
-    async fn run(&self, url: &str) -> Result<(String, Vec<String>), Error> {
+    async fn run(&self, url: &str) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
         todo!();
+    }
+
+    async fn process(&self, item: Self::Item) -> Result<(), Error> {
+        todo!()
     }
 }

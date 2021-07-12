@@ -43,6 +43,8 @@ impl CveDetailsSpider {
 
 #[async_trait]
 impl super::Spider for CveDetailsSpider {
+    type Item = Cve;
+
     fn name(&self) -> String {
         String::from("cvedetails")
     }
@@ -54,10 +56,11 @@ impl super::Spider for CveDetailsSpider {
         ]
     }
 
-    async fn run(&self, url: &str) -> Result<(String, Vec<String>), Error> {
-        let res = self.http_client.get(url).send().await?.text().await?;
+    async fn run(&self, url: &str) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
+        let http_res = self.http_client.get(url).send().await?.text().await?;
+        let mut items = Vec::new();
 
-        let document = Document::from(res.as_str());
+        let document = Document::from(http_res.as_str());
 
         let rows = document.select(Attr("id", "vulnslisttable").descendant(Class("srrowns")));
         for row in rows {
@@ -120,8 +123,7 @@ impl super::Spider for CveDetailsSpider {
                 integrity,
                 availability,
             };
-
-            println!("{:?}", cve);
+            items.push(cve);
         }
 
         let next_pages_links = document
@@ -130,7 +132,13 @@ impl super::Spider for CveDetailsSpider {
             .map(|url| self.normalize_url(url))
             .collect::<Vec<String>>();
 
-        Ok((res, next_pages_links))
+        Ok((items, next_pages_links))
+    }
+
+    async fn process(&self, item: Self::Item) -> Result<(), Error> {
+        println!("{:?}", item);
+
+        Ok(())
     }
 }
 

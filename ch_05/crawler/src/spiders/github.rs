@@ -9,8 +9,13 @@ impl GitHubSpider {
     }
 }
 
+#[derive(Debug, Clone)]
+pub struct GitHubItem {}
+
 #[async_trait]
 impl super::Spider for GitHubSpider {
+    type Item = GitHubItem;
+
     fn name(&self) -> String {
         String::from("github")
     }
@@ -19,7 +24,11 @@ impl super::Spider for GitHubSpider {
         Vec::new()
     }
 
-    async fn run(&self, url: &str) -> Result<(String, Vec<String>), Error> {
+    async fn run(&self, url: &str) -> Result<(Vec<GitHubItem>, Vec<String>), Error> {
         todo!();
+    }
+
+    async fn process(&self, item: Self::Item) -> Result<(), Error> {
+        todo!()
     }
 }

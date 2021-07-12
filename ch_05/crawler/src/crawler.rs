@@ -1,20 +1,27 @@
+use crate::spiders::Spider;
 use std::{collections::HashSet, time::Duration};
-
 use tokio::time::sleep;
-
-use crate::{processors::Processor, spiders::Spider};
 
 pub struct Crawler {
     delay: Duration,
-    concurrency: usize,
+    crawling_concurrency: usize,
+    processing_concurrency: usize,
 }
 
 impl Crawler {
-    pub fn new(delay: Duration, concurrency: usize) -> Self {
-        Crawler { delay, concurrency }
+    pub fn new(
+        delay: Duration,
+        crawling_concurrency: usize,
+        processing_concurrency: usize,
+    ) -> Self {
+        Crawler {
+            delay,
+            crawling_concurrency,
+            processing_concurrency,
+        }
     }
 
-    pub fn run(&self, spider: Box<dyn Spider>, processor: Box<dyn Processor>) {
+    pub fn run<T>(&self, spider: &dyn Spider<Item = T>) {
         let runtime = tokio::runtime::Builder::new_multi_thread()
             .enable_all()
             .build()
@@ -37,14 +44,17 @@ impl Crawler {
                 visited_urls.insert(queued_url.clone());
 
                 println!("NEXT PAGES: -------------------------------------");
-                if let Some((_, urls)) = res {
-                    // TODO: clean urls
-                    for url_to_visit in urls {
-                        println!("{}", url_to_visit);
-                        // if !visited_urls.contains(&url_to_visit) {
-                        //     queued_urls.push(url_to_visit);
-                        // }
+                if let Some((items, urls)) = res {
+                    for item in items {
+                        let _ = spider.process(item).await;
                     }
+                    // TODO: clean urls
+                    // for url_to_visit in urls {
+                    //     println!("{}", url_to_visit);
+                    //     // if !visited_urls.contains(&url_to_visit) {
+                    //     //     queued_urls.push(url_to_visit);
+                    //     // }
+                    // }
                 }
 
                 sleep(self.delay).await;
