@@ -57,6 +57,8 @@ impl super::Spider for CveDetailsSpider {
     }
 
     async fn run(&self, url: &str) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
+        log::info!("visiting: {}", url);
+
         let http_res = self.http_client.get(url).send().await?.text().await?;
         let mut items = Vec::new();
 

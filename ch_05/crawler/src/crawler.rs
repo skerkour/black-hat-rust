@@ -1,6 +1,6 @@
 use crate::spiders::Spider;
 use std::{collections::HashSet, time::Duration};
-use tokio::time::sleep;
+use tokio::{sync::mpsc, time::sleep};
 
 pub struct Crawler {
     delay: Duration,
@@ -29,9 +29,23 @@ impl Crawler {
 
         runtime.block_on(async move {
             let mut visited_urls = HashSet::<String>::new();
-            let mut queued_urls = spider.start_urls();
+            let (queue_tx, mut queue_rx) = mpsc::unbounded_channel();
+            // let (items_tx, mut items_rx) = mpsc::channel(self.processing_concurrency);
 
-            for queued_url in queued_urls.iter() {
+            for url in spider.start_urls() {
+                visited_urls.insert(url.clone());
+                let _ = queue_tx.send(url);
+            }
+
+            // tokio::spawn(async move {
+            //     tokio_stream::wrappers::UnboundedReceiverStream::new(items_rx)
+            //         .for_each_concurrent(self.processing_concurrency, |item| async {
+            //             let _ = spider.process(item).await;
+            //         })
+            //         .await;
+            // });
+
+            for queued_url in queue_rx.recv().await {
                 let res = spider
                     .run(&queued_url)
                     .await
@@ -43,18 +57,19 @@ impl Crawler {
 
                 visited_urls.insert(queued_url.clone());
 
-                println!("NEXT PAGES: -------------------------------------");
                 if let Some((items, urls)) = res {
                     for item in items {
                         let _ = spider.process(item).await;
+                        // let _ = items_tx.send(item);
                     }
-                    // TODO: clean urls
-                    // for url_to_visit in urls {
-                    //     println!("{}", url_to_visit);
-                    //     // if !visited_urls.contains(&url_to_visit) {
-                    //     //     queued_urls.push(url_to_visit);
-                    //     // }
-                    // }
+
+                    for url in urls {
+                        if !visited_urls.contains(&url) {
+                            visited_urls.insert(url.clone());
+                            log::info!("queueing: {}", &url);
+                            let _ = queue_tx.send(url);
+                        }
+                    }
                 }
 
                 sleep(self.delay).await;
