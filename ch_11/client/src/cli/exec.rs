@@ -221,7 +221,7 @@ fn decrypt_and_verify_job_output(
     kdf.update(&result_nonce);
     let mut key = kdf.finalize_boxed();
 
-    // decrypt job
+    // decrypt job result
     let cipher = XChaCha20Poly1305::new(key.as_ref().into());
     let decrypted_job_bytes =
         cipher.decrypt(&result_nonce.into(), encrypted_job_result.as_ref())?;
@@ -229,7 +229,7 @@ fn decrypt_and_verify_job_output(
     shared_secret.zeroize();
     key.zeroize();
 
-    // deserialize job
+    // deserialize job result
     let job_result: api::JobResult = serde_json::from_slice(&decrypted_job_bytes)?;
 
     Ok(job_result.output)

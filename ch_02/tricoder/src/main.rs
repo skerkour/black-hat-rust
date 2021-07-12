@@ -1,4 +1,3 @@
-use anyhow::Result;
 use rayon::prelude::*;
 use reqwest::{blocking::Client, redirect};
 use std::{env, time::Duration};
@@ -11,7 +10,7 @@ mod subdomains;
 use model::Subdomain;
 mod common_ports;
 
-fn main() -> Result<()> {
+fn main() -> Result<(), anyhow::Error> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() != 2 {
@@ -26,19 +25,29 @@ fn main() -> Result<()> {
         .timeout(http_timeout)
         .build()?;
 
-    let scan_result: Vec<Subdomain> = subdomains::enumerate(&http_client, target)?
-        .into_par_iter()
-        .map(ports::scan_ports)
-        .collect();
+    // we use a custom trheadpool to improve speed
+    let pool = rayon::ThreadPoolBuilder::new()
+        .num_threads(256)
+        .build()
+        .unwrap();
 
-    for subdomain in scan_result {
-        println!("{}:", &subdomain.domain);
-        for port in &subdomain.open_ports {
-            println!("    {}", port.port);
+    // pool.install is required to use our custom threadpool, instad of rayon's default one
+    pool.install(|| {
+        let scan_result: Vec<Subdomain> = subdomains::enumerate(&http_client, target)
+            .unwrap()
+            .into_par_iter()
+            .map(ports::scan_ports)
+            .collect();
+
+        for subdomain in scan_result {
+            println!("{}:", &subdomain.domain);
+            for port in &subdomain.open_ports {
+                println!("    {}", port.port);
+            }
+
+            println!("");
         }
-
-        println!("");
-    }
+    });
 
     Ok(())
 }
