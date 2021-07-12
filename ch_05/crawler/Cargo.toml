@@ -12,3 +12,7 @@ tokio = { version = "1", features = ["full"] }
 reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls"] }
 anyhow = "1.0"
 thiserror = "1.0"
+async-trait = "0.1"
+log = "0.4"
+env_logger = "0.8"
+select = "0.6.0-alpha.1"

@@ -2,7 +2,7 @@
 
 ```shell
 $ cargo run crawler -- spiders
-$ cargo run crawler -- run --spider apple
+$ cargo run crawler -- run --spider cvedetails
 ```
 
 ## fmt

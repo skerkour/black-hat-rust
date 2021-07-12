@@ -1,11 +1,17 @@
 use std::{collections::HashMap, iter::FromIterator};
 
+use crate::error::Error;
+use async_trait::async_trait;
+
 mod cvedetails;
 mod github;
 mod google;
 
+#[async_trait]
 pub trait Spider {
     fn name(&self) -> String;
+    fn start_urls(&self) -> Vec<String>;
+    async fn run(&self, url: &str) -> Result<(String, Vec<String>), Error>;
 }
 
 pub fn all_spiders() -> HashMap<String, Box<dyn Spider>> {

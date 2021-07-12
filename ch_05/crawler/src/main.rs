@@ -1,3 +1,5 @@
+use std::{env, time::Duration};
+
 use clap::{App, Arg, SubCommand};
 
 mod crawler;
@@ -31,6 +33,9 @@ fn main() -> Result<(), anyhow::Error> {
         .setting(clap::AppSettings::VersionlessSubcommands)
         .get_matches();
 
+    env::set_var("RUST_LOG", "info");
+    env_logger::init();
+
     if let Some(_) = cli.subcommand_matches("spiders") {
         let spiders = spiders::all_spiders();
         // HashMap keys to vec
@@ -42,7 +47,7 @@ fn main() -> Result<(), anyhow::Error> {
         // we can safely unwrap as the argument is required
         let spider_name = matches.value_of("spider").unwrap();
         let mut spiders = spiders::all_spiders();
-        let crawler = Crawler::new();
+        let crawler = Crawler::new(Duration::from_millis(125), 4);
         let processor: Box<dyn Processor> = Box::new(PrintProcessor::new());
 
         match spiders.remove(spider_name) {
