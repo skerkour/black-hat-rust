@@ -1,8 +1,8 @@
 ## Usage
 
 ```shell
-$ cargo run crawler -- spiders
-$ cargo run crawler -- run --spider cvedetails
+$ cargo run -- spiders
+$ cargo run -- run --spider cvedetails
 ```
 
 ## fmt

@@ -1,12 +1,32 @@
 use crate::error::Error;
 use async_trait::async_trait;
 use reqwest::Client;
-use select::document::Document;
-use select::predicate::Name;
+use select::{
+    document::Document,
+    predicate::{Attr, Class, Name, Predicate},
+};
 use std::time::Duration;
 
 pub struct CveDetailsSpider {
     http_client: Client,
+}
+
+#[derive(Debug, Clone)]
+pub struct Cve {
+    name: String,
+    url: String,
+    cwe_id: Option<String>,
+    cwe_url: Option<String>,
+    vulnerability_type: String,
+    publish_date: String,
+    update_date: String,
+    score: f32,
+    access: String,
+    complexity: String,
+    authentication: String,
+    confidentiality: String,
+    integrity: String,
+    availability: String,
 }
 
 impl CveDetailsSpider {
@@ -37,12 +57,93 @@ impl super::Spider for CveDetailsSpider {
     async fn run(&self, url: &str) -> Result<(String, Vec<String>), Error> {
         let res = self.http_client.get(url).send().await?.text().await?;
 
-        Document::from(res.as_str())
-            .select(Name("a"))
-            .filter_map(|n| n.attr("href"))
-            .for_each(|x| println!("{}", x));
+        let document = Document::from(res.as_str());
 
-        let urls = Vec::new();
-        Ok((res, urls))
+        let rows = document.select(Attr("id", "vulnslisttable").descendant(Class("srrowns")));
+        for row in rows {
+            let mut columns = row.select(Name("td"));
+            let _ = columns.next(); // # column
+            let cve_link = columns.next().unwrap().select(Name("a")).next().unwrap();
+            let cve_name = cve_link.text().trim().to_string();
+            let cve_url = self.normalize_url(cve_link.attr("href").unwrap());
+
+            let cwe = columns
+                .next()
+                .unwrap()
+                .select(Name("a"))
+                .next()
+                .map(|cwe_link| {
+                    (
+                        cwe_link.text().trim().to_string(),
+                        self.normalize_url(cwe_link.attr("href").unwrap()),
+                    )
+                });
+
+            let _ = columns.next(); // # of exploits column
+
+            let vulnerability_type = columns.next().unwrap().text().trim().to_string();
+
+            let publish_date = columns.next().unwrap().text().trim().to_string();
+            let update_date = columns.next().unwrap().text().trim().to_string();
+
+            let score: f32 = columns
+                .next()
+                .unwrap()
+                .text()
+                .trim()
+                .to_string()
+                .parse()
+                .unwrap();
+
+            let _ = columns.next(); // Gained Access Level  column
+
+            let access = columns.next().unwrap().text().trim().to_string();
+            let complexity = columns.next().unwrap().text().trim().to_string();
+            let authentication = columns.next().unwrap().text().trim().to_string();
+            let confidentiality = columns.next().unwrap().text().trim().to_string();
+            let integrity = columns.next().unwrap().text().trim().to_string();
+            let availability = columns.next().unwrap().text().trim().to_string();
+
+            let cve = Cve {
+                name: cve_name,
+                url: cve_url,
+                cwe_id: cwe.as_ref().map(|cwe| cwe.0.clone()),
+                cwe_url: cwe.as_ref().map(|cwe| cwe.1.clone()),
+                vulnerability_type,
+                publish_date,
+                update_date,
+                score,
+                access,
+                complexity,
+                authentication,
+                confidentiality,
+                integrity,
+                availability,
+            };
+
+            println!("{:?}", cve);
+        }
+
+        let next_pages_links = document
+            .select(Attr("id", "pagingb").descendant(Name("a")))
+            .filter_map(|n| n.attr("href"))
+            .map(|url| self.normalize_url(url))
+            .collect::<Vec<String>>();
+
+        Ok((res, next_pages_links))
+    }
+}
+
+impl CveDetailsSpider {
+    fn normalize_url(&self, url: &str) -> String {
+        let url = url.trim();
+
+        if url.starts_with("//www.cvedetails.com") {
+            return format!("https:{}", url);
+        } else if url.starts_with("/") {
+            return format!("https://www.cvedetails.com{}", url);
+        }
+
+        return url.to_string();
     }
 }

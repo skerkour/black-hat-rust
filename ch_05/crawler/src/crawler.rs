@@ -1,5 +1,7 @@
 use std::{collections::HashSet, time::Duration};
 
+use tokio::time::sleep;
+
 use crate::{processors::Processor, spiders::Spider};
 
 pub struct Crawler {
@@ -34,14 +36,18 @@ impl Crawler {
 
                 visited_urls.insert(queued_url.clone());
 
-                // if let Some((_, urls)) = res {
-                //     // TODO: clean urls
-                //     for url_to_visit in urls {
-                //         if !visited_urls.contains(&url_to_visit) {
-                //             queued_urls.push(url_to_visit);
-                //         }
-                //     }
-                // }
+                println!("NEXT PAGES: -------------------------------------");
+                if let Some((_, urls)) = res {
+                    // TODO: clean urls
+                    for url_to_visit in urls {
+                        println!("{}", url_to_visit);
+                        // if !visited_urls.contains(&url_to_visit) {
+                        //     queued_urls.push(url_to_visit);
+                        // }
+                    }
+                }
+
+                sleep(self.delay).await;
             }
         })
     }
