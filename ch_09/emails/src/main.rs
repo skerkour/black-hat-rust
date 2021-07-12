@@ -10,26 +10,20 @@ mod template;
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
+    // email data
     let from = "evil@hacker.com".to_string();
     let to = "credule@target.com".to_string();
     let subject = "".to_string();
-
-    // let email = Message::builder()
-    //     .from(from.parse()?)
-    //     .to(to.parse()?)
-    //     .subject(subject)
-    //     .body(body.to_string())?;
     let title = subject.clone();
     let content = "".to_string();
 
+    // template things
     let mut templates = tera::Tera::default();
     // don't escape input as it's provided by us
     templates.autoescape_on(Vec::new());
-
     templates.add_raw_template("email", template::EMAIL_TEMPLATE)?;
 
     let email_data = tera::Context::from_serialize(template::EmailData { title, content })?;
-
     let html = templates.render("email", &email_data)?;
 
     let email = Message::builder()
