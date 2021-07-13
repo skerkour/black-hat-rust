@@ -77,7 +77,7 @@ Unfortunately, when a program spends most of its time in I/O operations, multi-t
 #### 4 - Adding modules with Trait objects (beta available on July 14, 2021 🕒)
 We will add more heterogeneous modules to our scanner and will learn how Rust's type system helps create properly designed large software projects.
 
-#### 5 - Crawling the web for OSINT (beta available on July 30, 2021 🕒)
+#### 5 - Crawling the web for OSINT (August 2021 🕒)
 Leveraging all we learned previously, we will build an extremely fast web crawler to help us find the needles in the haystack the web is.
 
 
@@ -106,10 +106,10 @@ A RAT (for Remote Access Tool), also known as implant or beacon, is a kind of so
 #### 11 - Securing communications with end-to-end encryption (beta available on July 14, 2021 🕒)
 The consequences of our own infrastructure being compromised or seized can be disastrous. We will add end-to-end encryption to our RAT's communication in order to secure its communications and avoid leaving traces on our servers.
 
-#### 12 - Going multi-platforms (beta available on August 2021 🕒)
+#### 12 - Going multi-platforms (August-September 2021 🕒)
 Today's computing landscape is extremely fragmented. From Windows to macOS, we can't target only one Operating System to ensure the success of our operations. In this section we will see how Rust's ecosystem is extremely useful when it comes to cross-compilation.
 
-#### 13 - Turning into a worm to increase reach (beta available on August 2021 🕒)
+#### 13 - Turning into a worm to increase reach (August-September 2021 🕒)
 Once the initial targets compromised, we will capitalize on Rust's excellent reusability to incorporate some parts of our initial scanner to turn our RAT into a worm and reach more targets only accessible from the target's internal network.
 
 #### 14 Conclusion (beta available on July 14, 2021 🕒)
