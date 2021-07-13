@@ -120,6 +120,11 @@ Now it's **your** turn to get things done!
 </h3>
 
 
+## Getting started
+
+Once you are ready to get started, visit [phaser](https://github.com/skerkour/phaser) the automated vulnerability scanner I extracted from chapters 2, 3, 4, and 7, and improved to make it ready to use in bug bounty or other offensive operation.
+
+
 ## Community
 
 Hey! Welcome you to the Black Hat Rustaceans gang! If you think something in the book or the code can be improved, please [open an issue](https://github.com/skerkour/black-hat-rust/issues). Pull requests are also welcome :)
