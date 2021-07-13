@@ -122,7 +122,9 @@ Now it's **your** turn to get things done!
 
 ## Getting started
 
-Once you are ready to get started, visit [phaser](https://github.com/skerkour/phaser) the automated vulnerability scanner I extracted from chapters 2, 3, 4, and 7, and improved to make it ready to use in bug bounty or other offensive operation.
+Want to contribute to your first Rust security project or participate in your first bug bounty program?
+
+I've got you covered! I've extracted the security scanner we build in the book from chapters 2, 3, 4, and 7 into [phaser](https://github.com/skerkour/phaser): an automated assets mapper and vulnerability scanner.
 
 
 ## Community
