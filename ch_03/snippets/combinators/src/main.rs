@@ -47,6 +47,17 @@ mod tests {
     }
 
     #[test]
+    fn inspect() {
+        let v = vec![-1, 2, -3, 4, 5].into_iter();
+
+        let _positive_numbers: Vec<i32> = v
+            .inspect(|x| println!("Before filter: {}", x))
+            .filter(|x: &i32| x.is_positive())
+            .inspect(|x| println!("After filter: {}", x))
+            .collect();
+    }
+
+    #[test]
     fn from_iter() {
         let x = vec![(1, 2), (3, 4), (5, 6)].into_iter();
 
@@ -136,5 +147,21 @@ mod tests {
             .filter_map(|x| x.parse::<i64>().ok())
             .filter(|x| x > &0)
             .collect();
+    }
+
+    #[test]
+    fn option_unwrap_or() {
+        let _port = std::env::var("PORT").ok().unwrap_or(String::from("8080"));
+    }
+
+    #[test]
+    fn result_ok() {
+        let _port: Option<String> = std::env::var("PORT").ok();
+    }
+
+    #[test]
+    fn result_or() {
+        let _port: Result<String, std::env::VarError> =
+            std::env::var("PORT").or(Ok(String::from("8080")));
     }
 }
