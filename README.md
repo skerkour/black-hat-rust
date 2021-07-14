@@ -47,13 +47,16 @@ Instead, it's a from-theory-to-practice manual and you may enjoy it if any of th
 
 As of today, the book is a work in progress. It is available in the context of an Early Access program which means that the chapters will be sent to you as soon as they are written, and feedback is very much appreciated.
 
+pages available: **200+**
+
+code progress: **~90%**
+
 estimated beta release: **July 2021**
 
 estimated final publication: **Q3 2021**
 
 estimated number of pages: **~320**
 
-code progress: **~90%**
 
 **In order to thank all the people who will help me make this book a reality, all early access buyers will also receive the following bonus:**
 * **A curated list of advanced malware analyses. You will find inside great inspiration when developing your own offensive tools.**
