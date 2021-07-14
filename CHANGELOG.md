@@ -3,6 +3,22 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.5 - 2021-07-14
+
+### Changed
+
+* typos
+
+
+
+## v2021.4 - 2021-07-14
+
+### Changed
+
+* typos
+
+
+
 ## v2021.3 - 2021-07-14
 
 ### Added
