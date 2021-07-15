@@ -37,13 +37,10 @@ All notable changes to the book will be documented in this file.
 * chapter 04
 * chapter 05
 * chapter 06
-* chapter 07
 * chapter 08
 * chapter 09
 * chapter 10
 * chapter 11
-* chapter 12
-* chapter 13
 * chapter 14
 
 ### Changed

@@ -91,7 +91,7 @@ Leveraging all we learned previously, we will build an extremely fast web crawle
 #### 6 - Finding vulnerabilities (partially available, will be updated during the beta ✅🕒)
 Once the external reconnaissance performed, it's time to find entry points. In this chapter we will learn how automated fuzzing can help us to find vulnerabilities that can be exploited to then gain access to our target's systems.
 
-#### 7 - Exploit development (partially available, will be updated during the beta ✅🕒)
+#### 7 - Exploit development (August-September 2021 🕒)
 Rust may not be as fast as python when it comes to iterating on quick scripts such as exploits, but as we will see, its powerful type and modules system make it nonetheless a weapon of choice.
 
 #### 8 - Writing shellcodes in Rust (partially available, will be updated during the beta ✅🕒)
