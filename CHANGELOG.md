@@ -3,6 +3,14 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.7 - 2021-07-15
+
+### Changed
+
+* Fixed tokio's thread pools illustration in ch03
+
+
+
 ## v2021.6 - 2021-07-14
 
 ### Changed
