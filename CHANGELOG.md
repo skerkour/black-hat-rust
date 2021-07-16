@@ -2,6 +2,16 @@
 
 All notable changes to the book will be documented in this file.
 
+## v2021.8 - 2021-07-16
+
+
+### Changed
+
+* ch09: Added various illustrations
+* ch09: brain regions
+* ch09: How to improve delivery rates
+* ch09: A few ideas for your phishing campaigns
+* ch09: phishing quizzes
 
 ## v2021.7 - 2021-07-15
 
