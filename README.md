@@ -29,7 +29,7 @@ Free Updates and DRM Free, of course :)
 
 This is NOT a 1000th tutorial about sqlmap and Metasploit, nor will it teach you the fundamentals of programming.
 
-Instead, it's a from-theory-to-practice manual and you may enjoy it if any of the following:
+Instead, it's a from-theory-to-practice guide and you may enjoy it if any of the following:
 
 - You keep screaming "show me the code!" when reading about cyber attacks and malwares
 - You want to learn real-world and idiomatic rust practices
@@ -38,6 +38,8 @@ Instead, it's a from-theory-to-practice manual and you may enjoy it if any of th
 - You develop your own tools and exploits with Python, Ruby, C, Java...
 - You want to learn real-world offensive security, not just pentesting
 - You want to start your career in bug bounties or offensive security
+
+But I repeat, this book is NOT a computer science book.
 
 <h3>
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
