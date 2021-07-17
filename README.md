@@ -35,8 +35,8 @@ Instead, it's a from-theory-to-practice guide and you may enjoy it if any of the
 - You want to learn real-world and idiomatic rust practices
 - You believe that the best defense is thinking like an attacker
 - You learn by building and love to look under the hood
+- You value simplicity and pragmatism
 - You develop your own tools and exploits with Python, Ruby, C, Java...
-- You love simplicity and pragmatism
 - You prefer getting things done over analysis paralysis
 - You want to learn real-world offensive security, not just pentesting
 - You want to start your career in bug bounties or offensive security
