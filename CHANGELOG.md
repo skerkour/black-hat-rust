@@ -2,8 +2,15 @@
 
 All notable changes to the book will be documented in this file.
 
-## v2021.8 - 2021-07-16
 
+## v2021.9 - 2021-07-17
+
+### Changed
+
+* ch09: Evil twin attack
+
+
+## v2021.8 - 2021-07-16
 
 ### Changed
 
@@ -12,6 +19,8 @@ All notable changes to the book will be documented in this file.
 * ch09: How to improve delivery rates
 * ch09: A few ideas for your phishing campaigns
 * ch09: phishing quizzes
+
+
 
 ## v2021.7 - 2021-07-15
 
