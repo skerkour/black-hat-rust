@@ -3,6 +3,14 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.10 - 2021-07-17
+
+### Changed
+
+* ch14: Execution illustration
+
+
+
 ## v2021.9 - 2021-07-17
 
 ### Changed
