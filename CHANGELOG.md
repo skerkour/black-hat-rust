@@ -3,6 +3,15 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.11 - 2021-07-19
+
+### Changed
+
+* ch06: Added some illustrations
+* ch06: fill some holes
+
+
+
 ## v2021.10 - 2021-07-17
 
 ### Changed

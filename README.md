@@ -51,7 +51,7 @@ But I repeat, this book is NOT a computer science book.
 
 As of today, the book is a work in progress. It is available in the context of an Early Access program which means that the chapters will be sent to you as soon as they are written, and feedback is very much appreciated.
 
-pages available: **200+**
+pages available: **250+**
 
 code progress: **~90%**
 
