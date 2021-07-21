@@ -35,6 +35,8 @@ This is NOT a 1000th tutorial about sqlmap and Metasploit, nor will it teach you
 Instead, it's a from-theory-to-practice guide and you may enjoy it if any of the following:
 
 - You keep screaming "show me the code!" when reading about cyber attacks and malwares
+- You are a developer and want to learn security
+- You are a security engineer and want to learn Rust programming
 - You want to learn real-world and idiomatic rust practices
 - You believe that the best defense is thinking like an attacker
 - You learn by building and love to look under the hood
