@@ -1,7 +1,7 @@
 <p align="center">
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB" target="_blank" rel="noopener"><img alt="Black Hat Rust logo" src="./black_hat_rust_cover.png" height="300" /></a>
   <h1 align="center">Black Hat Rust - Early Access</h1>
-  <h3 align="center">Deep dive into offensive security with the Rust programming language</h3>
+  <h3 align="center">Applied offensive security with the Rust programming language</h3>
   <h3 align="center">
     <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
   </h3>
@@ -18,8 +18,11 @@ We will put on our black hat and explore the world of offensive security, whethe
 Scanners, exploits, phishing toolkit, implants... From theory to practice, we will explore the arcane of offensive security and build our own offensive tools with the Rust programming language, Stack Overflow's most loved language for five years in a row.
 
 
-The security programming field is defined by its extremely large scope (from shellcodes to servers and web apps). Rust is the long-awaited one-size-fits-all programming language meeting all those requirements thanks to its unparalleled guarantees and feature set. Here is why.
+Which programming language allows to craft shellcodes, build servers, create phishing pages? Before Rust, none! Rust is the long-awaited one-size-fits-all programming language meeting all those requirements thanks to its unparalleled guarantees and feature set. Here is why.
+
 <!--
+The security programming field is defined by its extremely large scope (from shellcodes to servers and web apps). Rust is the long-awaited one-size-fits-all programming language meeting all those requirements thanks to its unparalleled guarantees and feature set. Here is why.
+
 
 Rust is turning a new page in the history of programming languages by providing unparalleled guarantees and features, whether it be for defensive or offensive security. I will venture to say that Rust is the long awaited one-size-fits-all programming language. Here is why. -->
 
@@ -37,11 +40,13 @@ Instead, it's a from-theory-to-practice guide and you may enjoy it if any of the
 - You learn by building and love to look under the hood
 - You value simplicity and pragmatism
 - You develop your own tools and exploits with Python, Ruby, C, Java...
-- You prefer getting things done over analysis paralysis
 - You want to learn real-world offensive security, not just pentesting
-- You want to start your career in bug bounties or offensive security
+- You want to start making money with bug bounty programs
+- You prefer getting things done over analysis paralysis
+
 
 But I repeat, this book is NOT a computer science book.
+
 
 <h3>
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
