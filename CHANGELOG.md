@@ -3,6 +3,21 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.14 - ??
+
+### Changed
+
+
+
+
+## v2021.13 - 2021-07-22
+
+### Changed
+
+* ch08: Added 2 illustrations
+* preface: a little bit of storytelling
+
+
 
 ## v2021.12 - 2021-07-20
 
