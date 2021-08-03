@@ -3,11 +3,12 @@
 All notable changes to the book will be documented in this file.
 
 
-## v2021.14 - ??
+## v2021.14 - 2021-08-03
 
 ### Changed
 
-
+* ch06
+* ch04
 
 
 ## v2021.13 - 2021-07-22
