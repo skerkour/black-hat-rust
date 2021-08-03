@@ -3,6 +3,18 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.15 - Work in Progress
+
+### Added
+
+* Copyright notice
+
+### Changed
+
+* preface
+* ch06
+
+
 ## v2021.14 - 2021-08-03
 
 ### Changed
