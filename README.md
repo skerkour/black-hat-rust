@@ -62,8 +62,6 @@ pages available: **250+**
 
 code progress: **~90%**
 
-estimated beta release: **July 2021**
-
 estimated final publication: **Q3 2021**
 
 estimated number of pages: **~320**
