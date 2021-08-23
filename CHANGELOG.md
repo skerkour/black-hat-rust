@@ -15,6 +15,7 @@ All notable changes to the book will be documented in this file.
 * ch06: Tools for bug hunting, fuzzing, vulnerabilities inducing patterns
 * ch01 typos
 * ch09
+* ch11: Overview of the Rust cryptography ecosystem
 
 
 ## v2021.14 - 2021-08-03
