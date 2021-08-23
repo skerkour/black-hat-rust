@@ -12,7 +12,7 @@ All notable changes to the book will be documented in this file.
 ### Changed
 
 * preface
-* ch06: Tools for bug hunting
+* ch06: Tools for bug hunting, fuzzing, vulnerabilities inducing patterns
 
 
 ## v2021.14 - 2021-08-03
