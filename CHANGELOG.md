@@ -2,6 +2,14 @@
 
 All notable changes to the book will be documented in this file.
 
+## v2021.16 - Work in Progress
+
+### Changed
+
+* lots of typos fixed
+
+
+
 
 ## v2021.15 - Work in Progress
 
