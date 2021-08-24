@@ -11,7 +11,7 @@ All notable changes to the book will be documented in this file.
 
 
 
-## v2021.15 - Work in Progress
+## v2021.15 - 2021-08-24
 
 ### Added
 
