@@ -16,6 +16,8 @@ All notable changes to the book will be documented in this file.
 * ch01 typos
 * ch09
 * ch11: Overview of the Rust cryptography ecosystem
+* ch11: Threat model
+* ch11: prekey rotation
 
 
 ## v2021.14 - 2021-08-03
