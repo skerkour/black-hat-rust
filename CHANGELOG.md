@@ -7,7 +7,9 @@ All notable changes to the book will be documented in this file.
 ### Changed
 
 * lots of typos fixed
-
+* ch10: real-time communication schemas
+* ch10: code organization
+* ch11
 
 
 
