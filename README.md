@@ -91,7 +91,7 @@ Unfortunately, when a program spends most of its time in I/O operations, multi-t
 #### 4 - Adding modules with Trait objects (partially available, will be updated during the beta ✅🕒)
 We will add more heterogeneous modules to our scanner and will learn how Rust's type system helps create properly designed large software projects.
 
-#### 5 - Crawling the web for OSINT (August 2021 🕒)
+#### 5 - Crawling the web for OSINT (September 2021 🕒)
 Leveraging all we learned previously, we will build an extremely fast web crawler to help us find the needles in the haystack the web is.
 
 
@@ -100,7 +100,7 @@ Leveraging all we learned previously, we will build an extremely fast web crawle
 #### 6 - Finding vulnerabilities (partially available, will be updated during the beta ✅🕒)
 Once the external reconnaissance performed, it's time to find entry points. In this chapter we will learn how automated fuzzing can help us to find vulnerabilities that can be exploited to then gain access to our target's systems.
 
-#### 7 - Exploit development (August-September 2021 🕒)
+#### 7 - Exploit development (September 2021 🕒)
 Rust may not be as fast as python when it comes to iterating on quick scripts such as exploits, but as we will see, its powerful type and modules system make it nonetheless a weapon of choice.
 
 #### 8 - Writing shellcodes in Rust (partially available, will be updated during the beta ✅🕒)
@@ -123,7 +123,7 @@ The consequences of our own infrastructure being compromised or seized can be di
 #### 12 - Going multi-platforms (partially available, will be updated during the beta ✅🕒)
 Today's computing landscape is extremely fragmented. From Windows to macOS, we can't target only one Operating System to ensure the success of our operations. In this section we will see how Rust's ecosystem is extremely useful when it comes to cross-compilation.
 
-#### 13 - Turning into a worm to increase reach (August-September 2021 🕒)
+#### 13 - Turning into a worm to increase reach (September 2021 🕒)
 Once the initial targets compromised, we will capitalize on Rust's excellent reusability to incorporate some parts of our initial scanner to turn our RAT into a worm and reach more targets only accessible from the target's internal network.
 
 #### 14 Conclusion (partially available, will be updated during the beta ✅🕒)
