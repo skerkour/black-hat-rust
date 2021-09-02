@@ -4,6 +4,10 @@ All notable changes to the book will be documented in this file.
 
 ## v2021.17 - Work in Progress
 
+### Changed
+
+* ch01: how to avoid lifetime annotations
+* ch09: framing
 
 
 ## v2021.16 - 2021-08-30
