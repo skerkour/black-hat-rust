@@ -9,7 +9,10 @@ All notable changes to the book will be documented in this file.
 * ch01: how to avoid lifetime annotations
 * ch09: framing
 * ch09: persuasion
-* ch08: Add more shellcodes
+
+### Added
+* ch08: Shell shellcode
+* ch08: reverse_tcp shellcode
 
 
 ## v2021.16 - 2021-08-30
