@@ -1,4 +1,24 @@
+## Hello World
+
+```shell
+$ make run_hello_world
 ```
-make hello_world
-make execute
+
+
+## Shell
+
+```shell
+$ make run_shell
+```
+
+```
+gdb executor/target/debug/executor
+disassemble SHELLCODE
+```
+
+
+## Reverse TCP
+
+```shell
+$ make run_tcp
 ```
