@@ -30,7 +30,7 @@ unsafe fn syscall3(syscall: u64, arg1: u64, arg2: u64, arg3: u64) -> u64 {
 #[no_mangle]
 fn _start() -> ! {
     let shell: &str = "/bin/sh\x00";
-    let argv: [*const &str; 2] = [&SHELL, core::ptr::null()];
+    let argv: [*const &str; 2] = [&shell, core::ptr::null()];
 
     unsafe {
         syscall3(SYS_EXECVE, shell.as_ptr() as u64, argv.as_ptr() as u64, 0);
