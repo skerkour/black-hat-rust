@@ -2,15 +2,23 @@
 
 All notable changes to the book will be documented in this file.
 
-## v2021.17 - Work in Progress
+## v2021.18 - Work in Progress
+
+### Changed
+
+* ch09: Persuasion
+
+
+
+## v2021.17 - 2021-09-03
 
 ### Changed
 
 * ch01: how to avoid lifetime annotations
 * ch09: framing
-* ch09: persuasion
 
 ### Added
+
 * ch08: Shell shellcode
 * ch08: reverse_tcp shellcode
 
