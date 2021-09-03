@@ -1,0 +1,2 @@
+[build]
+rustflags = ["-C", "link-arg=-nostdlib", "-C", "link-arg=-static", "-C", "link-arg=-Wl,-T../shellcode.ld,--build-id=none"]
