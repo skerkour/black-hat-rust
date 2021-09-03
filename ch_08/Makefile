@@ -14,6 +14,7 @@ fmt:
 	cd executor && cargo fmt
 
 
+
 .PHONY: run_hello_world
 run_hello_world: hello_world execute
 
@@ -23,10 +24,10 @@ hello_world: hello_world
 	strip -s hello_world/target/release/hello_world
 	objcopy -O binary hello_world/target/release/hello_world shellcode.bin
 
-
 .PHONY: dump_hello_world
 dump_hello_world: hello_world dump_shellcode
 # objdump -Mintel -s -d hello_world/target/release/hello_world
+
 
 
 .PHONY: shell
@@ -35,11 +36,22 @@ shell:
 	strip -s shell/target/release/shell
 	objcopy -O binary shell/target/release/shell shellcode.bin
 
-
 .PHONY: dump_shell
 dump_shell: shell dump_shellcode
-# objdump -Mintel -s -d shell/target/release/shell
-
 
 .PHONY: run_shell
 run_shell: shell execute
+
+
+
+.PHONY: tcp
+tcp:
+	cd reverse_tcp && cargo +nightly build --release
+	strip -s reverse_tcp/target/release/reverse_tcp
+	objcopy -O binary reverse_tcp/target/release/reverse_tcp shellcode.bin
+
+.PHONY: dump_tcp
+dump_tcp: tcp dump_shellcode
+
+.PHONY: run_tcp
+run_tcp: tcp execute
