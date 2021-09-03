@@ -20,5 +20,9 @@ disassemble SHELLCODE
 ## Reverse TCP
 
 ```shell
+$ nc -vlnp 8042
+```
+
+```shell
 $ make run_tcp
 ```

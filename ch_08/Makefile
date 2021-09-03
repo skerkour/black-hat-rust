@@ -42,6 +42,9 @@ dump_shell: shell dump_shellcode
 .PHONY: run_shell
 run_shell: shell execute
 
+.PHONY: build_shell_debug
+build_shell_debug:
+	cd shell && cargo +nightly build
 
 
 .PHONY: tcp
