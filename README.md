@@ -147,7 +147,7 @@ Please join the discussion on [GitHub (Alternative means of payment (Bitcoin, Pa
 
 ### The book is too expensive!
 
-Black Hat Rust was designed to save you a lot of time in your learning journey of Rust and offensive security.
+Black Hat Rust is designed to save you a lot of time in your learning journey of Rust and offensive security.
 The maths are simple: if the book saves you 20 hours, and you are paid 25$ / hour, you just saved 25 * 18 = 450$
 
 Of course, I expect that the book will save you even more time!
