@@ -134,6 +134,32 @@ Now it's **your** turn to get things done!
 </h3>
 
 
+## FAQ
+
+### Are there other means of payment available?
+
+Payments by cards are secured by [Stripe](https://stripe.com).
+
+Also, I need a unified list of purchases on [Stripe](https://stripe.com) for accounting reasons, at least during the early-access phase.
+
+Please join the discussion on [GitHub (Alternative means of payment (Bitcoin, PayPal...))](https://github.com/skerkour/black-hat-rust/issues/10) if payment by card is absolutely not an option for you, I will do my best to add more means of payments once the book is completed.
+
+
+### The book is too expensive!
+
+This is not a question, but no. Black Hat Rust was designed to save you a lot of time in your learning journey of Rust and offensive security.
+The maths are simple: if the book saves you 20 hours, and you are paid 25$ / hour, you just saved 25 * 18 = 450$
+
+Of course, I expect that the book will save you even more time!
+
+
+### What to do if I don't have a VAT number?
+
+A European VAT number is optional, and you can skip the field or leave it empty if asked.
+
+
+
+
 ## Getting started
 
 **Knowledge has no value if you don't practice!**
