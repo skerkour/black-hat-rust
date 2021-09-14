@@ -43,7 +43,7 @@ unsafe fn syscall3(syscall: u64, arg1: u64, arg2: u64, arg3: u64) -> u64 {
 }
 
 #[no_mangle]
-fn _start() -> ! {
+fn _start() {
     unsafe {
         syscall3(
             SYS_WRITE,
@@ -54,6 +54,4 @@ fn _start() -> ! {
 
         syscall1(SYS_EXIT, 0)
     };
-
-    loop {}
 }

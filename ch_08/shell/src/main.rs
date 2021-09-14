@@ -34,7 +34,12 @@ fn _start() -> ! {
     let argv: [*const &str; 2] = [&shell, core::ptr::null()];
 
     unsafe {
-        syscall3(SYS_EXECVE, shell.as_ptr() as u64, argv.as_ptr() as u64, NULL_ENV);
+        syscall3(
+            SYS_EXECVE,
+            shell.as_ptr() as u64,
+            argv.as_ptr() as u64,
+            NULL_ENV,
+        );
     };
 
     loop {}
