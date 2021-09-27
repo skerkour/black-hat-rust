@@ -7,6 +7,8 @@
   </h3>
 </p>
 
+While the [Rust Book](https://doc.rust-lang.org/book/) does an excellent job teaching **What is** Rust, I felt that a book about **Why** and **How** to Rust was missing.
+
 
 ## Summary
 
