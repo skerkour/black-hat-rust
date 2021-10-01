@@ -64,7 +64,7 @@ pages available: **320+**
 
 code progress: **~90%**
 
-estimated final publication: **Q3 2021**
+estimated final publication: **October 2021**
 
 estimated number of pages: **~330+**
 
