@@ -147,12 +147,12 @@ Also, I need a unified list of purchases on [Stripe](https://stripe.com) for acc
 Please join the discussion on [GitHub (Alternative means of payment (Bitcoin, PayPal...))](https://github.com/skerkour/black-hat-rust/issues/10) if payment by card is absolutely not an option for you, I will do my best to add more means of payments once the book is completed.
 
 
-### The book is too expensive!
+<!-- ### The book is too expensive!
 
 Black Hat Rust is designed to save you a lot of time in your learning journey of Rust and offensive security.
 The maths are simple: if the book saves you 20 hours, and you are paid 25$ / hour, you just saved 25 * 18 = 450$
 
-Of course, I expect that the book will save you even more time!
+Of course, I expect that the book will save you even more time! -->
 
 
 ### What to do if I don't have a VAT number?
