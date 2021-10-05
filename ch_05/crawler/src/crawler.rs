@@ -66,18 +66,18 @@ impl Crawler {
             processor_barrier.wait().await;
         });
 
-        let spider_crawler = spider.clone();
-        let crawler_barrier = barrier.clone();
-        let crawling_counter = active_spiders.clone();
-        let crawling_new_urls_tx = new_urls_tx.clone();
+        let spider_scraper = spider.clone();
+        let scraper_barrier = barrier.clone();
+        let active_spiders_counter = active_spiders.clone();
+        let spider_new_urls_tx = new_urls_tx.clone();
         tokio::spawn(async move {
             tokio_stream::wrappers::ReceiverStream::new(urls_to_visit_rx)
                 .for_each_concurrent(crawling_concurrency, |queued_url| {
                     let queued_url = queued_url.clone();
                     async {
-                        crawling_counter.fetch_add(1, Ordering::SeqCst);
+                        active_spiders_counter.fetch_add(1, Ordering::SeqCst);
                         let mut urls = Vec::new();
-                        let res = spider_crawler
+                        let res = spider_scraper
                             .scrap(queued_url.clone())
                             .await
                             .map_err(|err| {
@@ -93,15 +93,15 @@ impl Crawler {
                             urls = new_urls;
                         }
 
-                        let _ = crawling_new_urls_tx.send((queued_url, urls)).await;
+                        let _ = spider_new_urls_tx.send((queued_url, urls)).await;
                         sleep(crawling_delay).await;
-                        crawling_counter.fetch_sub(1, Ordering::SeqCst);
+                        active_spiders_counter.fetch_sub(1, Ordering::SeqCst);
                     }
                 })
                 .await;
 
             drop(items_tx);
-            crawler_barrier.wait().await;
+            scraper_barrier.wait().await;
         });
 
         loop {
