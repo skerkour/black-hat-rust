@@ -14,13 +14,3 @@ pub trait Spider: Send + Sync {
     async fn scrap(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error>;
     async fn process(&self, item: Self::Item) -> Result<(), Error>;
 }
-
-// pub fn all_spiders() -> HashMap<String, Box<dyn Spider>> {
-//     let spiders: Vec<Box<dyn Spider>> = vec![
-//         Box::new(cvedetails::CveDetailsSpider::new()),
-//         Box::new(github::GitHubSpider::new()),
-//         Box::new(google::GoogleSpider::new()),
-//     ];
-
-//     return HashMap::from_iter(spiders.into_iter().map(|spider| (spider.name(), spider)));
-// }
