@@ -28,7 +28,7 @@ async fn main() -> Result<(), anyhow::Error> {
         .setting(clap::AppSettings::VersionlessSubcommands)
         .get_matches();
 
-    env::set_var("RUST_LOG", "info");
+    env::set_var("RUST_LOG", "info,crawler=debug");
     env_logger::init();
 
     if let Some(_) = cli.subcommand_matches("spiders") {

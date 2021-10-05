@@ -1,8 +1,13 @@
 use crate::spiders::Spider;
 use futures::stream::StreamExt;
-use std::{collections::HashSet, sync::Arc, time::Duration};
+use std::{
+    collections::HashSet,
+    ops::{AddAssign, SubAssign},
+    sync::Arc,
+    time::Duration,
+};
 use tokio::{
-    sync::{mpsc, Barrier},
+    sync::{mpsc, Barrier, Mutex},
     time::sleep,
 };
 
@@ -32,8 +37,9 @@ impl Crawler {
         let mut visited_urls = HashSet::<String>::new();
         let crawling_concurrency = self.crawling_concurrency * 10;
         let crawling_queue_capacity = crawling_concurrency * 10;
-        let processing_queue_capacity = self.processing_concurrency * 10;
+        let processing_queue_capacity = self.processing_concurrency;
         let crawling_delay = self.delay;
+        let currently_crawling = Arc::new(Mutex::new(0 as usize));
 
         let (queue_tx, queue_rx) = mpsc::channel(crawling_queue_capacity);
         let (items_tx, items_rx) = mpsc::channel(processing_queue_capacity);
@@ -60,11 +66,14 @@ impl Crawler {
 
         let spider_crawler = spider.clone();
         let crawler_barrier = barrier.clone();
+        let crawler_count = currently_crawling.clone();
         tokio::spawn(async move {
             tokio_stream::wrappers::ReceiverStream::new(queue_rx)
                 .for_each_concurrent(crawling_concurrency, |queued_url| {
                     let queued_url = queued_url.clone();
                     async {
+                        crawler_count.lock().await.add_assign(1);
+                        let mut urls = Vec::new();
                         let res = spider_crawler
                             .run(queued_url.clone())
                             .await
@@ -74,12 +83,21 @@ impl Crawler {
                             })
                             .ok();
 
-                        let _ = results_tx.send((queued_url, res)).await;
+                        if let Some((items, new_urls)) = res {
+                            for item in items {
+                                let _ = items_tx.send(item).await;
+                            }
+                            urls = new_urls;
+                        }
+
+                        let _ = results_tx.send((queued_url, urls)).await;
                         sleep(crawling_delay).await;
+                        crawler_count.lock().await.sub_assign(1);
                     }
                 })
                 .await;
 
+            drop(items_tx);
             crawler_barrier.wait().await;
         });
 
@@ -87,42 +105,37 @@ impl Crawler {
         loop {
             let rcv_result = results_rx.try_recv();
             if let Some(err) = rcv_result.as_ref().err() {
-                if err == &mpsc::error::TryRecvError::Empty {
+                if err == &mpsc::error::TryRecvError::Empty
+                    && currently_crawling.lock().await.eq(&0)
+                {
                     times_empty += 1;
-                    if queue_tx.capacity() == crawling_queue_capacity && times_empty > 10 {
+                    if times_empty > 10 {
                         // crawling queue is empty, we quit
                         break;
                     }
 
                     sleep(crawling_delay).await;
-                    continue;
                 }
-            }
 
+                continue;
+            }
             times_empty = 0;
 
-            let (url, res) = rcv_result.unwrap();
-            visited_urls.insert(url);
+            let (visited_url, new_urls) = rcv_result.unwrap();
+            visited_urls.insert(visited_url);
 
-            if let Some((items, urls)) = res {
-                for item in items {
-                    let _ = items_tx.send(item).await;
-                }
-
-                for url in urls {
-                    if !visited_urls.contains(&url) {
-                        visited_urls.insert(url.clone());
-                        log::info!("queueing: {}", &url);
-                        let _ = queue_tx.send(url).await;
-                    }
+            for url in new_urls {
+                if !visited_urls.contains(&url) {
+                    visited_urls.insert(url.clone());
+                    log::debug!("queueing: {}", &url);
+                    let _ = queue_tx.send(url).await;
                 }
             }
         }
 
         log::info!("crawler: control loop exited");
 
-        // we drop the transmitters in order to close the streams
-        drop(items_tx);
+        // we drop the transmitter in order to close the stream
         drop(queue_tx);
 
         // and then we wait for the streams to complete
