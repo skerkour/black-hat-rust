@@ -42,16 +42,16 @@ impl Crawler {
         let processing_concurrency = self.processing_concurrency;
         let processing_queue_capacity = processing_concurrency * 10;
         let crawling_delay = self.delay;
-        let currently_crawling = Arc::new(AtomicUsize::new(0));
+        let active_spiders = Arc::new(AtomicUsize::new(0));
 
-        let (queue_tx, queue_rx) = mpsc::channel(crawling_queue_capacity);
+        let (urls_to_visit_tx, urls_to_visit_rx) = mpsc::channel(crawling_queue_capacity);
         let (items_tx, items_rx) = mpsc::channel(processing_queue_capacity);
-        let (results_tx, mut results_rx) = mpsc::channel(crawling_queue_capacity);
+        let (new_urls_tx, mut new_urls_rx) = mpsc::channel(crawling_queue_capacity);
         let barrier = Arc::new(Barrier::new(3));
 
         for url in spider.start_urls() {
             visited_urls.insert(url.clone());
-            let _ = queue_tx.send(url).await;
+            let _ = urls_to_visit_tx.send(url).await;
         }
 
         let spider_processor = spider.clone();
@@ -68,10 +68,10 @@ impl Crawler {
 
         let spider_crawler = spider.clone();
         let crawler_barrier = barrier.clone();
-        let crawling_counter = currently_crawling.clone();
-        let crawling_results_tx = results_tx.clone();
+        let crawling_counter = active_spiders.clone();
+        let crawling_new_urls_tx = new_urls_tx.clone();
         tokio::spawn(async move {
-            tokio_stream::wrappers::ReceiverStream::new(queue_rx)
+            tokio_stream::wrappers::ReceiverStream::new(urls_to_visit_rx)
                 .for_each_concurrent(crawling_concurrency, |queued_url| {
                     let queued_url = queued_url.clone();
                     async {
@@ -93,7 +93,7 @@ impl Crawler {
                             urls = new_urls;
                         }
 
-                        let _ = crawling_results_tx.send((queued_url, urls)).await;
+                        let _ = crawling_new_urls_tx.send((queued_url, urls)).await;
                         sleep(crawling_delay).await;
                         crawling_counter.fetch_sub(1, Ordering::SeqCst);
                     }
@@ -105,24 +105,23 @@ impl Crawler {
         });
 
         loop {
-            if let Some((visited_url, new_urls)) = results_rx.try_recv().ok() {
-                // let (visited_url, new_urls) = rcv_result.unwrap();
+            if let Some((visited_url, new_urls)) = new_urls_rx.try_recv().ok() {
                 visited_urls.insert(visited_url);
 
-                for url in &new_urls {
-                    if !visited_urls.contains(url) {
+                for url in new_urls {
+                    if !visited_urls.contains(&url) {
                         visited_urls.insert(url.clone());
                         log::debug!("queueing: {}", url);
-                        let _ = queue_tx.send(url.clone()).await;
+                        let _ = urls_to_visit_tx.send(url).await;
                     }
                 }
             }
 
-            if results_tx.capacity() == crawling_queue_capacity // results channel is empty
-            && queue_tx.capacity() == crawling_queue_capacity // queue channel is empty
-            && currently_crawling.load(Ordering::SeqCst) == 0
+            if new_urls_tx.capacity() == crawling_queue_capacity // new_urls channel is empty
+            && urls_to_visit_tx.capacity() == crawling_queue_capacity // urls_to_visit channel is empty
+            && active_spiders.load(Ordering::SeqCst) == 0
             {
-                // no more work, we quit
+                // no more work, we leave
                 break;
             }
 
@@ -132,7 +131,7 @@ impl Crawler {
         log::info!("crawler: control loop exited");
 
         // we drop the transmitter in order to close the stream
-        drop(queue_tx);
+        drop(urls_to_visit_tx);
 
         // and then we wait for the streams to complete
         barrier.wait().await;
