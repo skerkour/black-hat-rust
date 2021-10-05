@@ -24,7 +24,7 @@ impl super::Spider for GoogleSpider {
         Vec::new()
     }
 
-    async fn run(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
+    async fn scrap(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
         todo!();
     }
 

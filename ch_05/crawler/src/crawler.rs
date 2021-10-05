@@ -75,7 +75,7 @@ impl Crawler {
                         crawler_count.lock().await.add_assign(1);
                         let mut urls = Vec::new();
                         let res = spider_crawler
-                            .run(queued_url.clone())
+                            .scrap(queued_url.clone())
                             .await
                             .map_err(|err| {
                                 log::error!("{}", err);
