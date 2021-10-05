@@ -32,10 +32,7 @@ impl Crawler {
         }
     }
 
-    pub async fn run<T: Send + Sync + 'static + std::fmt::Debug>(
-        &self,
-        spider: Arc<dyn Spider<Item = T>>,
-    ) {
+    pub async fn run<T: Send + 'static>(&self, spider: Arc<dyn Spider<Item = T>>) {
         let mut visited_urls = HashSet::<String>::new();
         let crawling_concurrency = self.crawling_concurrency;
         let crawling_queue_capacity = crawling_concurrency * 400;
