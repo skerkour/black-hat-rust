@@ -24,7 +24,7 @@ impl super::Spider for GitHubSpider {
         Vec::new()
     }
 
-    async fn run(&self, url: &str) -> Result<(Vec<GitHubItem>, Vec<String>), Error> {
+    async fn run(&self, url: String) -> Result<(Vec<GitHubItem>, Vec<String>), Error> {
         todo!();
     }
 
