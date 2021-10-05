@@ -63,12 +63,10 @@ impl Crawler {
         tokio::spawn(async move {
             tokio_stream::wrappers::ReceiverStream::new(queue_rx)
                 .for_each_concurrent(crawling_concurrency, |queued_url| {
-                    let queued_url2 = queued_url.clone();
-                    let queued_url3 = queued_url.clone();
-
+                    let queued_url = queued_url.clone();
                     async {
                         let res = spider_crawler
-                            .run(queued_url2)
+                            .run(queued_url.clone())
                             .await
                             .map_err(|err| {
                                 log::error!("{}", err);
@@ -76,7 +74,7 @@ impl Crawler {
                             })
                             .ok();
 
-                        let _ = results_tx.send((queued_url3, res)).await;
+                        let _ = results_tx.send((queued_url, res)).await;
                         sleep(crawling_delay).await;
                     }
                 })
@@ -88,28 +86,22 @@ impl Crawler {
         let mut times_empty = 0;
         loop {
             let rcv_result = results_rx.try_recv();
-            if let Err(err) = rcv_result {
-                match err {
-                    mpsc::error::TryRecvError::Empty => {
-                        times_empty += 1;
-                        if queue_tx.capacity() == crawling_queue_capacity && times_empty > 10 {
-                            // crawling queue is empty, we quit
-                            break;
-                        }
-
-                        sleep(crawling_delay).await;
-                        continue;
-                    }
-                    mpsc::error::TryRecvError::Disconnected => {
+            if let Some(err) = rcv_result.as_ref().err() {
+                if err == &mpsc::error::TryRecvError::Empty {
+                    times_empty += 1;
+                    if queue_tx.capacity() == crawling_queue_capacity && times_empty > 10 {
+                        // crawling queue is empty, we quit
                         break;
                     }
+
+                    sleep(crawling_delay).await;
+                    continue;
                 }
             }
 
             times_empty = 0;
 
             let (url, res) = rcv_result.unwrap();
-
             visited_urls.insert(url);
 
             if let Some((items, urls)) = res {
