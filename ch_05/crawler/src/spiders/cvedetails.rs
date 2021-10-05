@@ -31,7 +31,7 @@ pub struct Cve {
 
 impl CveDetailsSpider {
     pub fn new() -> Self {
-        let http_timeout = Duration::from_secs(5);
+        let http_timeout = Duration::from_secs(6);
         let http_client = Client::builder()
             .timeout(http_timeout)
             .build()
