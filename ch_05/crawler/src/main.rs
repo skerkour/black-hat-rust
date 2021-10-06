@@ -32,7 +32,7 @@ async fn main() -> Result<(), anyhow::Error> {
     env_logger::init();
 
     if let Some(_) = cli.subcommand_matches("spiders") {
-        let spider_names = vec!["cvedetails", "github", "google"];
+        let spider_names = vec!["cvedetails", "github", "quotes"];
         for name in spider_names {
             println!("{}", name);
         }
@@ -50,8 +50,9 @@ async fn main() -> Result<(), anyhow::Error> {
                 let spider = Arc::new(spiders::github::GitHubSpider::new());
                 crawler.run(spider).await;
             }
-            "google" => {
-                let spider = Arc::new(spiders::google::GoogleSpider::new());
+            "quotes" => {
+                let spider = spiders::quotes::QuotesSpider::new().await?;
+                let spider = Arc::new(spider);
                 crawler.run(spider).await;
             }
             _ => return Err(Error::InvalidSpider(spider_name.to_string()).into()),
