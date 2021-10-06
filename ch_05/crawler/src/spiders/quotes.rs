@@ -3,7 +3,7 @@ use async_trait::async_trait;
 use fantoccini::{Client, ClientBuilder};
 use select::{
     document::Document,
-    predicate::{Attr, Class, Name, Predicate},
+    predicate::{Class, Name, Predicate},
 };
 use tokio::sync::Mutex;
 
@@ -46,14 +46,12 @@ impl super::Spider for QuotesSpider {
     }
 
     async fn scrap(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
-        let mut html = String::new();
         let mut items = Vec::new();
-
-        {
+        let html = {
             let mut webdriver = self.webdriver_client.lock().await;
             webdriver.goto(&url).await?;
-            html = webdriver.source().await?;
-        }
+            webdriver.source().await?
+        };
 
         let document = Document::from(html.as_str());
 
