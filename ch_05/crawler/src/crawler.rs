@@ -38,7 +38,6 @@ impl Crawler {
         let crawling_queue_capacity = crawling_concurrency * 400;
         let processing_concurrency = self.processing_concurrency;
         let processing_queue_capacity = processing_concurrency * 10;
-        let crawling_delay = self.delay;
         let active_spiders = Arc::new(AtomicUsize::new(0));
 
         let (urls_to_visit_tx, urls_to_visit_rx) = mpsc::channel(crawling_queue_capacity);
@@ -51,55 +50,23 @@ impl Crawler {
             let _ = urls_to_visit_tx.send(url).await;
         }
 
-        let spider_processor = spider.clone();
-        let processor_barrier = barrier.clone();
-        tokio::spawn(async move {
-            tokio_stream::wrappers::ReceiverStream::new(items_rx)
-                .for_each_concurrent(processing_concurrency, |item| async {
-                    let _ = spider_processor.process(item).await;
-                })
-                .await;
+        self.launch_processors(
+            processing_concurrency,
+            spider.clone(),
+            items_rx,
+            barrier.clone(),
+        );
 
-            processor_barrier.wait().await;
-        });
-
-        let spider_scraper = spider.clone();
-        let scraper_barrier = barrier.clone();
-        let active_spiders_counter = active_spiders.clone();
-        let spider_new_urls_tx = new_urls_tx.clone();
-        tokio::spawn(async move {
-            tokio_stream::wrappers::ReceiverStream::new(urls_to_visit_rx)
-                .for_each_concurrent(crawling_concurrency, |queued_url| {
-                    let queued_url = queued_url.clone();
-                    async {
-                        active_spiders_counter.fetch_add(1, Ordering::SeqCst);
-                        let mut urls = Vec::new();
-                        let res = spider_scraper
-                            .scrap(queued_url.clone())
-                            .await
-                            .map_err(|err| {
-                                log::error!("{}", err);
-                                err
-                            })
-                            .ok();
-
-                        if let Some((items, new_urls)) = res {
-                            for item in items {
-                                let _ = items_tx.send(item).await;
-                            }
-                            urls = new_urls;
-                        }
-
-                        let _ = spider_new_urls_tx.send((queued_url, urls)).await;
-                        sleep(crawling_delay).await;
-                        active_spiders_counter.fetch_sub(1, Ordering::SeqCst);
-                    }
-                })
-                .await;
-
-            drop(items_tx);
-            scraper_barrier.wait().await;
-        });
+        self.launch_spiders(
+            crawling_concurrency,
+            spider.clone(),
+            urls_to_visit_rx,
+            new_urls_tx.clone(),
+            items_tx,
+            active_spiders.clone(),
+            self.delay,
+            barrier.clone(),
+        );
 
         loop {
             if let Some((visited_url, new_urls)) = new_urls_rx.try_recv().ok() {
@@ -132,5 +99,69 @@ impl Crawler {
 
         // and then we wait for the streams to complete
         barrier.wait().await;
+    }
+
+    fn launch_processors<T: Send + 'static>(
+        &self,
+        concurrency: usize,
+        spider: Arc<dyn Spider<Item = T>>,
+        items: mpsc::Receiver<T>,
+        barrier: Arc<Barrier>,
+    ) {
+        tokio::spawn(async move {
+            tokio_stream::wrappers::ReceiverStream::new(items)
+                .for_each_concurrent(concurrency, |item| async {
+                    let _ = spider.process(item).await;
+                })
+                .await;
+
+            barrier.wait().await;
+        });
+    }
+
+    fn launch_spiders<T: Send + 'static>(
+        &self,
+        concurrency: usize,
+        spider: Arc<dyn Spider<Item = T>>,
+        urls_to_vist: mpsc::Receiver<String>,
+        new_urls: mpsc::Sender<(String, Vec<String>)>,
+        items_tx: mpsc::Sender<T>,
+        active_spiders: Arc<AtomicUsize>,
+        delay: Duration,
+        barrier: Arc<Barrier>,
+    ) {
+        tokio::spawn(async move {
+            tokio_stream::wrappers::ReceiverStream::new(urls_to_vist)
+                .for_each_concurrent(concurrency, |queued_url| {
+                    let queued_url = queued_url.clone();
+                    async {
+                        active_spiders.fetch_add(1, Ordering::SeqCst);
+                        let mut urls = Vec::new();
+                        let res = spider
+                            .scrap(queued_url.clone())
+                            .await
+                            .map_err(|err| {
+                                log::error!("{}", err);
+                                err
+                            })
+                            .ok();
+
+                        if let Some((items, new_urls)) = res {
+                            for item in items {
+                                let _ = items_tx.send(item).await;
+                            }
+                            urls = new_urls;
+                        }
+
+                        let _ = new_urls.send((queued_url, urls)).await;
+                        sleep(delay).await;
+                        active_spiders.fetch_sub(1, Ordering::SeqCst);
+                    }
+                })
+                .await;
+
+            drop(items_tx);
+            barrier.wait().await;
+        });
     }
 }
