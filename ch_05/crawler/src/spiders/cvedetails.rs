@@ -51,7 +51,7 @@ impl super::Spider for CveDetailsSpider {
 
     fn start_urls(&self) -> Vec<String> {
         vec![
-            "https://www.cvedetails.com/vulnerability-list/year-2021/vulnerabilities.html"
+            "https://www.cvedetails.com/vulnerability-list/vulnerabilities.html"
                 .to_string(),
         ]
     }
