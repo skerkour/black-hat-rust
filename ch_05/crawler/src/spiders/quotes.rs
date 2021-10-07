@@ -45,7 +45,7 @@ impl super::Spider for QuotesSpider {
         vec!["https://quotes.toscrape.com/js".to_string()]
     }
 
-    async fn scrap(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
+    async fn scrape(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
         let mut items = Vec::new();
         let html = {
             let mut webdriver = self.webdriver_client.lock().await;

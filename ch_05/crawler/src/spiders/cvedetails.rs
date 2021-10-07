@@ -56,7 +56,7 @@ impl super::Spider for CveDetailsSpider {
         ]
     }
 
-    async fn scrap(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
+    async fn scrape(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
         log::info!("visiting: {}", url);
 
         let http_res = self.http_client.get(url).send().await?.text().await?;

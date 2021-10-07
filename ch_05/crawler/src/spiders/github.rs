@@ -61,7 +61,7 @@ impl super::Spider for GitHubSpider {
         vec!["https://api.github.com/orgs/google/public_members?per_page=100&page=1".to_string()]
     }
 
-    async fn scrap(&self, url: String) -> Result<(Vec<GitHubItem>, Vec<String>), Error> {
+    async fn scrape(&self, url: String) -> Result<(Vec<GitHubItem>, Vec<String>), Error> {
         let items: Vec<GitHubItem> = self.http_client.get(&url).send().await?.json().await?;
 
         let next_pages_links = if items.len() == self.expected_number_of_results {

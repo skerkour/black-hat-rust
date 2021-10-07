@@ -57,7 +57,7 @@ impl Crawler {
             barrier.clone(),
         );
 
-        self.launch_spiders(
+        self.launch_scrapers(
             crawling_concurrency,
             spider.clone(),
             urls_to_visit_rx,
@@ -119,7 +119,7 @@ impl Crawler {
         });
     }
 
-    fn launch_spiders<T: Send + 'static>(
+    fn launch_scrapers<T: Send + 'static>(
         &self,
         concurrency: usize,
         spider: Arc<dyn Spider<Item = T>>,
@@ -138,7 +138,7 @@ impl Crawler {
                         active_spiders.fetch_add(1, Ordering::SeqCst);
                         let mut urls = Vec::new();
                         let res = spider
-                            .scrap(queued_url.clone())
+                            .scrape(queued_url.clone())
                             .await
                             .map_err(|err| {
                                 log::error!("{}", err);
