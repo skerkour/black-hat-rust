@@ -2,7 +2,15 @@
 
 All notable changes to the book will be documented in this file.
 
-## v2021.18 - Work in Progress
+
+## v2021.19 - Work In Progress
+
+
+## v2021.18 - 2021-10-07
+
+### Added
+
+* ch05: Crawler
 
 ### Changed
 
