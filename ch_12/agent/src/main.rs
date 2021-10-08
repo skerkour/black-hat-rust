@@ -4,6 +4,7 @@ mod commands;
 mod config;
 mod error;
 mod init;
+mod install;
 mod run;
 
 pub use error::Error;
