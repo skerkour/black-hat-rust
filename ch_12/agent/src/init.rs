@@ -1,4 +1,4 @@
-use crate::{config, Error};
+use crate::{config, install, Error};
 use common::{
     api::{self, RegisterAgent},
     crypto,
@@ -15,6 +15,7 @@ pub fn init(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     let conf = match saved_agent_id {
         Some(agent_id) => agent_id,
         None => {
+            install::install()?;
             let conf = register(api_client)?;
             save_agent_config(&conf)?;
             conf

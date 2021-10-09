@@ -1,7 +1,6 @@
 ## Setup
 
 ```shell
-$ make docker_agent_builder
 $ docker run --name bhr_ch12_postgres -d -e POSTGRES_PASSWORD=black_hat_rust -e POSTGRES_USER=ch12 -p 5432:5432 postgres:13
 $ cp env.example .env
 ```
@@ -46,13 +45,13 @@ target
 ## Build for Linux
 
 ```shell
-make agent_linux_docker
+make agent_linux
 ```
 
 ## Build for Windows
 
 ```shell
-make agent_windows_docker
+make agent_windows
 ```
 
 ## Warning
