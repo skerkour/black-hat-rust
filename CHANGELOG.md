@@ -5,6 +5,9 @@ All notable changes to the book will be documented in this file.
 
 ## v2021.19 - Work In Progress
 
+### Added
+
+* ch12
 
 ## v2021.18 - 2021-10-07
 
