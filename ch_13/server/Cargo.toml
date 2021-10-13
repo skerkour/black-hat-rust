@@ -1,0 +1,24 @@
+[package]
+name = "server"
+version = "0.1.0"
+authors = ["Sylvain Kerkour <sylvain@kerkour.fr>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+common = { path = "../common" }
+
+uuid = { version = "0.8", features = ["v4"] }
+chrono = { version  = "0.4" }
+sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "uuid", "postgres", "migrate", "chrono", "time" ] }
+warp = { version = "0.3", default-features = false }
+tokio = { version = "1", features = ["full"] }
+env_logger = "0.8"
+anyhow = "1.0"
+dotenv = "0.15"
+thiserror = "1.0"
+serde = { version = "1" }
+log = "0.4"
+ed25519-dalek = "1"
+base64 = "0.13"

@@ -1,0 +1,25 @@
+[package]
+name = "client"
+version = "0.1.0"
+authors = ["Sylvain Kerkour <sylvain@kerkour.fr>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+common = { path = "../common" }
+
+clap = "2.33"
+anyhow = "1.0"
+thiserror = "1.0"
+base64 = "0.13"
+reqwest = { version = "0.11", default-features = false, features = ["json", "rustls-tls", "blocking"] }
+uuid = { version = "0.8", features = ["serde", "v4"] }
+prettytable-rs = "0.8"
+ed25519-dalek = "1"
+rand = "0.7"
+x25519-dalek = "1"
+chacha20poly1305 = "0.8"
+blake2 = "0.9"
+serde_json = "1"
+zeroize = "1.3"
