@@ -23,6 +23,12 @@ agent_windows:
 	upx -9 --force target/x86_64-pc-windows-gnu/release/agent.exe
 
 
+
+.PHONY: clean_agent
+clean_agent:
+	cargo run -p agent -- clean
+
+
 .PHONY: client
 client:
 	cargo build -p client --release

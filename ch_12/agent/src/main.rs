@@ -1,6 +1,7 @@
 use single_instance::SingleInstance;
-use std::time::Duration;
+use std::{env, time::Duration};
 
+mod clean;
 mod commands;
 mod config;
 mod error;
@@ -11,6 +12,12 @@ mod run;
 pub use error::Error;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let mut args = env::args();
+    if args.len() == 2 && args.nth(1).unwrap() == "clean" {
+        clean::clean()?;
+        return Ok(());
+    }
+
     let instance = SingleInstance::new(config::SINGLE_INSTANCE_IDENTIFIED).unwrap();
 
     if !instance.is_single() {

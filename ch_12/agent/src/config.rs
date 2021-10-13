@@ -1,14 +1,20 @@
 use serde::{Deserialize, Serialize};
-use std::convert::{Into, TryFrom};
+use std::{
+    convert::{Into, TryFrom},
+    path::PathBuf,
+};
 use uuid::Uuid;
 use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
 use crate::Error;
 
 pub const SERVER_URL: &str = "http://localhost:8080";
-pub const AGENT_ID_FILE: &str = "ch12";
+pub const AGENT_CONFIG_FILE: &str = "ch12_config.json";
+pub const AGENT_INSTALL_FILE: &str = "ch12_agent";
+pub const INSTALL_DIRECTORY: &str = "bhr_ch12";
 pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "xQ6gstFLtTbDC06LDb5dAQap+fXVG45BnRZj0L5th+M=";
 pub const SINGLE_INSTANCE_IDENTIFIED: &str = "ch12_agent";
+pub const SYSTEMD_SERVICE_FILE: &str = "/etc/systemd/system/ch12agent.service";
 
 #[derive(Debug)]
 pub struct Config {
@@ -63,4 +69,30 @@ pub struct SerializedConfig {
     pub agent_id: Uuid,
     pub identity_private_key: [u8; ed25519_dalek::SECRET_KEY_LENGTH],
     pub private_prekey: [u8; 32],
+}
+
+pub fn get_agent_config_file_path() -> Result<PathBuf, Error> {
+    let mut config_file = get_agent_directory()?;
+
+    config_file.push(AGENT_CONFIG_FILE);
+
+    Ok(config_file)
+}
+
+pub fn get_agent_directory() -> Result<PathBuf, Error> {
+    let mut data_dir = match dirs::data_dir() {
+        Some(home_dir) => home_dir,
+        None => return Err(Error::Internal("Error getting home directory.".to_string())),
+    };
+
+    data_dir.push(INSTALL_DIRECTORY);
+
+    Ok(data_dir)
+}
+
+pub fn get_agent_install_target() -> Result<PathBuf, Error> {
+    let mut install_target = get_agent_directory()?;
+    install_target.push(AGENT_INSTALL_FILE);
+
+    Ok(install_target)
 }

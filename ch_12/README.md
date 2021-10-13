@@ -17,6 +17,8 @@ $ cargo run -p server
 $ cargo run -p agent
 ```
 
+On Linux, the agent will be installed in `$XDG_DATA_HOME/bhr_ch12` or `$HOME/.local/share/bhr_ch12`
+
 
 ## In shell 3
 

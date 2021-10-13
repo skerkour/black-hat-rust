@@ -5,7 +5,6 @@ use common::{
 };
 use ed25519_dalek::Signer;
 use rand::RngCore;
-use std::path::PathBuf;
 use std::{convert::TryInto, fs};
 use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
@@ -69,7 +68,7 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
 }
 
 pub fn save_agent_config(conf: &config::Config) -> Result<(), Error> {
-    let agent_config_file = get_agent_config_file_path()?;
+    let agent_config_file = config::get_agent_config_file_path()?;
 
     let serialized_conf: config::SerializedConfig = conf.into();
     let config_json = serde_json::to_string(&serialized_conf)?;
@@ -80,7 +79,7 @@ pub fn save_agent_config(conf: &config::Config) -> Result<(), Error> {
 }
 
 pub fn get_saved_agent_config() -> Result<Option<config::Config>, Error> {
-    let agent_id_file = get_agent_config_file_path()?;
+    let agent_id_file = config::get_agent_config_file_path()?;
 
     if agent_id_file.exists() {
         let agent_file_content = fs::read(agent_id_file)?;
@@ -92,15 +91,4 @@ pub fn get_saved_agent_config() -> Result<Option<config::Config>, Error> {
     } else {
         Ok(None)
     }
-}
-
-pub fn get_agent_config_file_path() -> Result<PathBuf, Error> {
-    let mut home_dir = match dirs::home_dir() {
-        Some(home_dir) => home_dir,
-        None => return Err(Error::Internal("Error getting home directory.".to_string())),
-    };
-
-    home_dir.push(config::AGENT_ID_FILE);
-
-    Ok(home_dir)
 }
