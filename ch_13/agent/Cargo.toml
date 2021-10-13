@@ -8,7 +8,7 @@ edition = "2018"
 
 [dependencies]
 dirs = "3.0"
-
+ssh2 = { version = "0.9", features = ["vendored-openssl", "openssl-on-win32"] }
 
 log = "0.4"
 serde = { version = "1", features = ["derive"] }
