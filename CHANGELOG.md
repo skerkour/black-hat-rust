@@ -8,6 +8,13 @@ All notable changes to the book will be documented in this file.
 ### Added
 
 * ch12
+* ch13
+
+### Changed
+
+* all chapters: typos
+* all chapters: overhaul of the illustrations
+
 
 ## v2021.18 - 2021-10-07
 
