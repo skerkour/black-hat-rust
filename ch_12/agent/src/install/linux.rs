@@ -1,6 +1,8 @@
 use crate::config;
 use std::{fs, path::PathBuf, process::Command};
 
+pub const SYSTEMD_SERVICE_FILE: &str = "/etc/systemd/system/ch12agent.service";
+
 pub fn install() -> Result<(), crate::Error> {
     let executable_path = super::copy_executable()?;
 
@@ -69,7 +71,7 @@ Alias=ch12agent.service",
         executable.display()
     );
 
-    fs::write(config::SYSTEMD_SERVICE_FILE, systemd_file_content)?;
+    fs::write(SYSTEMD_SERVICE_FILE, systemd_file_content)?;
 
     Command::new("systemctl")
         .arg("enable")

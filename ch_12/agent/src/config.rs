@@ -14,7 +14,6 @@ pub const AGENT_INSTALL_FILE: &str = "ch12_agent";
 pub const INSTALL_DIRECTORY: &str = "bhr_ch12";
 pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "xQ6gstFLtTbDC06LDb5dAQap+fXVG45BnRZj0L5th+M=";
 pub const SINGLE_INSTANCE_IDENTIFIED: &str = "ch12_agent";
-pub const SYSTEMD_SERVICE_FILE: &str = "/etc/systemd/system/ch12agent.service";
 
 #[derive(Debug)]
 pub struct Config {
@@ -82,12 +81,21 @@ pub fn get_agent_config_file_path() -> Result<PathBuf, Error> {
 pub fn get_agent_directory() -> Result<PathBuf, Error> {
     let mut data_dir = match dirs::data_dir() {
         Some(home_dir) => home_dir,
-        None => return Err(Error::Internal("Error getting home directory.".to_string())),
+        None => return Err(Error::Internal("Error getting data directory.".to_string())),
     };
 
     data_dir.push(INSTALL_DIRECTORY);
 
     Ok(data_dir)
+}
+
+pub fn get_home_directory() -> Result<PathBuf, Error> {
+    let home_dir = match dirs::home_dir() {
+        Some(home_dir) => home_dir,
+        None => return Err(Error::Internal("Error getting home directory.".to_string())),
+    };
+
+    Ok(home_dir)
 }
 
 pub fn get_agent_install_target() -> Result<PathBuf, Error> {
