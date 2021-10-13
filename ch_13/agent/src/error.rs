@@ -5,6 +5,7 @@ pub enum Error {
     Internal(String),
     Api(String),
     Io(std::io::Error),
+    Ssh(ssh2::Error),
 }
 
 impl fmt::Display for Error {
@@ -21,26 +22,14 @@ impl std::convert::From<std::io::Error> for Error {
     }
 }
 
-impl std::convert::From<serde_json::Error> for Error {
-    fn from(err: serde_json::Error) -> Self {
-        Error::Internal(err.to_string())
-    }
-}
-
-impl std::convert::From<ed25519_dalek::SignatureError> for Error {
-    fn from(err: ed25519_dalek::SignatureError) -> Self {
-        Error::Internal(err.to_string())
-    }
-}
-
-impl std::convert::From<base64::DecodeError> for Error {
-    fn from(err: base64::DecodeError) -> Self {
-        Error::Internal(err.to_string())
-    }
-}
-
 impl std::convert::From<std::string::FromUtf8Error> for Error {
     fn from(err: std::string::FromUtf8Error) -> Self {
         Error::Internal(err.to_string())
+    }
+}
+
+impl std::convert::From<ssh2::Error> for Error {
+    fn from(err: ssh2::Error) -> Self {
+        Error::Ssh(err)
     }
 }
