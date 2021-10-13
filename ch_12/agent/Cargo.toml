@@ -9,7 +9,6 @@ edition = "2018"
 [dependencies]
 common = { path = "../common" }
 
-ureq = { version = "2.1", features = ["tls", "json"] }
 log = "0.4"
 uuid = { version = "0.8", features = ["serde", "v4"] }
 dirs = "3.0"

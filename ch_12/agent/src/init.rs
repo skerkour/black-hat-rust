@@ -1,21 +1,17 @@
 use crate::{config, install, Error};
-use common::{
-    api::{self, RegisterAgent},
-    crypto,
-};
-use ed25519_dalek::Signer;
+use common::crypto;
 use rand::RngCore;
 use std::{convert::TryInto, fs};
 use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
-pub fn init_and_install(api_client: &ureq::Agent) -> Result<config::Config, Error> {
+pub fn init_and_install() -> Result<config::Config, Error> {
     let saved_agent_id = get_saved_agent_config()?;
 
     let conf = match saved_agent_id {
         Some(agent_id) => agent_id,
         None => {
             install::install()?;
-            let conf = register(api_client)?;
+            let conf = register()?;
             save_agent_config(&conf)?;
             conf
         }
@@ -24,8 +20,7 @@ pub fn init_and_install(api_client: &ureq::Agent) -> Result<config::Config, Erro
     Ok(conf)
 }
 
-pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
-    let register_agent_route = format!("{}/api/agents", config::SERVER_URL);
+pub fn register() -> Result<config::Config, Error> {
     let mut rand_generator = rand::rngs::OsRng {};
 
     let identity_keypair = ed25519_dalek::Keypair::generate(&mut rand_generator);
@@ -34,29 +29,12 @@ pub fn register(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     rand_generator.fill_bytes(&mut private_prekey);
     let public_prekey = x25519(private_prekey.clone(), X25519_BASEPOINT_BYTES);
 
-    let public_prekey_signature = identity_keypair.sign(&public_prekey);
-
-    let register_agent = RegisterAgent {
-        identity_public_key: identity_keypair.public.to_bytes(),
-        public_prekey: public_prekey.clone(),
-        public_prekey_signature: public_prekey_signature.to_bytes().to_vec(),
-    };
-
     let client_public_key_bytes = base64::decode(config::CLIENT_IDENTITY_PUBLIC_KEY)?;
     let client_identity_public_key =
         ed25519_dalek::PublicKey::from_bytes(&client_public_key_bytes)?;
 
-    let api_res: api::Response<api::AgentRegistered> = api_client
-        .post(register_agent_route.as_str())
-        .send_json(ureq::json!(register_agent))?
-        .into_json()?;
-
-    if let Some(err) = api_res.error {
-        return Err(Error::Api(err.message));
-    }
-
     let conf = config::Config {
-        agent_id: api_res.data.unwrap().id,
+        agent_id: uuid::Uuid::new_v4(),
         identity_public_key: identity_keypair.public,
         identity_private_key: identity_keypair.secret,
         public_prekey,

@@ -8,7 +8,6 @@ use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
 use crate::Error;
 
-pub const SERVER_URL: &str = "http://localhost:8080";
 pub const AGENT_CONFIG_FILE: &str = "ch12_config.json";
 pub const AGENT_INSTALL_FILE: &str = "ch12_agent";
 pub const INSTALL_DIRECTORY: &str = "bhr_ch12";
