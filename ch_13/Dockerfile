@@ -9,7 +9,7 @@ RUN echo "PasswordAuthentication yes" >> /etc/ssh/sshd_config
 RUN service ssh restart
 
 # change root password
-RUN echo "root:toor" | chpasswd
+RUN echo "root:root" | chpasswd
 
 EXPOSE 22
 CMD  ["/usr/sbin/sshd", "-D"]
