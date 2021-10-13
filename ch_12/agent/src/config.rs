@@ -89,15 +89,6 @@ pub fn get_agent_directory() -> Result<PathBuf, Error> {
     Ok(data_dir)
 }
 
-pub fn get_home_directory() -> Result<PathBuf, Error> {
-    let home_dir = match dirs::home_dir() {
-        Some(home_dir) => home_dir,
-        None => return Err(Error::Internal("Error getting home directory.".to_string())),
-    };
-
-    Ok(home_dir)
-}
-
 pub fn get_agent_install_target() -> Result<PathBuf, Error> {
     let mut install_target = get_agent_directory()?;
     install_target.push(AGENT_INSTALL_FILE);
