@@ -50,10 +50,7 @@ impl super::Spider for CveDetailsSpider {
     }
 
     fn start_urls(&self) -> Vec<String> {
-        vec![
-            "https://www.cvedetails.com/vulnerability-list/vulnerabilities.html"
-                .to_string(),
-        ]
+        vec!["https://www.cvedetails.com/vulnerability-list/vulnerabilities.html".to_string()]
     }
 
     async fn scrape(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
