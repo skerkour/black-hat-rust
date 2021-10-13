@@ -8,6 +8,7 @@ use crate::Error;
 pub const SERVER_URL: &str = "http://localhost:8080";
 pub const AGENT_ID_FILE: &str = "ch12";
 pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "xQ6gstFLtTbDC06LDb5dAQap+fXVG45BnRZj0L5th+M=";
+pub const SINGLE_INSTANCE_IDENTIFIED: &str = "ch12_agent";
 
 #[derive(Debug)]
 pub struct Config {

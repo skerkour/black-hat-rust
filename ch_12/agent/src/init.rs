@@ -9,7 +9,7 @@ use std::path::PathBuf;
 use std::{convert::TryInto, fs};
 use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 
-pub fn init(api_client: &ureq::Agent) -> Result<config::Config, Error> {
+pub fn init_and_install(api_client: &ureq::Agent) -> Result<config::Config, Error> {
     let saved_agent_id = get_saved_agent_config()?;
 
     let conf = match saved_agent_id {
