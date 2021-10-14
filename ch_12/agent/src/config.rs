@@ -9,6 +9,9 @@ use x25519_dalek::{x25519, X25519_BASEPOINT_BYTES};
 use crate::Error;
 
 pub const AGENT_CONFIG_FILE: &str = "ch12_config.json";
+#[cfg(target_os = "windows")]
+pub const AGENT_INSTALL_FILE: &str = "ch12_agent.exe";
+#[cfg(not(target_os = "windows"))]
 pub const AGENT_INSTALL_FILE: &str = "ch12_agent";
 pub const INSTALL_DIRECTORY: &str = "bhr_ch12";
 pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "xQ6gstFLtTbDC06LDb5dAQap+fXVG45BnRZj0L5th+M=";
