@@ -73,9 +73,10 @@ fn upload_agent(ssh: &Session, agent_path: &PathBuf) -> Result<String, crate::Er
         .take(32)
         .map(char::from)
         .collect();
+    let hidden_rand_name = format!(".{}", rand_name);
 
     let mut remote_path = PathBuf::from("/tmp");
-    remote_path.push(&rand_name);
+    remote_path.push(&hidden_rand_name);
 
     let agent_data = fs::read(agent_path)?;
 

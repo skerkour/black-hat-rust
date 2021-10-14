@@ -21,8 +21,8 @@ On Linux, the agent will be installed in `$XDG_DATA_HOME/bhr_ch13` or `$HOME/.lo
 
 ```shell
 $ docker exec -ti bhr_ch13_ssh bash
-$ cd $HOME
-$ ls -la
+$ ls -lah /tmp
+$ ls -lahR /root/.local/share/
 ```
 
 ### Cleanup
