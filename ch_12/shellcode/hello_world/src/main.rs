@@ -14,8 +14,6 @@ const SYS_EXIT: u64 = 60;
 const STDOUT: u64 = 1;
 static MESSAGE: &str = "hello world\n";
 
-
-
 #[no_mangle]
 fn _start() {
     unsafe {
