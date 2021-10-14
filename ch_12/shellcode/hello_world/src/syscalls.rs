@@ -55,8 +55,9 @@ pub unsafe fn syscall1(syscall: u64, arg1: u64) -> u64 {
 pub unsafe fn syscall3(syscall: u64, arg1: u64, arg2: u64, arg3: u64) -> u64 {
     let ret: u64;
     asm!(
-        "ldr x1, [{0}]",
-        in(reg) arg2,
+        "mov x12, {0}",
+        "ldr x1, #20",
+        in(reg) arg2 ,
         options(nostack),
     );
     asm!(
