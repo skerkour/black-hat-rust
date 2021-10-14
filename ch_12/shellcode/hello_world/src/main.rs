@@ -20,16 +20,16 @@ const SYS_WRITE: u64 = 64;
 const SYS_EXIT: u64 = 93;
 
 const STDOUT: u64 = 1;
-static MESSAGE: &str = "hello world\n";
 
 #[no_mangle]
 fn _start() {
     unsafe {
+        let message: &str = "hello world\n";
         syscalls::syscall3(
             SYS_WRITE,
             STDOUT,
-            MESSAGE.as_ptr() as u64,
-            MESSAGE.len() as u64,
+            message.as_ptr() as u64,
+            message.len() as u64,
         );
 
         syscalls::syscall1(SYS_EXIT, 0)

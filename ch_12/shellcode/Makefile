@@ -36,11 +36,6 @@ fmt:
 .PHONY: hello_world_aarch64
 hello_world_aarch64:
 	docker run --rm -ti -v `pwd`:/app $(AARCH64_DOCKER_IMAGE)
-# 	cd hello_world && cargo +nightly build --release --target aarch64-unknown-linux-gnu
-# 	aarch64-linux-gnu-strip -s hello_world/target/aarch64-unknown-linux-gnu/release/hello_world
-# 	aarch64-linux-gnu-objcopy -O binary hello_world/target/aarch64-unknown-linux-gnu/release/hello_world shellcode.bin
-# 	cp shellcode.bin executor/
-# #docker run --rm -ti -v `pwd`:/app $(AARCH64_DOCKER_IMAGE)
 
 .PHONY: hello_world_aarch64_docker
 hello_world_aarch64_docker:
@@ -53,11 +48,6 @@ hello_world_aarch64_docker:
 .PHONY: hello_world_x86_64
 hello_world_x86_64:
 	docker run --rm -ti -v `pwd`:/app $(x86_64_DOCKER_IMAGE)
-# cd hello_world && cargo +nightly build --release --target x86_64-unknown-linux-gnu
-# strip -s hello_world/target/x86_64-unknown-linux-gnu/release/hello_world
-# objcopy -O binary hello_world/target/x86_64-unknown-linux-gnu/release/hello_world shellcode.bin
-# cp shellcode.bin executor/
-#docker run --rm -ti -v `pwd`:/app $(x86_64_DOCKER_IMAGE)
 
 .PHONY: hello_world_x86_64_docker
 hello_world_x86_64_docker:
@@ -81,3 +71,4 @@ dump_hello_world_x86_64:
 .PHONY: clean
 clean:
 	rm -rf hello_world/target/ executor/target/ shellcode.bin
+	docker rmi $(x86_64_DOCKER_IMAGE) $(AARCH64_DOCKER_IMAGE)
