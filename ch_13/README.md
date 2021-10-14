@@ -29,6 +29,10 @@ $ ls -la
 
 ```shell
 $ docker rm -f bhr_ch13_ssh
+# on linux
+$ rm -rf ~/.local/share/bhr_ch13/
+# on macOS
+$ rm -rf $HOME/Library/Application Support/bhr_ch13/
 ```
 
 
