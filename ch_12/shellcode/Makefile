@@ -1,11 +1,31 @@
-.PHONY: execute
-execute:
-	cd executor && cargo run
+AARCH64_DOCKER_IMAGE = black_hat_rust/ch12_aarch64
+x86_64_DOCKER_IMAGE = black_hat_rust/ch12_x86_64
 
 
-.PHONY: dump_shellcode
-dump_shellcode:
-	objdump -D -b binary -mi386 -Mx86-64 -Mintel -z shellcode.bin
+.PHONY: docker
+docker: docker_image_aarch64 docker_image_x86_64
+
+.PHONY: docker_image_aarch64
+docker_image_aarch64:
+	docker build -t $(AARCH64_DOCKER_IMAGE) . -f Dockerfile.aarch64
+
+.PHONY: docker_image_x86_64
+docker_image_x86_64:
+	docker build -t $(x86_64_DOCKER_IMAGE) . -f Dockerfile.x86_64
+
+
+.PHONY: execute_aarch64
+execute_aarch64:
+	cd executor && cross run --target aarch64-unknown-linux-gnu
+
+.PHONY: execute_x86_64
+execute_x86_64:
+	cd executor && cross run --target x86_64-unknown-linux-gnu
+
+
+# .PHONY: dump_shellcode
+# dump_shellcode:
+# 	objdump -D -b binary -mi386 -Mx86-64 -Mintel -z shellcode.bin
 
 
 .PHONY: fmt
@@ -13,17 +33,51 @@ fmt:
 	cd hello_world && cargo fmt
 	cd executor && cargo fmt
 
+.PHONY: hello_world_aarch64
+hello_world_aarch64:
+	docker run --rm -ti -v `pwd`:/app $(AARCH64_DOCKER_IMAGE)
+# 	cd hello_world && cargo +nightly build --release --target aarch64-unknown-linux-gnu
+# 	aarch64-linux-gnu-strip -s hello_world/target/aarch64-unknown-linux-gnu/release/hello_world
+# 	aarch64-linux-gnu-objcopy -O binary hello_world/target/aarch64-unknown-linux-gnu/release/hello_world shellcode.bin
+# 	cp shellcode.bin executor/
+# #docker run --rm -ti -v `pwd`:/app $(AARCH64_DOCKER_IMAGE)
+
+.PHONY: hello_world_aarch64_docker
+hello_world_aarch64_docker:
+	cd hello_world && cargo +nightly build --release --target aarch64-unknown-linux-gnu
+	aarch64-linux-gnu-strip -s hello_world/target/aarch64-unknown-linux-gnu/release/hello_world
+	aarch64-linux-gnu-objcopy -O binary hello_world/target/aarch64-unknown-linux-gnu/release/hello_world shellcode.bin
+	cp shellcode.bin executor/
 
 
-.PHONY: run_hello_world
-run_hello_world: hello_world execute
+.PHONY: hello_world_x86_64
+hello_world_x86_64:
+	docker run --rm -ti -v `pwd`:/app $(x86_64_DOCKER_IMAGE)
+# cd hello_world && cargo +nightly build --release --target x86_64-unknown-linux-gnu
+# strip -s hello_world/target/x86_64-unknown-linux-gnu/release/hello_world
+# objcopy -O binary hello_world/target/x86_64-unknown-linux-gnu/release/hello_world shellcode.bin
+# cp shellcode.bin executor/
+#docker run --rm -ti -v `pwd`:/app $(x86_64_DOCKER_IMAGE)
 
-.PHONY: hello_world
-hello_world:
-	cd hello_world && cargo +nightly build --release
-	strip -s hello_world/target/release/hello_world
-	objcopy -O binary hello_world/target/release/hello_world shellcode.bin
+.PHONY: hello_world_x86_64_docker
+hello_world_x86_64_docker:
+	cd hello_world && cargo +nightly build --release --target x86_64-unknown-linux-gnu
+	strip -s hello_world/target/x86_64-unknown-linux-gnu/release/hello_world
+	objcopy -O binary hello_world/target/x86_64-unknown-linux-gnu/release/hello_world shellcode.bin
+	cp shellcode.bin executor/
 
-.PHONY: dump_hello_world
-dump_hello_world: hello_world dump_shellcode
-# objdump -Mintel -s -d hello_world/target/release/hello_world
+
+
+.PHONY: dump_hello_world_aarch64
+dump_hello_world_aarch64:
+	docker run --rm -ti -v `pwd`:/app $(AARCH64_DOCKER_IMAGE) aarch64-linux-gnu-objdump -D -b binary -maarch64 shellcode.bin
+
+
+.PHONY: dump_hello_world_x86_64
+dump_hello_world_x86_64:
+	docker run --rm -ti -v `pwd`:/app $(x86_64_DOCKER_IMAGE) objdump -D -b binary -mi386 -Mx86-64 -Mintel -z  shellcode.bin
+
+
+.PHONY: clean
+clean:
+	rm -rf hello_world/target/ executor/target/ shellcode.bin

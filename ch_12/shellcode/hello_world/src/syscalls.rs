@@ -42,7 +42,7 @@ pub unsafe fn syscall3(syscall: u64, arg1: u64, arg2: u64, arg3: u64) -> u64 {
 pub unsafe fn syscall1(syscall: u64, arg1: u64) -> u64 {
     let ret: u64;
     asm!(
-        "syscall",
+        "svc 0",
         in("x8") syscall,
         in("x0") arg1,
         // out("rcx") _,
@@ -57,7 +57,7 @@ pub unsafe fn syscall1(syscall: u64, arg1: u64) -> u64 {
 pub unsafe fn syscall3(syscall: u64, arg1: u64, arg2: u64, arg3: u64) -> u64 {
     let ret: u64;
     asm!(
-        "syscall",
+        "svc 0",
         in("x8") syscall,
         in("x0") arg1,
         in("x1") arg2,

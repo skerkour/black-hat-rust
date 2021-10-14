@@ -9,8 +9,16 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 
 mod syscalls;
 
+#[cfg(target_arch = "x86_64")]
 const SYS_WRITE: u64 = 1;
+#[cfg(target_arch = "x86_64")]
 const SYS_EXIT: u64 = 60;
+
+#[cfg(target_arch = "aarch64")]
+const SYS_WRITE: u64 = 64;
+#[cfg(target_arch = "aarch64")]
+const SYS_EXIT: u64 = 93;
+
 const STDOUT: u64 = 1;
 static MESSAGE: &str = "hello world\n";
 
