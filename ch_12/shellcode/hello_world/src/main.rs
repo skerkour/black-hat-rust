@@ -25,10 +25,11 @@ const STDOUT: u64 = 1;
 fn _start() {
     unsafe {
         let message: &str = "hello world\n";
+        let message_ptr = message.as_ptr() as u64;
         syscalls::syscall3(
             SYS_WRITE,
             STDOUT,
-            message.as_ptr() as u64,
+            message_ptr,
             message.len() as u64,
         );
 
