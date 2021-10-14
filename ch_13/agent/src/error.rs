@@ -6,6 +6,7 @@ pub enum Error {
     Api(String),
     Io(std::io::Error),
     Ssh(ssh2::Error),
+    Zip(zip::result::ZipError),
 }
 
 impl fmt::Display for Error {
@@ -31,5 +32,11 @@ impl std::convert::From<std::string::FromUtf8Error> for Error {
 impl std::convert::From<ssh2::Error> for Error {
     fn from(err: ssh2::Error) -> Self {
         Error::Ssh(err)
+    }
+}
+
+impl std::convert::From<zip::result::ZipError> for Error {
+    fn from(err: zip::result::ZipError) -> Self {
+        Error::Zip(err)
     }
 }

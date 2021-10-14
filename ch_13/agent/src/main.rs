@@ -5,6 +5,7 @@ mod config;
 mod error;
 mod install;
 mod spread;
+mod wordlist;
 
 pub use error::Error;
 
@@ -25,9 +26,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    let executable_path = install::install()?;
+    let install_dir = install::install()?;
 
-    spread::spread(executable_path, &host_port)?;
+    spread::spread(install_dir, &host_port)?;
 
     Ok(())
 }

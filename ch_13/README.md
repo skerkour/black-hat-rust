@@ -2,13 +2,12 @@
 
 ```shell
 $ docker build -t black_hat_rust/ch13:latest .
+$ make bundle
 ```
 
 
 ## Usage
 
-
-### In shell 1
 
 ```shell
 $ docker run -d -p 1322:22 --name bhr_ch13_ssh black_hat_rust/ch13:latest
@@ -18,17 +17,12 @@ $ cargo run -p agent -- 127.0.0.1:1322
 On Linux, the agent will be installed in `$XDG_DATA_HOME/bhr_ch13` or `$HOME/.local/share/bhr_ch13`
 
 
-### In shell 2
-
-```shell
-$ cargo run -p agent -- 127.0.0.1:1322
-# should exit immediatly
-```
-
 ### Inspect container
 
 ```shell
 $ docker exec -ti bhr_ch13_ssh bash
+$ cd $HOME
+$ ls -la
 ```
 
 ### Cleanup

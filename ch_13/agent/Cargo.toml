@@ -11,3 +11,4 @@ dirs = "3.0"
 ssh2 = { version = "0.9", features = ["vendored-openssl", "openssl-on-win32"] }
 rand = "0.7"
 single-instance = "0.3"
+zip = "0.5"
