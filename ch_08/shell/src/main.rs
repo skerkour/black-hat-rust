@@ -7,13 +7,13 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
     loop {}
 }
 
-const SYS_EXECVE: u64 = 59;
+const SYS_EXECVE: usize = 59;
 const SHELL: &str = "/bin/sh\x00";
 const ARGV: [*const &str; 2] = [&SHELL, core::ptr::null()];
-const NULL_ENV: u64 = 0;
+const NULL_ENV: usize = 0;
 
-unsafe fn syscall3(syscall: u64, arg1: u64, arg2: u64, arg3: u64) -> u64 {
-    let ret: u64;
+unsafe fn syscall3(syscall: usize, arg1: usize, arg2: usize, arg3: usize) -> usize {
+    let ret: usize;
     asm!(
         "syscall",
         in("rax") syscall,
@@ -36,8 +36,8 @@ fn _start() -> ! {
     unsafe {
         syscall3(
             SYS_EXECVE,
-            shell.as_ptr() as u64,
-            argv.as_ptr() as u64,
+            shell.as_ptr() as usize,
+            argv.as_ptr() as usize,
             NULL_ENV,
         );
     };

