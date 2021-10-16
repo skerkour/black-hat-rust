@@ -41,13 +41,11 @@ async fn scan_port(hostname: &str, port: u16) -> Port {
         };
     }
 
-    let is_open = if let Ok(_) =
-        tokio::time::timeout(timeout, TcpStream::connect(&socket_addresses[0])).await
-    {
-        true
-    } else {
-        false
-    };
+    let is_open =
+        match tokio::time::timeout(timeout, TcpStream::connect(&socket_addresses[0])).await {
+            Ok(Ok(_)) => true,
+            _ => false,
+        };
 
     Port {
         port: port,
