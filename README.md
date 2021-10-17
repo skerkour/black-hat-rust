@@ -138,6 +138,12 @@ Now it's **your** turn to get things done!
 
 ## FAQ
 
+
+### Do you provide discounts for students, unemployed or group buys?
+
+Yes! Just send me a message: [https://kerkour.com/about](https://kerkour.com/about/#contact--social-) :)
+
+
 ### Are there other means of payment available?
 
 Payments by cards are secured by [Stripe](https://stripe.com).
