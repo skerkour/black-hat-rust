@@ -22,7 +22,7 @@ pub fn install() -> Result<PathBuf, crate::Error> {
                 install_dir.display()
             );
 
-            extract_bundle()
+            extract_bundle(install_dir.clone(), bundle)?;
         } else {
             println!("bundle.zip NOT found");
         }
@@ -31,7 +31,7 @@ pub fn install() -> Result<PathBuf, crate::Error> {
     Ok(install_dir)
 }
 
-fn extract_bundle() Result<(), crate::Error> {
+fn extract_bundle(install_dir: PathBuf, bundle: PathBuf) -> Result<(), crate::Error> {
     let mut dist_bundle = install_dir.clone();
     dist_bundle.push(&bundle);
 
