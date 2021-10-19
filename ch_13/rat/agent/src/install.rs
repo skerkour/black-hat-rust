@@ -14,7 +14,7 @@ pub fn install() -> Result<PathBuf, crate::Error> {
 
         fs::copy(current_exe, &install_target)?;
 
-        // copy and extract bundle.zip
+        // here, we could have fetched the bundle from a central server
         let bundle = PathBuf::from("bundle.zip");
         if bundle.exists() {
             println!(
@@ -22,30 +22,36 @@ pub fn install() -> Result<PathBuf, crate::Error> {
                 install_dir.display()
             );
 
-            let mut dist_bundle = install_dir.clone();
-            dist_bundle.push(&bundle);
-
-            fs::copy(&bundle, &dist_bundle)?;
-
-            let zip_file = fs::File::open(&dist_bundle)?;
-            let mut zip_archive = zip::ZipArchive::new(zip_file)?;
-
-            for i in 0..zip_archive.len() {
-                let mut archive_file = zip_archive.by_index(i)?;
-                let dist_filename = match archive_file.enclosed_name() {
-                    Some(path) => path.to_owned(),
-                    None => continue,
-                };
-                let mut dist_path = install_dir.clone();
-                dist_path.push(dist_filename);
-
-                let mut dist_file = fs::File::create(&dist_path)?;
-                io::copy(&mut archive_file, &mut dist_file)?;
-            }
+            extract_bundle()
         } else {
             println!("bundle.zip NOT found");
         }
     }
 
     Ok(install_dir)
+}
+
+fn extract_bundle() Result<(), crate::Error> {
+    let mut dist_bundle = install_dir.clone();
+    dist_bundle.push(&bundle);
+
+    fs::copy(&bundle, &dist_bundle)?;
+
+    let zip_file = fs::File::open(&dist_bundle)?;
+    let mut zip_archive = zip::ZipArchive::new(zip_file)?;
+
+    for i in 0..zip_archive.len() {
+        let mut archive_file = zip_archive.by_index(i)?;
+        let dist_filename = match archive_file.enclosed_name() {
+            Some(path) => path.to_owned(),
+            None => continue,
+        };
+        let mut dist_path = install_dir.clone();
+        dist_path.push(dist_filename);
+
+        let mut dist_file = fs::File::create(&dist_path)?;
+        io::copy(&mut archive_file, &mut dist_file)?;
+    }
+
+    Ok(())
 }
