@@ -7,8 +7,8 @@ bundle: x86_64 aarch64
 .PHONY: x86_64
 x86_64:
 	cross build -p agent --release --target x86_64-unknown-linux-musl
-	strip -s target/x86_64-unknown-linux-musl/release/agent
-	upx -9 target/x86_64-unknown-linux-musl/release/agent
+# strip -s target/x86_64-unknown-linux-musl/release/agent
+#	upx -9 target/x86_64-unknown-linux-musl/release/agent
 	mv target/x86_64-unknown-linux-musl/release/agent target/agent.linux_x86_64
 
 
