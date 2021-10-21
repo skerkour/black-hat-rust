@@ -10,7 +10,7 @@ mod wordlist;
 pub use error::Error;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let instance = SingleInstance::new(config::SINGLE_INSTANCE_IDENTIFIED).unwrap();
+    let instance = SingleInstance::new(config::SINGLE_INSTANCE_IDENTIFIER).unwrap();
     if !instance.is_single() {
         return Ok(());
     }

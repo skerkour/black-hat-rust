@@ -15,7 +15,7 @@ pub const AGENT_INSTALL_FILE: &str = "ch12_agent.exe";
 pub const AGENT_INSTALL_FILE: &str = "ch12_agent";
 pub const INSTALL_DIRECTORY: &str = "bhr_ch12";
 pub const CLIENT_IDENTITY_PUBLIC_KEY: &str = "xQ6gstFLtTbDC06LDb5dAQap+fXVG45BnRZj0L5th+M=";
-pub const SINGLE_INSTANCE_IDENTIFIED: &str = "ch12_agent";
+pub const SINGLE_INSTANCE_IDENTIFIER: &str = "ch12_agent";
 
 #[derive(Debug)]
 pub struct Config {

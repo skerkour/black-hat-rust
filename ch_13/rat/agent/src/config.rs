@@ -3,7 +3,7 @@ use std::path::PathBuf;
 use crate::Error;
 
 pub const AGENT_INSTALL_FILE: &str = "ch13_agent";
-pub const SINGLE_INSTANCE_IDENTIFIED: &str = "ch13_agent";
+pub const SINGLE_INSTANCE_IDENTIFIER: &str = "ch13_agent";
 pub const INSTALL_DIRECTORY: &str = "bhr_ch13";
 
 pub fn get_agent_directory() -> Result<PathBuf, Error> {
