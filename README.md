@@ -84,13 +84,13 @@ estimated number of pages: **~340+**
 
 ### Part I: Reconnaissance
 
-#### 2 - Multi-threaded attack surface discovery (partially available, will be updated during the beta ✅🕒)
+#### 2 - Multi-threaded attack surface discovery (available ✅)
 How to perform effective reconnaissance? In this chapter, we will build a multi-threaded scanner in order to automate the mapping of the target.
 
-#### 3 - Going full speed with async (partially available, will be updated during the beta ✅🕒)
+#### 3 - Going full speed with async (available ✅)
 Unfortunately, when a program spends most of its time in I/O operations, multi-threading is not a panacea. We will learn how async makes Rust code really, really fast and refactor our scanner to async code.
 
-#### 4 - Adding modules with Trait objects (partially available, will be updated during the beta ✅🕒)
+#### 4 - Adding modules with Trait objects (available ✅)
 We will add more heterogeneous modules to our scanner and will learn how Rust's type system helps create properly designed large software projects.
 
 #### 5 - Crawling the web for OSINT (partially available, will be updated during the beta ✅🕒)
@@ -99,13 +99,13 @@ Leveraging all we learned previously, we will build an extremely fast web crawle
 
 ### Part II: Exploitation
 
-#### 6 - Finding vulnerabilities (partially available, will be updated during the beta ✅🕒)
+#### 6 - Finding vulnerabilities (available ✅)
 Once the external reconnaissance performed, it's time to find entry points. In this chapter we will learn how automated fuzzing can help us to find vulnerabilities that can be exploited to then gain access to our target's systems.
 
 #### 7 - Exploit development (partially available, will be updated during the beta ✅🕒)
 Rust may not be as fast as python when it comes to iterating on quick scripts such as exploits, but as we will see, its powerful type and modules system make it nonetheless a weapon of choice.
 
-#### 8 - Writing shellcodes in Rust (partially available, will be updated during the beta ✅🕒)
+#### 8 - Writing shellcodes in Rust (available ✅)
 Shellcode development is an ungrateful task. Writing assembly by hand is definitely not sexy. Fortunately for us, Rust, one more time, got our back! In this chapter we will learn how to write shellcodes in plain Rust with no_std.
 
 #### 9 - Phishing with WebAssembly (partially available, will be updated during the beta ✅🕒)
@@ -116,19 +116,19 @@ Again, Rust comes handy and will let us create advanced phishing pages by compil
 
 ### Part III: Implant development
 
-#### 10 - A modern RAT (partially available, will be updated during the beta ✅🕒)
+#### 10 - A modern RAT (available ✅)
 A RAT (for Remote Access Tool), also known as implant or beacon, is a kind of software used to perform offensive operations on a target's machines. In this chapter we will build our own RAT communicating to a remote server and database.
 
-#### 11 - Securing communications with end-to-end encryption (partially available, will be updated during the beta ✅🕒)
+#### 11 - Securing communications with end-to-end encryption (available ✅)
 The consequences of our own infrastructure being compromised or seized can be disastrous. We will add end-to-end encryption to our RAT's communication in order to secure its communications and avoid leaving traces on our servers.
 
-#### 12 - Going multi-platforms (partially available, will be updated during the beta ✅🕒)
+#### 12 - Going multi-platforms (available ✅)
 Today's computing landscape is extremely fragmented. From Windows to macOS, we can't target only one Operating System to ensure the success of our operations. In this section we will see how Rust's ecosystem is extremely useful when it comes to cross-compilation.
 
 #### 13 - Turning into a worm to increase reach (partially available, will be updated during the beta ✅🕒)
 Once the initial targets compromised, we will capitalize on Rust's excellent reusability to incorporate some parts of our initial scanner to turn our RAT into a worm and reach more targets only accessible from the target's internal network.
 
-#### 14 Conclusion (partially available, will be updated during the beta ✅🕒)
+#### 14 Conclusion (available ✅)
 Now it's **your** turn to get things done!
 
 <h3>
