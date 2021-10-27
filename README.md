@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB" target="_blank" rel="noopener"><img alt="Black Hat Rust logo" src="./black_hat_rust_cover.png" height="300" /></a>
-  <h1 align="center">Black Hat Rust - Early Access</h1>
+  <h1 align="center">Black Hat Rust - Beta</h1>
   <h3 align="center">Applied offensive security with the Rust programming language</h3>
   <h3 align="center">
     <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
@@ -56,11 +56,11 @@ But I repeat, this book is NOT a computer science book.
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
 </h3>
 
-## Early access
+## Beta
 
-As of today, the book is a work in progress. It is available in the context of an Early Access program which means that the chapters will be sent to you as soon as they are written, and feedback is very much appreciated.
+As of today, the book is a work in progress. It is available in the context of a [Beta program](https://kerkour.com/blog/black-hat-rust-october-update/) which means that the chapters will be sent to you as soon as they are written, and feedback is very much appreciated.
 
-pages available: **330+**
+pages available: **350+**
 
 code progress: **100%**
 
@@ -69,7 +69,7 @@ estimated final publication: **October 2021**
 estimated number of pages: **~340+**
 
 
-**In order to thank all the people who will help me make this book a reality, all early access buyers will also receive the following bonus:**
+**In order to thank all the people who will help me make this book a reality, all beta buyers will also receive the following bonus:**
 * **A curated list of advanced malware analyses. You will find inside great inspiration when developing your own offensive tools.**
 
 
