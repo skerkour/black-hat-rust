@@ -64,7 +64,7 @@ pages available: **350+**
 
 code progress: **100%**
 
-estimated final publication: **October 2021**
+estimated final publication: **November 2021** - See the [public roadmap here](https://github.com/skerkour/black-hat-rust/issues/25).
 
 estimated number of pages: **~340+**
 
