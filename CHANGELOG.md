@@ -8,7 +8,12 @@ All notable changes to the book will be documented in this file.
 
 ### Changed
 
-- ch14
+- ch14: content
+
+
+### Fixed
+
+- ch14: Fixed "Your turn" image
 
 
 ## v2021.22 - 2021-10-28
