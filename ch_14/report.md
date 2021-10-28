@@ -4,7 +4,7 @@
 ## Summary
 
 
-*Exaplain your findings, but without entering in the details*
+*Explain your findings, but without entering in the details*
 
 
 ### Impact
