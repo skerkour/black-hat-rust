@@ -3,7 +3,14 @@
 All notable changes to the book will be documented in this file.
 
 
-## v2021.19 - Work In Progress
+## v2021.22 - 2021-10-28
+
+### Fixed
+
+- hyperlinks in Table of contents are now working
+
+
+## v2021.19 - 2021-10-27
 
 ### Added
 
@@ -13,7 +20,7 @@ All notable changes to the book will be documented in this file.
 ### Changed
 
 * all chapters: typos
-* all chapters: overhaul of the illustrations
+* all chapters: all illustrations revamped
 
 
 ## v2021.18 - 2021-10-07
