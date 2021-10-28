@@ -62,7 +62,7 @@ As of today, the book is a work in progress. It is available in the context of a
 
 pages available: **350+**
 
-code progress: **100%**
+code progress: **100%** - [https://github.com/skerkour/black-hat-rust](https://github.com/skerkour/black-hat-rust)
 
 estimated final publication: **November 2021** - See the [public roadmap here](https://github.com/skerkour/black-hat-rust/issues/25).
 
