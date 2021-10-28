@@ -3,7 +3,7 @@
 All notable changes to the book will be documented in this file.
 
 
-## v2021.23 - Work In Progress
+## v2021.23 - 2021-10-28
 
 
 ### Changed
