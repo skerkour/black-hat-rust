@@ -3,7 +3,14 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.24 - Work in Progress
+
+
 ## v2021.23 - 2021-10-28
+
+### Changed
+
+- ch01 illustrations
 
 
 ### Changed
