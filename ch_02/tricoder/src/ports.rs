@@ -29,11 +29,11 @@ fn scan_port(hostname: &str, port: u16) -> Port {
         };
     }
 
-    let is_open = if let Ok(_) = TcpStream::connect_timeout(&socket_addresses[0], timeout) {
-        true
-    } else {
-        false
-    };
+    let is_open =
+        match tokio::time::timeout(timeout, TcpStream::connect(&socket_addresses[0])).await {
+            Ok(Ok(_)) => true,
+            _ => false,
+        };
 
     Port {
         port: port,
