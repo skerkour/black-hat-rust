@@ -6,5 +6,5 @@ Assets mapper
 
 ```shell
 # Scan a target
-$ cargo run --release -- target.com
+$ cargo run --release -- kerkour.com
 ```

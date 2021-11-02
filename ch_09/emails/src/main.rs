@@ -12,7 +12,7 @@ mod template;
 async fn main() -> Result<(), Error> {
     // email data
     let from = "evil@hacker.com".to_string();
-    let to = "credule@target.com".to_string();
+    let to = "credule@kerkour.com".to_string();
     let subject = "".to_string();
     let title = subject.clone();
     let content = "".to_string();

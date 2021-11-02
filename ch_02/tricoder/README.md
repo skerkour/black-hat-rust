@@ -4,5 +4,5 @@
 
 ```shell
 # Scan a target
-$ cargo run -- target.com
+$ cargo run -- kerkour.com
 ```
