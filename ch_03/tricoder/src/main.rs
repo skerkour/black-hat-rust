@@ -13,7 +13,8 @@ mod subdomains;
 use model::Subdomain;
 mod common_ports;
 
-fn main() -> Result<(), anyhow::Error> {
+#[tokio::main]
+async fn main() -> Result<(), anyhow::Error> {
     let args: Vec<String> = env::args().collect();
 
     if args.len() != 2 {
@@ -22,11 +23,6 @@ fn main() -> Result<(), anyhow::Error> {
 
     let target = args[1].as_str();
 
-    let runtime = tokio::runtime::Builder::new_multi_thread()
-        .enable_all()
-        .build()
-        .expect("Building tokio's runtime");
-
     let http_timeout = Duration::from_secs(10);
     let http_client = Client::builder().timeout(http_timeout).build()?;
 
@@ -34,31 +30,27 @@ fn main() -> Result<(), anyhow::Error> {
     let subdomains_concurrency = 100;
     let scan_start = Instant::now();
 
-    let scan_result = runtime.block_on(async move {
-        let subdomains = subdomains::enumerate(&http_client, target).await?;
+    let subdomains = subdomains::enumerate(&http_client, target).await?;
 
-        // Concurrent stream method 1: Using buffer_unordered + collect
-        let subdomains: Vec<Subdomain> = stream::iter(subdomains.into_iter())
-            .map(|subdomain| ports::scan_ports(ports_concurrency, subdomain))
-            .buffer_unordered(subdomains_concurrency)
-            .collect()
-            .await;
+    // Concurrent stream method 1: Using buffer_unordered + collect
+    let scan_result: Vec<Subdomain> = stream::iter(subdomains.into_iter())
+        .map(|subdomain| ports::scan_ports(ports_concurrency, subdomain))
+        .buffer_unordered(subdomains_concurrency)
+        .collect()
+        .await;
 
-        // Concurrent stream method 2: Using an Arc<Mutex<T>>
-        // let res: Arc<Mutex<Vec<Subdomain>>> = Arc::new(Mutex::new(Vec::new()));
+    // Concurrent stream method 2: Using an Arc<Mutex<T>>
+    // let res: Arc<Mutex<Vec<Subdomain>>> = Arc::new(Mutex::new(Vec::new()));
 
-        // stream::iter(subdomains.into_iter())
-        //     .for_each_concurrent(subdomains_concurrency, |subdomain| {
-        //         let res = res.clone();
-        //         async move {
-        //             let subdomain = ports::scan_ports(ports_concurrency, subdomain).await;
-        //             res.lock().await.push(subdomain)
-        //         }
-        //     })
-        //     .await;
-
-        Ok::<_, crate::Error>(subdomains)
-    })?;
+    // stream::iter(subdomains.into_iter())
+    //     .for_each_concurrent(subdomains_concurrency, |subdomain| {
+    //         let res = res.clone();
+    //         async move {
+    //             let subdomain = ports::scan_ports(ports_concurrency, subdomain).await;
+    //             res.lock().await.push(subdomain)
+    //         }
+    //     })
+    //     .await;
 
     let scan_duration = scan_start.elapsed();
     println!("Scan completed in {:?}", scan_duration);
