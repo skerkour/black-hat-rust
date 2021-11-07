@@ -3,8 +3,18 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.28 - Work in Progress
 
-## v2021.27 - Work in progress
+
+### Changed
+
+- ch13: Editing + typos
+- ch13: Illustrations improved
+
+
+
+
+## v2021.27 - 2021-11-07
 
 
 ### Changed
