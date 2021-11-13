@@ -1,6 +1,6 @@
 # Evil Twin
 
-On a Raspberry Pi with Rust installed
+On a Raspberry Pi with Rust installed:
 
 ```shell
 $ sudo apt install -y macchanger hostapd dnsmasq sqlite3 libssl-dev
