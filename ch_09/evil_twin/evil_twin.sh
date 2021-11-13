@@ -1,12 +1,14 @@
 echo "Changing wlan0's MAC address"
 ifconfig wlan0 down
 macchanger -A wlan0
+sleep 1
 ifconfig wlan0 up
-
 sleep 1
 
 echo "Starting access point"
 hostapd -B hostapd.conf
+sleep 1
+
 
 echo "Configuring bhr0 network interface"
 ifconfig bhr0 up
