@@ -3,6 +3,8 @@ ifconfig wlan0 down
 macchanger -A wlan0
 ifconfig wlan0 up
 
+sleep 1
+
 echo "Starting access point"
 hostapd -B hostapd.conf
 
@@ -21,4 +23,4 @@ cp -f dnsmasq.conf /etc
 service dnsmasq start
 service dnsmasq restart
 
-echo "Evil twin"
+echo "Evil twin Started"
