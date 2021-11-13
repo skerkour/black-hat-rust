@@ -3,6 +3,34 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.36 - 2021-11-13
+
+
+### Changed
+
+- ch07: Editing + typos
+
+
+
+
+## v2021.35 - 2021-11-13
+
+
+### Changed
+
+- ch05: Editing + typos
+- ch05: Illustrations improved
+
+
+
+## v2021.34 - 2021-11-12
+
+
+### Changed
+
+- ch06: Editing + typos
+- ch06: Illustrations improved
+
 
 
 ## v2021.33 - 2021-11-11
