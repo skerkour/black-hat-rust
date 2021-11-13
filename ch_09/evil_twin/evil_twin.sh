@@ -20,3 +20,5 @@ echo "Starting dnsmasq"
 cp -f dnsmasq.conf /etc
 service dnsmasq start
 service dnsmasq restart
+
+echo "Evil twin"
