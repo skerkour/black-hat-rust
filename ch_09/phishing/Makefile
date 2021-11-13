@@ -48,3 +48,12 @@ build: webapp
 	strip -s target/release/server
 	cp target/release/server $(DIST_DIR)
 	cp -r public $(DIST_DIR)
+
+
+.PHONY: rpi
+rpi: webapp_debug
+	mkdir -p $(DIST_DIR)
+	cargo build --release -p server
+	strip -s target/release/server
+	cp target/release/server $(DIST_DIR)
+	cp -r public $(DIST_DIR)
