@@ -6,7 +6,7 @@ First, build the phishing portal:
 ```shell
 $ cargo install wasm-pack
 $ git clone https://github.com/skerkour/black-hat-rust.git && cd black-hat-rust/ch_09/evil_twin
-$ make -C ../phishing/ build && cp -r ../phishing/dist/* .
+$ make -C ../phishing/ rpi && cp -r ../phishing/dist/* .
 
 ```
 
