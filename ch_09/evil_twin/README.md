@@ -1,6 +1,6 @@
 # Evil Twin
 
-On a Raspberry Pi with Rust installed:
+On a Raspberry Pi with Rust installed and connected to internet by ethernet:
 
 First, build the phishing portal:
 ```shell
@@ -19,5 +19,13 @@ $ sudo ./evil_twin.sh
 
 
 Then visit the `FREE_WIFI` wifi network.
+
+
+To access the phished credentials:
+```
+$ sqlite3 db.sqlite
+sqlite> SELECT * FROM credentials;
+```
+
 
 You can update the SSID (access point's name) in `hostapd.conf`.
