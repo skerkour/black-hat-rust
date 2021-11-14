@@ -58,15 +58,11 @@ But I repeat, this book is NOT a computer science book.
 
 ## Beta
 
-As of today, the book is a work in progress. It is available in the context of a [Beta program](https://kerkour.com/blog/black-hat-rust-october-update/) which means that the chapters will be sent to you as soon as they are written, and feedback is very much appreciated.
+The book is almost finished. A few typos or weird wordings may remain.
 
 pages available: **350+**
 
 code progress: **100%** - [https://github.com/skerkour/black-hat-rust](https://github.com/skerkour/black-hat-rust)
-
-estimated final publication: **November 2021** - See the [public roadmap here](https://github.com/skerkour/black-hat-rust/issues/25).
-
-estimated number of pages: **~340+**
 
 
 **In order to thank all the people who will help me make this book a reality, all beta buyers will also receive the following bonus:**
@@ -80,35 +76,35 @@ estimated number of pages: **~340+**
 
 ## Table of contents
 
-#### 1 - Introduction <span title="available">✅</span>
+#### 1 - Introduction
 
 ### Part I: Reconnaissance
 
-#### 2 - Multi-threaded attack surface discovery (available ✅)
+#### 2 - Multi-threaded attack surface discovery
 How to perform effective reconnaissance? In this chapter, we will build a multi-threaded scanner in order to automate the mapping of the target.
 
-#### 3 - Going full speed with async (available ✅)
+#### 3 - Going full speed with async
 Unfortunately, when a program spends most of its time in I/O operations, multi-threading is not a panacea. We will learn how async makes Rust code really, really fast and refactor our scanner to async code.
 
-#### 4 - Adding modules with Trait objects (available ✅)
+#### 4 - Adding modules with Trait objects
 We will add more heterogeneous modules to our scanner and will learn how Rust's type system helps create properly designed large software projects.
 
-#### 5 - Crawling the web for OSINT (partially available, will be updated during the beta ✅🕒)
+#### 5 - Crawling the web for OSINT
 Leveraging all we learned previously, we will build an extremely fast web crawler to help us find the needles in the haystack the web is.
 
 
 ### Part II: Exploitation
 
-#### 6 - Finding vulnerabilities (available ✅)
+#### 6 - Finding vulnerabilities
 Once the external reconnaissance performed, it's time to find entry points. In this chapter we will learn how automated fuzzing can help us to find vulnerabilities that can be exploited to then gain access to our target's systems.
 
-#### 7 - Exploit development (partially available, will be updated during the beta ✅🕒)
+#### 7 - Exploit development
 Rust may not be as fast as python when it comes to iterating on quick scripts such as exploits, but as we will see, its powerful type and modules system make it nonetheless a weapon of choice.
 
-#### 8 - Writing shellcodes in Rust (available ✅)
+#### 8 - Writing shellcodes in Rust
 Shellcode development is an ungrateful task. Writing assembly by hand is definitely not sexy. Fortunately for us, Rust, one more time, got our back! In this chapter we will learn how to write shellcodes in plain Rust with no_std.
 
-#### 9 - Phishing with WebAssembly (partially available, will be updated during the beta ✅🕒)
+#### 9 - Phishing with WebAssembly
 When they can't find exploitable hardware or software vulnerability, attackers usually fall back to what is often the weakest link in the chain: Humans.
 Again, Rust comes handy and will let us create advanced phishing pages by compiling to WebAssembly.
 
@@ -116,19 +112,19 @@ Again, Rust comes handy and will let us create advanced phishing pages by compil
 
 ### Part III: Implant development
 
-#### 10 - A modern RAT (available ✅)
+#### 10 - A modern RAT
 A RAT (for Remote Access Tool), also known as implant or beacon, is a kind of software used to perform offensive operations on a target's machines. In this chapter we will build our own RAT communicating to a remote server and database.
 
-#### 11 - Securing communications with end-to-end encryption (available ✅)
+#### 11 - Securing communications with end-to-end encryption
 The consequences of our own infrastructure being compromised or seized can be disastrous. We will add end-to-end encryption to our RAT's communication in order to secure its communications and avoid leaving traces on our servers.
 
-#### 12 - Going multi-platforms (available ✅)
+#### 12 - Going multi-platforms
 Today's computing landscape is extremely fragmented. From Windows to macOS, we can't target only one Operating System to ensure the success of our operations. In this section we will see how Rust's ecosystem is extremely useful when it comes to cross-compilation.
 
-#### 13 - Turning into a worm to increase reach (partially available, will be updated during the beta ✅🕒)
+#### 13 - Turning into a worm to increase reach
 Once the initial targets compromised, we will capitalize on Rust's excellent reusability to incorporate some parts of our initial scanner to turn our RAT into a worm and reach more targets only accessible from the target's internal network.
 
-#### 14 Conclusion (available ✅)
+#### 14 Conclusion
 Now it's **your** turn to get things done!
 
 <h3>
@@ -180,8 +176,6 @@ You can then contribute to your first Rust security project or participate in yo
 ## Community
 
 Hey! Welcome you to the Black Hat Rustaceans gang! If you think something in the book or the code can be improved, please [open an issue](https://github.com/skerkour/black-hat-rust/issues). Pull requests are also welcome :)
-
-If you have any questions or ideas, feel free to [join the discussion on the Forum](https://github.com/skerkour/black-hat-rust/discussions)!
 
 
 ## Newsletter
