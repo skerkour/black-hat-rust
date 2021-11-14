@@ -24,19 +24,15 @@ fn scan_port(hostname: &str, port: u16) -> Port {
 
     if socket_addresses.len() == 0 {
         return Port {
-            port: port,
+            port,
             is_open: false,
         };
     }
 
-    let is_open = if let Ok(_) = TcpStream::connect_timeout(&socket_addresses[0], timeout) {
-        true
-    } else {
-        false
-    };
+    let is_open = TcpStream::connect_timeout(&socket_addresses[0], timeout).is_ok();
 
     Port {
-        port: port,
+        port,
         is_open,
     }
 }

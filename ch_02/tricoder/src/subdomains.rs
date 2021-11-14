@@ -11,30 +11,28 @@ use trust_dns_resolver::{
 
 pub fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, Error> {
     let entries: Vec<CrtShEntry> = http_client
-        .get(&format!("https://crt.sh/?q=%25.{}&output=json", target))
+        .get(format!("https://crt.sh/?q=%25.{}&output=json", target))
         .send()?
         .json()?;
 
     // clean and dedup results
-    let mut subdomains: HashSet<String> = entries
-        .into_iter()
-        .map(|entry| {
+    let mut subdomains: HashSet<&str> = entries
+        .iter()
+        .flat_map(|entry| {
             entry
                 .name_value
                 .split("\n")
-                .map(|subdomain| subdomain.trim().to_string())
-                .collect::<Vec<String>>()
+                .map(|subdomain| subdomain.trim())
         })
-        .flatten()
-        .filter(|subdomain: &String| subdomain != target)
-        .filter(|subdomain: &String| !subdomain.contains("*"))
+        .filter(|subdomain| *subdomain != target)
+        .filter(|subdomain| !subdomain.contains("*"))
         .collect();
-    subdomains.insert(target.to_string());
+    subdomains.insert(target);
 
     let subdomains: Vec<Subdomain> = subdomains
         .into_iter()
         .map(|domain| Subdomain {
-            domain,
+            domain: domain.to_string(),
             open_ports: Vec::new(),
         })
         .filter(resolves)

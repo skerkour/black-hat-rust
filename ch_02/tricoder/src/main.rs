@@ -19,7 +19,7 @@ fn main() -> Result<(), anyhow::Error> {
 
     let target = args[1].as_str();
 
-    let http_timeout = Duration::from_secs(5);
+    let http_timeout = Duration::from_secs(8);
     let http_client = Client::builder()
         .redirect(redirect::Policy::limited(4))
         .timeout(http_timeout)
@@ -28,8 +28,7 @@ fn main() -> Result<(), anyhow::Error> {
     // we use a custom trheadpool to improve speed
     let pool = rayon::ThreadPoolBuilder::new()
         .num_threads(256)
-        .build()
-        .unwrap();
+        .build()?;
 
     // pool.install is required to use our custom threadpool, instad of rayon's default one
     pool.install(|| {
