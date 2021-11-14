@@ -58,7 +58,7 @@ But I repeat, this book is NOT a computer science book.
 
 ## Beta
 
-The book is almost finished. A few typos or weird wordings may remain.
+The book is almost complete: a few typos or weird wordings may remain.
 
 pages available: **350+**
 
