@@ -6,6 +6,7 @@ pub struct Login {}
 impl Component for Login {
     type Message = ();
     type Properties = ();
+
     fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
         Login {}
     }

@@ -12,6 +12,10 @@ pub use error::Error;
 #[derive(Switch, Debug, Clone)]
 pub enum Route {
     #[to = "*"]
+    Fallback,
+    #[to = "/error"]
+    Error,
+    #[to = "/"]
     Login,
 }
 
@@ -35,7 +39,8 @@ impl Component for App {
 
     fn view(&self) -> Html {
         let render = Router::render(|switch: Route| match switch {
-            Route::Login => html! {<pages::Login/>},
+            Route::Login | Route::Fallback => html! {<pages::Login/>},
+            Route::Error => html! {<pages::Error/>},
         });
 
         html! {
@@ -46,5 +51,5 @@ impl Component for App {
 
 #[wasm_bindgen(start)]
 pub fn run_app() {
-    yew::App::<pages::Login>::new().mount_to_body();
+    yew::App::<App>::new().mount_to_body();
 }

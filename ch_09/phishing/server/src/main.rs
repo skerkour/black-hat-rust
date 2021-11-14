@@ -1,6 +1,6 @@
 use clap::Arg;
 use log::info;
-use std::sync::Arc;
+use std::{path::Path, sync::Arc};
 use warp::Filter;
 
 mod api;
@@ -48,7 +48,13 @@ async fn run_server(pool: SqlitePool, port: u16, public_dir: String) -> Result<(
     info!("Starting server. port={}, directory={}", port, &public_dir);
 
     let pool = Arc::new(pool);
+    let index_path = Path::new(&public_dir)
+        .join("index.html")
+        .into_os_string()
+        .into_string()
+        .unwrap();
 
+    let index = warp::any().and(warp::fs::file(index_path));
     let files = warp::any().and(warp::fs::dir(public_dir));
     let login = warp::path("api")
         .and(warp::path("login"))
@@ -57,7 +63,7 @@ async fn run_server(pool: SqlitePool, port: u16, public_dir: String) -> Result<(
         .and(api::with_db(pool))
         .and_then(api::login);
 
-    let routes = files.or(login).with(warp::log("server"));
+    let routes = files.or(login).or(index).with(warp::log("server"));
     warp::serve(routes).run(([0, 0, 0, 0], port)).await;
 
     Ok(())
