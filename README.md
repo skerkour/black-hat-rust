@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB" target="_blank" rel="noopener"><img alt="Black Hat Rust logo" src="./black_hat_rust_cover.png" height="300" /></a>
-  <h1 align="center">Black Hat Rust - Beta</h1>
+  <h1 align="center">Black Hat Rust</h1>
   <h3 align="center">Applied offensive security with the Rust programming language</h3>
   <h3 align="center">
     <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
