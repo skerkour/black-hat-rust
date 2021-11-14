@@ -64,6 +64,8 @@ pages available: **350+**
 
 code progress: **100%** - [https://github.com/skerkour/black-hat-rust](https://github.com/skerkour/black-hat-rust)
 
+code progress: **100%** - [https://github.com/skerkour/black-hat-rust](https://github.com/skerkour/black-hat-rust)
+
 
 **In order to thank all the people who will help me make this book a reality, all beta buyers will also receive the following bonus:**
 * **A curated list of advanced malware analyses. You will find inside great inspiration when developing your own offensive tools.**
