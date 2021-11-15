@@ -22,17 +22,8 @@ fn scan_port(hostname: &str, port: u16) -> Port {
         .expect("port scanner: Creating socket address")
         .collect();
 
-    if socket_addresses.len() == 0 {
-        return Port {
-            port,
-            is_open: false,
-        };
-    }
-
-    let is_open = TcpStream::connect_timeout(&socket_addresses[0], timeout).is_ok();
-
     Port {
         port,
-        is_open,
+        is_open:socket_addresses.len()!=0 && TcpStream::connect_timeout(&socket_addresses[0], timeout).is_ok(),
     }
 }
