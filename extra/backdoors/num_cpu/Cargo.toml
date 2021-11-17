@@ -1,0 +1,12 @@
+[package]
+name = "num_cpu"
+version = "1.13.1"
+edition = "2021"
+description = "Get the number of CPUs on a machine."
+license = "Apache-2.0"
+
+repository = "https://github.com/seanmonstar/num_cpus"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]

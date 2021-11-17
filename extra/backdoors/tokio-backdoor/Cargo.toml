@@ -1,0 +1,11 @@
+[package]
+name = "tokio-backdoor"
+version = "0.1.1"
+edition = "2021"
+description = "Backdoored crate for educational purpose. https://kerkour.com/rust-crate-backdoor"
+license = "Apache-2.0"
+repository = "https://github.com/tokio-rs/tokio"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
