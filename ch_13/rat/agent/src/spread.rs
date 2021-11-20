@@ -56,7 +56,7 @@ pub fn spread(install_dir: PathBuf, host_port: &str) -> Result<(), crate::Error>
         return Ok(());
     }
 
-    println!("Uplaoding: {}", agent_for_platform.display());
+    println!("Uploading: {}", agent_for_platform.display());
 
     let remote_path = upload_agent(&ssh, &agent_for_platform)?;
     println!("agent uploaded to {}", &remote_path);
