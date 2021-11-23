@@ -1,14 +1,12 @@
 [package]
 name = "num_cpu"
-version = "1.13.2"
+version = "1.14.0"
 edition = "2021"
 description = "Get the number of CPUs on a machine."
 license = "Apache-2.0"
-authors = ["Sean McArthur <sean@seanmonstar.com>"]
-repository = "https://github.com/seanmonstar/num_cpus"
+repository = "https://github.com/skerkour/black-hat-rust"
 documentation = "https://docs.rs/num_cpu"
 keywords = ["cpu", "cpus", "cores"]
-categories = ["hardware-support"]
 readme = "README.md"
 
 
