@@ -3,6 +3,14 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.39 - 2021-11-30
+
+
+### Changed
+
+- all chapters: typos and wording
+
+
 
 ## v2021.38 - 2021-11-23
 
