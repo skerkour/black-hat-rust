@@ -3,6 +3,15 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.40 - 2021-12-01
+
+
+### Changed
+
+- all chapters: Fix layout
+
+
+
 ## v2021.39 - 2021-11-30
 
 
