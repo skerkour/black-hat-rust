@@ -56,21 +56,16 @@ But I repeat, this book is NOT a computer science book.
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
 </h3>
 
-## Beta
+## Black Hat Week
 
-The book is almost complete: a few typos or weird wordings may remain.
+**[Black Hat Rust](https://academy.kerkour.com/black-hat-rust?coupon=BLACK-HAT-WEEK) is out of beta :)**
 
-pages available: **350+**
-
-code progress: **100%** - [https://github.com/skerkour/black-hat-rust](https://github.com/skerkour/black-hat-rust)
-
-
-**In order to thank all the people who will help me make this book a reality, all beta buyers will also receive the following bonus:**
+**In order to thank all the people who will help me make this book a reality, all the supporters buying the book during [the Black Hat Week ](https://kerkour.com/black-hat-rust-week-2021/) will also receive the following bonus:**
 * **A curated list of advanced malware analyses. You will find inside great inspiration when developing your own offensive tools.**
 
 
 <h3>
-  <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
+  <a href="https://academy.kerkour.com/black-hat-rust?coupon=BLACK-HAT-WEEK">Buy the book now!</a>
 </h3>
 
 
