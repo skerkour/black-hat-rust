@@ -9,8 +9,6 @@ use tokio::net::TcpStream;
 use tokio::sync::mpsc;
 
 pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
-    let mut ret = subdomain.clone();
-
     // Concurrent stream method 3: using channels
     let (input_tx, input_rx) = mpsc::channel(concurrency);
     let (output_tx, output_rx) = mpsc::channel(concurrency);
@@ -21,13 +19,14 @@ pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
         }
     });
 
+    let subdomain_domain = &subdomain.domain;
+
     let input_rx_stream = tokio_stream::wrappers::ReceiverStream::new(input_rx);
     input_rx_stream
         .for_each_concurrent(concurrency, |port| {
-            let subdomain = subdomain.clone();
             let output_tx = output_tx.clone();
             async move {
-                let port = scan_port(&subdomain.domain, port).await;
+                let port = scan_port(subdomain_domain, port).await;
                 if port.is_open {
                     let _ = output_tx.send(port).await;
                 }
@@ -38,8 +37,9 @@ pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
     drop(output_tx);
 
     let output_rx_stream = tokio_stream::wrappers::ReceiverStream::new(output_rx);
-    ret.open_ports = output_rx_stream.collect().await;
-
+    let open_ports = output_rx_stream.collect().await;
+    let mut ret = subdomain;
+    ret.open_ports = open_ports;
     ret
 }
 
