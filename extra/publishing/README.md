@@ -9,3 +9,5 @@ Then:
 $ make docker
 $ docker run --ti --rm -v `pwd`:/ebook localhost/skerkour/ebook
 ```
+
+All your ebooks are now in the `ebooks` folder.
