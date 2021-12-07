@@ -3,6 +3,15 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.41 - 2021-12-07
+
+
+### Changed
+
+- PDF: Fix layout issues
+
+
+
 ## v2021.40 - 2021-12-01
 
 
