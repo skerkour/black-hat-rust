@@ -28,6 +28,6 @@ RUN apt install -y pandoc libpar-packer-perl perl-doc zlib1g zlib1g-dev expat \
 
 USER ebook:ebook
 
-WORKDIR /ebooks
+WORKDIR /ebook
 
 CMD ["make", "all"]
