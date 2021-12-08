@@ -37,11 +37,11 @@ pdf:
 	--table-of-contents --toc-depth=2 \
 	--number-sections \
 	--top-level-division=chapter \
-	--include-in-header src/inline_code.tex \
+	--include-in-header inline_code.tex \
 	-V fontsize=12pt \
 	-V documentclass=report \
 	-V linkcolor:blue \
-	--highlight-style ./src/tango_mod.theme \
+	--highlight-style tango_theme.json \
 	-M date="$(VERSION)"
 	pdftk src/assets/black_hat_rust_cover.pdf $(DIST_DIR)/$(BOOK_FILE)_content.pdf cat output $(DIST_DIR)/$(BOOK_FILE).pdf
 	rm $(DIST_DIR)/$(BOOK_FILE)_content.pdf
@@ -59,8 +59,8 @@ epub:
 	--standalone \
 	--epub-cover-image=$(COVER) \
 	--metadata title="$(BOOK_FILE)" \
-	--highlight-style ./src/tango_mod.theme \
-	--css ./src/epub.css \
+	--highlight-style tango_theme.json \
+	--css epub.css \
 	-M date="$(DATE)"
 
 
