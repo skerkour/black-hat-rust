@@ -1,0 +1,16 @@
+---
+title: Black Hat Rust
+subtitle: Applied offensive security with the Rust programming language
+author: Sylvain Kerkour
+subject: "markdown"
+keywords: [books,programming,security,rust,hacking]
+language: en-US
+cover-image: src/assets/black_hat_rust_cover.png
+lof: false
+lof-own-page: true
+toc-own-page: true
+titlepage: false
+colorlinks: true
+geometry: "left=3cm, top=2cm, right=3cm, bottom=2cm"
+linestretch: 1.25
+---

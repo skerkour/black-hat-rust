@@ -11,3 +11,6 @@ $ docker run --ti --rm -v `pwd`:/ebook localhost/skerkour/ebook
 ```
 
 All your ebooks are now in the `ebooks` folder.
+
+
+You can find other themes here: https://github.com/tajmone/pandoc-goodies/tree/master/skylighting/themes

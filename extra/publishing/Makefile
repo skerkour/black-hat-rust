@@ -1,6 +1,6 @@
 BOOK_FILE = black_hat_rust
 BOOK_TITLE = Black Hat Rust
-CHAPTERS_FILES = src/settings.txt  \
+CHAPTERS_FILES = settings.txt  \
 	src/ch_01.md \
 	src/ch_02.md \
 	src/ch_03.md \
