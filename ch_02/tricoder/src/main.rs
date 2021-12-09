@@ -25,7 +25,7 @@ fn main() -> Result<(), anyhow::Error> {
         .timeout(http_timeout)
         .build()?;
 
-    // we use a custom trheadpool to improve speed
+    // we use a custom threadpool to improve speed
     let pool = rayon::ThreadPoolBuilder::new()
         .num_threads(256)
         .build()
