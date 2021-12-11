@@ -29,14 +29,10 @@ fn scan_port(hostname: &str, port: u16) -> Port {
         };
     }
 
-    let is_open = if let Ok(_) = TcpStream::connect_timeout(&socket_addresses[0], timeout) {
-        true
-    } else {
-        false
-    };
+    let is_open = matches!(
+        TcpStream::connect_timeout(&socket_addresses[0], timeout),
+        Ok(_)
+    );
 
-    Port {
-        port: port,
-        is_open,
-    }
+    Port { port, is_open }
 }
