@@ -56,18 +56,6 @@ But I repeat, this book is NOT a computer science book.
   <a href="https://academy.kerkour.com/black-hat-rust?coupon=GITHUB">Buy the book now!</a>
 </h3>
 
-## Black Hat Week
-
-**[Black Hat Rust](https://academy.kerkour.com/black-hat-rust?coupon=BLACK-HAT-WEEK) is out of beta :)**
-
-**In order to thank all the people who will help me make this book a reality, all the supporters buying the book during [the Black Hat Week ](https://kerkour.com/black-hat-rust-week-2021/) will also receive the following bonus:**
-* **A curated list of advanced malware analyses. You will find inside great inspiration when developing your own offensive tools.**
-
-
-<h3>
-  <a href="https://academy.kerkour.com/black-hat-rust?coupon=BLACK-HAT-WEEK">Buy the book now!</a>
-</h3>
-
 
 ## Table of contents
 
@@ -134,7 +122,7 @@ Now it's **your** turn to get things done!
 
 Payments by cards are secured by [Stripe](https://stripe.com).
 
-Also, I need a unified list of purchases on [Stripe](https://stripe.com) for accounting reasons, at least during the early-access phase.
+Also, I need a unified list of purchases on [Stripe](https://stripe.com) for accounting reasons.
 
 Please join the discussion on [GitHub (Alternative means of payment (Bitcoin, PayPal...))](https://github.com/skerkour/black-hat-rust/issues/10) if payment by card is absolutely not an option for you, I will do my best to add more means of payments once the book is completed.
 
