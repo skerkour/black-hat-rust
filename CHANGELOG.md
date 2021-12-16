@@ -3,6 +3,15 @@
 All notable changes to the book will be documented in this file.
 
 
+
+## v2021.45 - 2021-12-16
+
+
+### Changed
+
+- fixed sections numbers
+
+
 ## v2021.44 - 2021-12-16
 
 
