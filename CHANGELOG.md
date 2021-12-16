@@ -3,7 +3,18 @@
 All notable changes to the book will be documented in this file.
 
 
-## v2021.43 - 2021-12-§1
+## v2021.44 - Work In Progress
+
+
+### Changed
+
+- ch04: fixed ETCD snippet
+- ch07: fixed lists layout issues
+- all chapters: fixed bash code highlighting overflowing
+- all chapters: fix lists layout issues
+
+
+## v2021.43 - 2021-12-11
 
 
 ### Changed
