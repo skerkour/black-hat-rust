@@ -3,6 +3,13 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2021.46 - 2021-12-21
+
+
+### Changed
+
+- All chapters: fixed overflowing code sections for default language
+
 
 ## v2021.45 - 2021-12-16
 
