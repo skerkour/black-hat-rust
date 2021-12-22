@@ -118,7 +118,7 @@ Now it's **your** turn to get things done!
 ## FAQ
 
 
-### Are there other means of payment available?
+### Can I pay with PayPal, Apple Pay or Google Pay?
 
 Yes! [Go Here] to pay by [PayPal](https://kerkour.com/black-hat-rust), Apple Pay or Google Pay.
 
