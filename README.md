@@ -120,7 +120,7 @@ Now it's **your** turn to get things done!
 
 ### Can I pay with PayPal, Apple Pay or Google Pay?
 
-Yes! [Go Here] to pay by [PayPal](https://kerkour.com/black-hat-rust), Apple Pay or Google Pay.
+Yes! [Go Here](https://kerkour.com/black-hat-rust) to pay by PayPal, Apple Pay or Google Pay.
 
 <!-- ### The book is too expensive!
 
