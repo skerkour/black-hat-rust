@@ -120,12 +120,7 @@ Now it's **your** turn to get things done!
 
 ### Are there other means of payment available?
 
-Payments by cards are secured by [Stripe](https://stripe.com).
-
-Also, I need a unified list of purchases on [Stripe](https://stripe.com) for accounting reasons.
-
-Please join the discussion on [GitHub (Alternative means of payment (Bitcoin, PayPal...))](https://github.com/skerkour/black-hat-rust/issues/10) if payment by card is absolutely not an option for you, I will do my best to add more means of payments once the book is completed.
-
+Yes! [Go Here] to pay by [PayPal](https://kerkour.com/black-hat-rust), Apple Pay or Google Pay.
 
 <!-- ### The book is too expensive!
 
