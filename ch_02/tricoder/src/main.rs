@@ -31,7 +31,7 @@ fn main() -> Result<(), anyhow::Error> {
         .build()
         .unwrap();
 
-    // pool.install is required to use our custom threadpool, instad of rayon's default one
+    // pool.install is required to use our custom threadpool, instead of rayon's default one
     pool.install(|| {
         let scan_result: Vec<Subdomain> = subdomains::enumerate(&http_client, target)
             .unwrap()
