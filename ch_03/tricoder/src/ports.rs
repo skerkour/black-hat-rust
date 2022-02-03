@@ -57,10 +57,10 @@ async fn scan_port(mut socket_address: SocketAddr, port: u16) -> Port {
     let timeout = Duration::from_secs(3);
     socket_address.set_port(port);
 
-    let is_open = match tokio::time::timeout(timeout, TcpStream::connect(&socket_address)).await {
-        Ok(Ok(_)) => true,
-        _ => false,
-    };
+    let is_open = matches!(
+        tokio::time::timeout(timeout, TcpStream::connect(&socket_address)).await,
+        Ok(Ok(_)),
+    );
 
     Port {
         port: port,
