@@ -11,6 +11,17 @@ use tokio::sync::mpsc;
 pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
     let mut ret = subdomain.clone();
 
+    let socket_addresses: Vec<SocketAddr> = format!("{}:1024", subdomain.domain)
+        .to_socket_addrs()
+        .expect("port scanner: Creating socket address")
+        .collect();
+
+    if socket_addresses.len() == 0 {
+        return subdomain;
+    }
+
+    let socket_addresse = socket_addresses[0];
+
     // Concurrent stream method 3: using channels
     let (input_tx, input_rx) = mpsc::channel(concurrency);
     let (output_tx, output_rx) = mpsc::channel(concurrency);
@@ -24,10 +35,9 @@ pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
     let input_rx_stream = tokio_stream::wrappers::ReceiverStream::new(input_rx);
     input_rx_stream
         .for_each_concurrent(concurrency, |port| {
-            let subdomain = subdomain.clone();
             let output_tx = output_tx.clone();
             async move {
-                let port = scan_port(&subdomain.domain, port).await;
+                let port = scan_port(socket_addresse, port).await;
                 if port.is_open {
                     let _ = output_tx.send(port).await;
                 }
@@ -43,25 +53,14 @@ pub async fn scan_ports(concurrency: usize, subdomain: Subdomain) -> Subdomain {
     ret
 }
 
-async fn scan_port(hostname: &str, port: u16) -> Port {
+async fn scan_port(mut socket_address: SocketAddr, port: u16) -> Port {
     let timeout = Duration::from_secs(3);
-    let socket_addresses: Vec<SocketAddr> = format!("{}:{}", hostname, port)
-        .to_socket_addrs()
-        .expect("port scanner: Creating socket address")
-        .collect();
+    socket_address.set_port(port);
 
-    if socket_addresses.len() == 0 {
-        return Port {
-            port: port,
-            is_open: false,
-        };
-    }
-
-    let is_open =
-        match tokio::time::timeout(timeout, TcpStream::connect(&socket_addresses[0])).await {
-            Ok(Ok(_)) => true,
-            _ => false,
-        };
+    let is_open = match tokio::time::timeout(timeout, TcpStream::connect(&socket_address)).await {
+        Ok(Ok(_)) => true,
+        _ => false,
+    };
 
     Port {
         port: port,
