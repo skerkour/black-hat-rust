@@ -2,6 +2,14 @@
 
 All notable changes to the book will be documented in this file.
 
+
+## v2022.49 - 2022-01-25
+
+### Changed
+
+* ch10: Fix "Scaling the architecture" schema
+
+
 ## v2022.48 - 2022-01-22
 
 ### Changed
