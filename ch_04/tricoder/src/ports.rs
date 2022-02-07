@@ -8,11 +8,20 @@ use std::time::Duration;
 use tokio::net::TcpStream;
 
 pub async fn scan_ports(concurrency: usize, mut subdomain: Subdomain) -> Subdomain {
-    let hostname = &subdomain.domain.clone();
+    let socket_addresses: Vec<SocketAddr> = format!("{}:1024", subdomain.domain)
+        .to_socket_addrs()
+        .expect("port scanner: Creating socket address")
+        .collect();
+
+    if socket_addresses.len() == 0 {
+        return subdomain;
+    }
+
+    let socket_address = socket_addresses[0];
 
     subdomain.open_ports = stream::iter(MOST_COMMON_PORTS.into_iter())
         .map(|port| async move {
-            let port = scan_port(hostname, *port).await;
+            let port = scan_port(socket_address, *port).await;
             if port.is_open {
                 return Some(port);
             }
@@ -26,26 +35,14 @@ pub async fn scan_ports(concurrency: usize, mut subdomain: Subdomain) -> Subdoma
     subdomain
 }
 
-async fn scan_port(hostname: &str, port: u16) -> Port {
+async fn scan_port(mut socket_address: SocketAddr, port: u16) -> Port {
     let timeout = Duration::from_secs(3);
-    let socket_addresses: Vec<SocketAddr> = format!("{}:{}", hostname, port)
-        .to_socket_addrs()
-        .expect("port scanner: Creating socket address")
-        .collect();
+    socket_address.set_port(port);
 
-    if socket_addresses.len() == 0 {
-        return Port {
-            port: port,
-            is_open: false,
-            findings: Vec::new(),
-        };
-    }
-
-    let is_open =
-        match tokio::time::timeout(timeout, TcpStream::connect(&socket_addresses[0])).await {
-            Ok(Ok(_)) => true,
-            _ => false,
-        };
+    let is_open = matches!(
+        tokio::time::timeout(timeout, TcpStream::connect(&socket_address)).await,
+        Ok(Ok(_)),
+    );
 
     Port {
         port: port,
