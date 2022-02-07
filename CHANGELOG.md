@@ -3,6 +3,14 @@
 All notable changes to the book will be documented in this file.
 
 
+## v2022.50 - 2022-02-07
+
+### Changed
+
+* ch02: Use a single call to `to_socket_addrs`
+* ch03: Use a single call to `to_socket_addrs`
+
+
 ## v2022.49 - 2022-01-25
 
 ### Changed
