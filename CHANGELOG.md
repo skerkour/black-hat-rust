@@ -2,6 +2,16 @@
 
 All notable changes to the book will be documented in this file.
 
+## v2022.51 - 2022-03-04
+
+### Changed
+
+* ch10: Add "Dockerizing the server" section
+* ch02: typos
+* ch03: typos
+* ch09: typos
+* ch10: typos
+
 
 ## v2022.50 - 2022-02-07
 
