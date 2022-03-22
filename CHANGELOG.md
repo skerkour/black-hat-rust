@@ -2,6 +2,32 @@
 
 All notable changes to the book will be documented in this file.
 
+## v2022.53 - 2022-03-15
+
+* ch03: typo
+
+## v2022.52 - 2022-03-07
+
+* ch08: typo
+
+## v2022.51 - 2022-03-04
+
+### Changed
+
+* ch10: Add "Dockerizing the server" section
+* ch02: typos
+* ch03: typos
+* ch09: typos
+* ch10: typos
+
+
+## v2022.50 - 2022-02-07
+
+### Changed
+
+* ch02: Use a single call to `to_socket_addrs`
+* ch03: Use a single call to `to_socket_addrs`
+
 
 ## v2022.49 - 2022-01-25
 
