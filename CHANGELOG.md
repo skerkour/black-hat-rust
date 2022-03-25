@@ -2,7 +2,7 @@
 
 All notable changes to the book will be documented in this file.
 
-## v2022.43 - 2022-03-25
+## v2022.54 - 2022-03-25
 
 * ch06: typo
 
