@@ -1,7 +1,8 @@
 #![no_std]
 #![no_main]
-#![feature(asm)]
 #![feature(const_raw_ptr_deref)]
+
+use core::arch::asm;
 
 #[panic_handler]
 fn panic(_: &core::panic::PanicInfo) -> ! {
