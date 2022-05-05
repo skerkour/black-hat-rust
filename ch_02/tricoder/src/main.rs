@@ -45,7 +45,7 @@ fn main() -> Result<(), anyhow::Error> {
                 println!("    {}", port.port);
             }
 
-            println!("");
+            println!();
         }
     });
 
