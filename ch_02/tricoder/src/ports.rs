@@ -12,7 +12,7 @@ pub fn scan_ports(mut subdomain: Subdomain) -> Subdomain {
         .expect("port scanner: Creating socket address")
         .collect();
 
-    if socket_addresses.len() == 0 {
+    if socket_addresses.is_empty() {
         return subdomain;
     }
 
@@ -28,14 +28,7 @@ fn scan_port(mut socket_address: SocketAddr, port: u16) -> Port {
     let timeout = Duration::from_secs(3);
     socket_address.set_port(port);
 
-    let is_open = if let Ok(_) = TcpStream::connect_timeout(&socket_address, timeout) {
-        true
-    } else {
-        false
-    };
+    let is_open = TcpStream::connect_timeout(&socket_address, timeout).is_ok();
 
-    Port {
-        port: port,
-        is_open,
-    }
+    Port { port, is_open }
 }
