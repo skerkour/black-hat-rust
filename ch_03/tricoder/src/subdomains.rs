@@ -22,12 +22,12 @@ pub async fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdoma
         .json()
         .await?;
 
+    let mut dns_resolver_opts = ResolverOpts::default();
+    dns_resolver_opts.timeout = Duration::from_secs(4);
+
     let dns_resolver = AsyncResolver::tokio(
         ResolverConfig::default(),
-        ResolverOpts {
-            timeout: Duration::from_secs(4),
-            ..Default::default()
-        },
+        dns_resolver_opts,
     )
     .expect("subdomain resolver: building DNS client");
 
