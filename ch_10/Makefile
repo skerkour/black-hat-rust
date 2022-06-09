@@ -10,7 +10,6 @@ build: agent client server
 agent:
 	cargo build -p agent --release
 
-
 .PHONY: client
 client:
 	cargo build -p client --release
@@ -30,3 +29,7 @@ dev:
 .PHONY: fmt
 fmt:
 	cargo fmt
+
+.PHONY: check
+check:
+	cargo check
