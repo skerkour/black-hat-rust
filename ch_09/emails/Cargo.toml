@@ -8,9 +8,9 @@ edition = "2018"
 [dependencies]
 tokio = { version = "1", features = ["full"] }
 
-lettre = { version = "0.10.0-rc.3", default-features = false, features = ["smtp-transport", "tokio1-rustls-tls", "hostname", "r2d2", "builder"] }
-rusoto_core = { version = "0.47", default-features = false, features = ["rustls"] }
-rusoto_ses = { version = "0.47", default-features = false, features = ["rustls"] }
+lettre = { version = "0.10.0-rc.7", default-features = false, features = ["smtp-transport", "tokio1-rustls-tls", "hostname", "builder"] }
+rusoto_core = { version = "0.48", default-features = false, features = ["rustls"] }
+rusoto_ses = { version = "0.48", default-features = false, features = ["rustls"] }
 base64 = "0.13"
 serde = "1.0"
 anyhow = "1.0"
