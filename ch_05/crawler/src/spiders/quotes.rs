@@ -48,7 +48,7 @@ impl super::Spider for QuotesSpider {
     async fn scrape(&self, url: String) -> Result<(Vec<Self::Item>, Vec<String>), Error> {
         let mut items = Vec::new();
         let html = {
-            let mut webdriver = self.webdriver_client.lock().await;
+            let webdriver = self.webdriver_client.lock().await;
             webdriver.goto(&url).await?;
             webdriver.source().await?
         };

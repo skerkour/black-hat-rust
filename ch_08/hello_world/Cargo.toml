@@ -2,7 +2,7 @@
 name = "hello_world"
 version = "0.1.0"
 authors = ["Sylvain Kerkour <sylvain@kerkour.fr>"]
-edition = "2018"
+edition = "2021"
 
 [profile.dev]
 panic = "abort"
