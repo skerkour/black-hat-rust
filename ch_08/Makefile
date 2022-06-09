@@ -20,7 +20,7 @@ run_hello_world: hello_world execute
 
 .PHONY: hello_world
 hello_world:
-	cd hello_world && cargo +nightly build --release
+	cd hello_world && cargo build --release
 	strip -s hello_world/target/release/hello_world
 	objcopy -O binary hello_world/target/release/hello_world shellcode.bin
 
@@ -32,7 +32,7 @@ dump_hello_world: hello_world dump_shellcode
 
 .PHONY: shell
 shell:
-	cd shell && cargo +nightly build --release
+	cd shell && cargo build --release
 	strip -s shell/target/release/shell
 	objcopy -O binary shell/target/release/shell shellcode.bin
 
@@ -44,12 +44,12 @@ run_shell: shell execute
 
 .PHONY: build_shell_debug
 build_shell_debug:
-	cd shell && cargo +nightly build
+	cd shell && cargo build
 
 
 .PHONY: tcp
 tcp:
-	cd reverse_tcp && cargo +nightly build --release
+	cd reverse_tcp && cargo build --release
 	strip -s reverse_tcp/target/release/reverse_tcp
 	objcopy -O binary reverse_tcp/target/release/reverse_tcp shellcode.bin
 
