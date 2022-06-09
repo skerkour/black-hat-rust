@@ -1,4 +1,4 @@
-use clap::{App, Arg, SubCommand};
+use clap::{Arg, Command};
 
 mod api;
 mod cli;
@@ -10,31 +10,30 @@ pub use error::Error;
 use crate::config::Config;
 
 fn main() -> Result<(), anyhow::Error> {
-    let cli = App::new(clap::crate_name!())
+    let cli = Command::new(clap::crate_name!())
         .version(clap::crate_version!())
         .about(clap::crate_description!())
-        .subcommand(SubCommand::with_name(cli::AGENTS).about("List all agents"))
-        .subcommand(SubCommand::with_name(cli::IDENTITY).about("Generates a new identity keypair"))
+        .subcommand(Command::new(cli::AGENTS).about("List all agents"))
+        .subcommand(Command::new(cli::IDENTITY).about("Generates a new identity keypair"))
         .subcommand(
-            SubCommand::with_name(cli::EXEC)
+            Command::new(cli::EXEC)
                 .about("Execute a command")
                 .arg(
-                    Arg::with_name("agent")
-                        .short("a")
+                    Arg::new("agent")
+                        .short('a')
                         .long("agent")
                         .help("The agent id to execute the command on")
                         .takes_value(true)
                         .required(true),
                 )
                 .arg(
-                    Arg::with_name("command")
+                    Arg::new("command")
                         .help("The command to execute, with its arguments.")
                         .required(true)
                         .index(1),
                 ),
         )
-        .setting(clap::AppSettings::ArgRequiredElseHelp)
-        .setting(clap::AppSettings::VersionlessSubcommands)
+        .arg_required_else_help(true)
         .get_matches();
 
     let api_client = api::Client::new(config::SERVER_URL.to_string());

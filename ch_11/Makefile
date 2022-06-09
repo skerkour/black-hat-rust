@@ -29,3 +29,7 @@ dev:
 .PHONY: fmt
 fmt:
 	cargo fmt
+
+.PHONY: check
+check:
+	cargo check
