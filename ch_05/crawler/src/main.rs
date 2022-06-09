@@ -1,4 +1,4 @@
-use clap::{App, Arg, SubCommand};
+use clap::{Command, Arg};
 use std::{env, sync::Arc, time::Duration};
 
 mod crawler;
@@ -10,22 +10,21 @@ use error::Error;
 
 #[tokio::main]
 async fn main() -> Result<(), anyhow::Error> {
-    let cli = App::new(clap::crate_name!())
+    let cli = Command::new(clap::crate_name!())
         .version(clap::crate_version!())
         .about(clap::crate_description!())
-        .subcommand(SubCommand::with_name("spiders").about("List all spiders"))
+        .subcommand(Command::new("spiders").about("List all spiders"))
         .subcommand(
-            SubCommand::with_name("run").about("Run a spider").arg(
-                Arg::with_name("spider")
-                    .short("s")
+            Command::new("run").about("Run a spider").arg(
+                Arg::new("spider")
+                    .short('s')
                     .long("spider")
                     .help("The spider to run")
                     .takes_value(true)
                     .required(true),
             ),
         )
-        .setting(clap::AppSettings::ArgRequiredElseHelp)
-        .setting(clap::AppSettings::VersionlessSubcommands)
+        .arg_required_else_help(true)
         .get_matches();
 
     env::set_var("RUST_LOG", "info,crawler=debug");
