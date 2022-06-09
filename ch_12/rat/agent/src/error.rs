@@ -45,12 +45,6 @@ impl std::convert::From<base64::DecodeError> for Error {
     }
 }
 
-impl std::convert::From<chacha20poly1305::aead::Error> for Error {
-    fn from(err: chacha20poly1305::aead::Error) -> Self {
-        Error::Internal(err.to_string())
-    }
-}
-
 impl std::convert::From<std::string::FromUtf8Error> for Error {
     fn from(err: std::string::FromUtf8Error) -> Self {
         Error::Internal(err.to_string())
