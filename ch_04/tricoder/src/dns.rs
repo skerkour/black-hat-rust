@@ -17,14 +17,11 @@ pub async fn resolves(dns_resolver: &Resolver, domain: Subdomain) -> Option<Subd
 }
 
 pub fn new_resolver() -> Resolver {
-    let resolver = AsyncResolver::tokio(
-        ResolverConfig::default(),
-        ResolverOpts {
-            timeout: Duration::from_secs(4),
-            ..Default::default()
-        },
-    )
-    .expect("dns/new_resolver: building DNS client");
+    let mut opts = ResolverOpts::default();
+    opts.timeout = Duration::from_secs(4);
+
+    let resolver = AsyncResolver::tokio(ResolverConfig::default(), opts)
+        .expect("dns/new_resolver: building DNS client");
 
     return Arc::new(resolver);
 }

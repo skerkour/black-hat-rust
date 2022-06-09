@@ -1,7 +1,7 @@
 use std::env;
 
 use anyhow::Result;
-use clap::{App, Arg, SubCommand};
+use clap::{Arg, Command};
 
 mod cli;
 mod common_ports;
@@ -15,20 +15,19 @@ fn main() -> Result<()> {
     env::set_var("RUST_LOG", "info,trust_dns_proto=error");
     env_logger::init();
 
-    let cli = App::new(clap::crate_name!())
+    let cli = Command::new(clap::crate_name!())
         .version(clap::crate_version!())
         .about(clap::crate_description!())
-        .subcommand(SubCommand::with_name("modules").about("List all modules"))
+        .subcommand(Command::new("modules").about("List all modules"))
         .subcommand(
-            SubCommand::with_name("scan").about("Scan a target").arg(
-                Arg::with_name("target")
+            Command::new("scan").about("Scan a target").arg(
+                Arg::new("target")
                     .help("The domain name to scan")
                     .required(true)
                     .index(1),
             ),
         )
-        .setting(clap::AppSettings::ArgRequiredElseHelp)
-        .setting(clap::AppSettings::VersionlessSubcommands)
+        .arg_required_else_help(true)
         .get_matches();
 
     if let Some(_) = cli.subcommand_matches("modules") {
