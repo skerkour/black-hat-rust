@@ -9,10 +9,12 @@ edition = "2018"
 [dependencies]
 common = { path = "../common" }
 
-warp = { version = "0.3", default-features = false }
-tokio = { version = "1", features = ["rt", "rt-multi-thread", "macros"] }
+axum = "0.5"
+tower-http = { version = "0.3", features = ["fs", "trace"] }
+axum-extra = { version = "0.3", features = ["spa"] }
+tokio = { version = "1", features = ["full"] }
 env_logger = "0.8"
-clap = "2"
+clap = { version = "3.1", features = ["cargo"] }
 log = "0.4"
 sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "sqlite", "chrono" ] }
 chrono = "0.4"
