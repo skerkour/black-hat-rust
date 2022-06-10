@@ -4,7 +4,11 @@ All notable changes to the book will be documented in this file.
 
 ## v2022.56 - Work In Progress
 
-* ch02 / ch04: minor typos
+* ch02: minor typos
+* ch04: minor typos
+* ch10: Updated web frameworks overview figure
+* ch11: Updated cryptography ecosystem overview figure
+
 
 
 ## v2022.55 - 2022-05-02
