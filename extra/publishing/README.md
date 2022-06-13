@@ -7,7 +7,7 @@ Put your files in a `src` folder and edit the `Makefile` accordingly.
 Then:
 ```shell
 $ make docker
-$ docker run --ti --rm -v `pwd`:/ebook localhost/skerkour/ebook
+$ docker run -ti --rm -v `pwd`:/ebook localhost/skerkour/ebook
 ```
 
 All your ebooks are now in the `ebooks` folder.
