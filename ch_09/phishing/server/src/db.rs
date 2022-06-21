@@ -20,7 +20,7 @@ pub async fn connect(database_url: &str) -> Result<SqlitePool, crate::Error> {
 
     let pool = SqlitePoolOptions::new()
         .max_connections(pool_max_connections)
-        .connect_timeout(pool_timeout)
+        .idle_timeout(pool_timeout)
         .connect_with(options)
         .await?;
 

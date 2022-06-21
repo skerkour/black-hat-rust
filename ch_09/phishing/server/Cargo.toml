@@ -13,9 +13,9 @@ axum = "0.5"
 tower-http = { version = "0.3", features = ["fs", "trace"] }
 axum-extra = { version = "0.3", features = ["spa"] }
 tokio = { version = "1", features = ["full"] }
-env_logger = "0.8"
+env_logger = "0.9"
 clap = { version = "3.1", features = ["cargo"] }
 log = "0.4"
-sqlx = { version = "0.5", features = [ "runtime-tokio-rustls", "sqlite", "chrono" ] }
+sqlx = { version = "0.6", features = [ "runtime-tokio-rustls", "sqlite", "chrono" ] }
 chrono = "0.4"
-uuid = { version = "0.8", features = ["v4"] }
+uuid = { version = "1", features = ["v4"] }
