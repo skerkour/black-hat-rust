@@ -1,4 +1,3 @@
-use crate::config;
 use std::{fs, path::PathBuf, process::Command};
 
 pub const LAUNCHD_FILE: &str = "com.blackhatrust.agent.plist";
