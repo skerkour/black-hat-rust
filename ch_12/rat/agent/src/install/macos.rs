@@ -39,12 +39,11 @@ fn install_launchd(executable: &PathBuf) -> Result<(), crate::Error> {
 
     let mut launchd_file = match dirs::home_dir() {
         Some(home_dir) => home_dir,
-        None => return Err(Error::Internal("Error getting home directory.".to_string())),
+        None => return Err(crate::Error::Internal("Error getting home directory.".to_string())),
     };
-    launchd_file
-        .push("Library")
-        .push("LaunchAgents")
-        .push(LAUNCHD_FILE);
+    launchd_file.push("Library");
+    launchd_file.push("LaunchAgents");
+    launchd_file.push(LAUNCHD_FILE);
 
     fs::write(&launchd_file, launchd_file_content)?;
 
