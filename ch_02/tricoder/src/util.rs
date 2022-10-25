@@ -1,7 +1,7 @@
 use rayon::{ThreadPool, ThreadPoolBuildError};
 use reqwest::{blocking::Client, redirect};
 
-use crate::config::{MAX_REDIRECTS, HTTP_TIMEOUT, NUM_THREADS};
+use crate::config::{HTTP_TIMEOUT, MAX_REDIRECTS, NUM_THREADS};
 
 pub fn configure_http_client() -> Result<Client, reqwest::Error> {
     Client::builder()

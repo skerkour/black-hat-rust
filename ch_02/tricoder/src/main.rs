@@ -1,18 +1,14 @@
-use api_helpers::get_subdomains_from_crt_sh;
-use config::{HTTP_TIMEOUT, MAX_REDIRECTS, NUM_THREADS};
-use rayon::{prelude::*, ThreadPool, ThreadPoolBuildError};
-use reqwest::{blocking::Client, redirect};
-use serde::Deserialize;
-use std::{collections::HashSet, env, time::Duration};
+use std::env;
 
 mod error;
 pub use error::Error;
 mod scanned_subdomain;
-use scanned_subdomain::{ScannedSubdomain};
+use scanned_subdomain::ScannedSubdomain;
+mod api_helpers;
+use api_helpers::get_subdomains_from_crt_sh;
 mod common_ports;
 mod config;
 mod util;
-mod api_helpers;
 
 fn main() -> Result<(), anyhow::Error> {
     let top_level_domain = parse_cli_input()?;
@@ -22,11 +18,10 @@ fn main() -> Result<(), anyhow::Error> {
 
     // For each subdomain, look for open ports and built a list of subdomains
     // and their open ports, excluding the ones that fail to resolve.
-    let scanned_subdomains = 
-        subdomains
-            .into_iter()
-            .filter_map(|sd| ScannedSubdomain::try_from(sd).ok())
-            .collect::<Vec<_>>();
+    let scanned_subdomains = subdomains
+        .into_iter()
+        .filter_map(|sd| ScannedSubdomain::try_from(sd).ok())
+        .collect::<Vec<_>>();
 
     // Print out the discovered subdomains and their open ports
     for sd in scanned_subdomains {
@@ -39,7 +34,7 @@ fn main() -> Result<(), anyhow::Error> {
 fn parse_cli_input() -> Result<String, Error> {
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
-        Err(Error::CliUsage.into())
+        Err(Error::CliUsage)
     } else {
         Ok(args[1].clone())
     }

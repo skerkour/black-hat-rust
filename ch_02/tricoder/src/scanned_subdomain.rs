@@ -6,8 +6,8 @@ use trust_dns_resolver::{
     Resolver,
 };
 
-use crate::{config::SCAN_TIMEOUT, util};
 use crate::{common_ports::MOST_COMMON_PORTS_100, config::RESOLUTION_TIMEOUT};
+use crate::{config::SCAN_TIMEOUT, util};
 
 #[derive(Debug, Clone)]
 pub struct ScannedSubdomain {
@@ -45,13 +45,13 @@ impl TryFrom<String> for ScannedSubdomain {
         let pool = util::configure_threadpool()?;
         let open_ports = pool.install(|| {
             (!socket_addrs.is_empty())
-            .then(|| {
-                MOST_COMMON_PORTS_100
-                    .into_par_iter()
-                    .filter_map(|port| get_open_port(socket_addrs[0], *port))
-                    .collect()
-            })
-            .unwrap_or(vec![])
+                .then(|| {
+                    MOST_COMMON_PORTS_100
+                        .into_par_iter()
+                        .filter_map(|port| get_open_port(socket_addrs[0], *port))
+                        .collect()
+                })
+                .unwrap_or_default() // I prefer unwrap_or(vec![]) for explicitness, but cargo-clippy doesn't like it.
         });
 
         Ok(Self {
