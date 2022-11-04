@@ -5,7 +5,7 @@ All notable changes to the book will be documented in this file.
 
 ## v2022.56 - 2022-11-04
 
-* The book bundle now contains a `.awz3` file instead of `.mobi` for Kindle devices.
+* The book bundle now contains a `.awz3` file in addition of the `.mobi` file for Kindle devices.
 
 
 ## v2022.56 - 2022-06-15
