@@ -1,0 +1,7 @@
+cff-version: 1.2.0
+message: If you use this software, please cite it using these metadata.
+title: Black Hat Rust
+abstract: Applied offensive security with the Rust programming language
+authors:
+  - name: "Sylvain Kerkour"
+version: v2022.56
