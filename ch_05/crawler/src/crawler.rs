@@ -123,15 +123,15 @@ impl Crawler {
         &self,
         concurrency: usize,
         spider: Arc<dyn Spider<Item = T>>,
-        urls_to_vist: mpsc::Receiver<String>,
-        new_urls: mpsc::Sender<(String, Vec<String>)>,
+        urls_to_visit: mpsc::Receiver<String>,
+        new_urls_tx: mpsc::Sender<(String, Vec<String>)>,
         items_tx: mpsc::Sender<T>,
         active_spiders: Arc<AtomicUsize>,
         delay: Duration,
         barrier: Arc<Barrier>,
     ) {
         tokio::spawn(async move {
-            tokio_stream::wrappers::ReceiverStream::new(urls_to_vist)
+            tokio_stream::wrappers::ReceiverStream::new(urls_to_visit)
                 .for_each_concurrent(concurrency, |queued_url| {
                     let queued_url = queued_url.clone();
                     async {
@@ -153,7 +153,7 @@ impl Crawler {
                             urls = new_urls;
                         }
 
-                        let _ = new_urls.send((queued_url, urls)).await;
+                        let _ = new_urls_tx.send((queued_url, urls)).await;
                         sleep(delay).await;
                         active_spiders.fetch_sub(1, Ordering::SeqCst);
                     }
