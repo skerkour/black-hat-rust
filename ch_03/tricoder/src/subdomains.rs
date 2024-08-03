@@ -29,8 +29,8 @@ pub async fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdoma
     let dns_resolver = AsyncResolver::tokio(
         ResolverConfig::default(),
         dns_resolver_opts,
-    )
-    .expect("subdomain resolver: building DNS client");
+    );
+    // .expect("subdomain resolver: building DNS client");
 
     // clean and dedup results
     let mut subdomains: HashSet<String> = entries
