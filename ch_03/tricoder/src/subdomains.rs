@@ -12,7 +12,8 @@ use trust_dns_resolver::{
     AsyncResolver,
 };
 
-type DnsResolver = AsyncResolver<GenericConnection, GenericConnectionProvider<TokioRuntime>>;
+// type DnsResolver = AsyncResolver<GenericConnection, GenericConnectionProvider<TokioRuntime>>;
+type DnsResolver = AsyncResolver<TokioConnectionProvider>;
 
 pub async fn enumerate(http_client: &Client, target: &str) -> Result<Vec<Subdomain>, Error> {
     let entries: Vec<CrtShEntry> = http_client
