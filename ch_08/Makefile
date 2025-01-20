@@ -21,7 +21,6 @@ run_hello_world: hello_world execute
 .PHONY: hello_world
 hello_world:
 	cd hello_world && cargo build --release
-	strip -s hello_world/target/release/hello_world
 	objcopy -O binary hello_world/target/release/hello_world shellcode.bin
 
 .PHONY: dump_hello_world
